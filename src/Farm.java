@@ -6,6 +6,7 @@ public class Farm {
     private Season season;
     private Weather weather;
     private int day; // hari ke-n dalam satu musim
+    private Point playerPosition;
 
     public Farm(String farmName, Player player) {
         this.farmName = farmName;
@@ -15,6 +16,7 @@ public class Farm {
         this.season = new Season();
         this.weather = new Weather();
         this.day = 1;
+        this.playerPosition = new Point(0, 0);  // Posisi awal pemain di (0, 0)
     }
 
     // --- Getter Methods ---
@@ -38,6 +40,18 @@ public class Farm {
     }
     public int getDay() { 
         return day; 
+    }
+    public Point getPlayerPosition() {
+        return playerPosition;
+    }
+    public void setPlayerPosition(Point position) {
+        this.playerPosition = position;
+    }
+
+    // menggerakkan player
+    public void movePlayer(int dx, int dy) {
+        playerPosition.setX(playerPosition.getX() + dx);
+        playerPosition.setY(playerPosition.getY() + dy);
     }
 
     // --- Day Progression ---

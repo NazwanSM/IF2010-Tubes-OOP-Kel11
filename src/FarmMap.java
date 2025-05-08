@@ -1,5 +1,7 @@
-public class FarmMap extends Map {
+import java.util.Random;
 
+public class FarmMap extends Map {
+    private Point playerPosition;
     private final int SIZE = 32; // Ukuran peta (32x32 tiles)
     private int playerX, playerY;  // Posisi pemain di peta
 
@@ -99,6 +101,16 @@ public class FarmMap extends Map {
                 }
             }
             System.out.println();
+        }
+    }
+
+    public void makeLandWetIfRainy(Weather weather) {
+        if (weather.isRainy()) {
+            for (int i = 0; i < getMapWidth(); i++) {
+                for (int j = 0; j < getMapLength(); j++) {
+                    getTiles()[i][j].setWet();  // Set tile menjadi basah jika hujan
+                }
+            }
         }
     }
 

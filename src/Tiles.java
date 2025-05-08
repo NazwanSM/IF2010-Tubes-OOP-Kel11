@@ -1,11 +1,11 @@
 public class Tiles {
-    private String state; // "land", "tilled", "planted", "wet"
+    private String state; // "tillable", "tilled", "planted", "wet"
     private Seed plantedSeed;
     private DeployedObject object;
     private boolean isWet; // status tile basah karena Rainy
 
     public Tiles() {
-        this.state = "land";
+        this.state = "tillable";
         this.plantedSeed = null;
         this.object = null;
         this.isWet = false;
@@ -47,8 +47,10 @@ public class Tiles {
         return isWet;
     }
 
-    public void setWet(boolean wet) {
-        this.isWet = wet;
+    public void setWet() {
+        if (state.equals("tillable") || state.equals("tilled") || state.equals("planted")) {
+            this.state = "wet";  // Mengubah status menjadi "wet" jika kondisi cocok
+        }
     }
 
     public void dry() {
@@ -57,7 +59,7 @@ public class Tiles {
 
     // --- Interaksi validasi ---
     public boolean isTillable() {
-        return state.equals("land") && !isOccupied();
+        return state.equals("tillable") && !isOccupied();
     }
 
     public boolean isTilled() {
