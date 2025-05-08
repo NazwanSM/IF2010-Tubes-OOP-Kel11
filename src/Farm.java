@@ -45,10 +45,10 @@ public class Farm {
         day++;
         if (day > 10) {
             day = 1;
-            season.nextDay(); // ganti season setelah 10 hari
+            season.nextSeason(); // ganti season setelah 10 hari
         }
 
-        weather.nextDay(season);
+        weather.nextWeather(season);
         gameTime.skipToMorning();
         farmMap.getTilesManagement().growCropsOneDay();
 

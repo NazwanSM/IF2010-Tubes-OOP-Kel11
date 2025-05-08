@@ -13,7 +13,7 @@ public class Weather {
         return currentWeather;
     }
 
-    public void nextDay(Season season) {
+    public void nextWeather(Season season) {
         this.currentWeather = generateWeather();
         if (isRainy()) {
             rainyDaysThisSeason++;

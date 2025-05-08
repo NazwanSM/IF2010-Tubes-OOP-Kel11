@@ -1,4 +1,4 @@
-public class PLayer {
+public class Player {
     private String name;
     private String gender;
     private int energy;

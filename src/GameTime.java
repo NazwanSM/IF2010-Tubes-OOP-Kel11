@@ -30,6 +30,10 @@ public class GameTime {
         this.minutes = 0;
     }
 
-    public int getHours() { return hours; }
-    public int getMinutes() { return minutes; }
+    public int getHours() { 
+        return hours; 
+    }
+    public int getMinutes() { 
+        return minutes; 
+    }
 }
