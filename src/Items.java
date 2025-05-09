@@ -37,4 +37,17 @@ public abstract class Items {
             this.quantity = quantity;
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Items items = (Items) obj;
+        return name.equals(items.name); // Bandingkan berdasarkan nama
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode(); // Gunakan hashCode dari nama
+    }
 }
