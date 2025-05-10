@@ -1,7 +1,8 @@
-public class PLayer {
+public class Player {
     private String name;
     private String gender;
     private int energy;
+    private int chatCount;
     private String famName;
     private NPC partner; // Blom dibkin class NPCnya
     private int gold;
@@ -14,6 +15,7 @@ public class PLayer {
         this.name = name;
         this.gender = gender;
         this.energy = MAX_ENERGY;
+        this.chatCount = 0;
         this.famName = famName;
         this.partner = null;
         this.gold = gold;
@@ -115,12 +117,12 @@ public class PLayer {
         return inventory.hasItem(item); // harus diimplementasi di class inventory juga
     }
 
-    public void addItemToInventory(Items item) {
-        inventory.addItem(item); // harus diimplementasi di class inventory juga
+    public void addItemToInventory(Items item, int amount) {
+        inventory.addItem(item, amount); // harus diimplementasi di class inventory juga
     }
 
-    public void removeItemFromInventory(Items item) {
-        inventory.removeItem(item); // harus diimplementasi di class inventory juga
+    public void removeItemFromInventory(Items item, int amount) {
+        inventory.removeItem(item, amount); // harus diimplementasi di class inventory juga
     }
 
     public void eating (Items eadible) {
@@ -128,7 +130,7 @@ public class PLayer {
             Edible edibleItem = (Edible) eadible;
             if (hasItem(edibleItem)) {
                 edibleItem.eat(this); // harus diimplementasi di class edible 
-                removeItemFromInventory(edibleItem);
+                removeItemFromInventory(edibleItem, 1);
                 increaseEnergy(eadibleItem.getEnergy()); // harus diimplementasi di class edible
             } else {
                 System.out.println("You don't have this item in your inventory."); // implementasi ini blom tentu dipake
@@ -140,26 +142,27 @@ public class PLayer {
     }
 
     public void chatting(NPC npc) {
-        System.out.println("Chatting with " + npc.getName() + ": " + npc.getDialogue()); // harus diimplementasi di class NPC
-        npc.increseaseHeartPoint(10); // harus diimplementasi di class NPC
+        System.out.println("Chatting with " + npc.getNPCName() + ": " + npc.getDialogue()); // harus diimplementasi di class NPC
+        npc.increaseHeartPoints(10); // harus diimplementasi di class NPC
         decreaseEnergy(10); // ini juga harus disesuain sama class NPC
         // abis ini harus ada fungsi buat ngitung statistik berapa kali chatting dll
+        chatCount++;
     }
 
     public void gifting(NPC npc, Items gift) {
         if (hasItem(gift)) {
             if (npc.getLovedItems().contains(gift)) {
-                npc.increaseHeartPoint(25); 
+                npc.increaseHeartPoints(25); 
             }
             else if (npc.getLikedItems().contains(gift)) {
-                npc.increaseHeartPoint(20); 
+                npc.increaseHeartPoints(20); 
             }
             else if (npc.getHatedItems().contains(gift)) {
-                npc.decreaseHeartPoint(25); 
+                npc.decreaseHeartPoints(25); 
             }
 
-            System.out.println("Giving " + gift.getName() + " to " + npc.getName() + "."); // harus diimplementasi di class NPC
-            removeItemFromInventory(gift);
+            System.out.println("Giving " + gift.getName() + " to " + npc.getNPCName() + "."); // harus diimplementasi di class NPC
+            removeItemFromInventory(gift, 1); // asumsi amount of gift selalu 1, nanti diganti kalo ada perubahan
             decreaseEnergy(5);
         } else {
             System.out.println("You don't have this item in your inventory."); // implementasi ini blom tentu dipake
@@ -200,13 +203,13 @@ public class PLayer {
 
 
     public boolean isProposeable(NPC npc) {
-        int heartPoint = npc.getHeartPoint(); // harus diimplementasi di class NPC
+        int heartPoints = npc.getHeartPoints(); // harus diimplementasi di class NPC
         String relationshipStatus = npc.getRelationshipStatus(); // harus diimplementasi di class NPC
 
-        if (partner == null && heartPoint == 150 && relationshipStatus.equals("single")) {
+        if (partner == null && heartPoints == 150 && relationshipStatus.equals("Single")) {
             return true; // bisa diimplementasi di class NPC
         } else {
-            System.out.println("You are already in a relationship with " + partner.getName() + "."); // implementasi ini blom tentu dipake
+            System.out.println("You are already in a relationship with " + partner.getNPCName() + "."); // implementasi ini blom tentu dipake
             return false;
         }
     }
@@ -214,10 +217,10 @@ public class PLayer {
     public void propose(NPC npc) {
         if (isProposeable(npc)) {
             partner = npc; // harus diimplementasi di class NPC
-            npc.setRelationshipStatus("fiance"); // harus diimplementasi di class NPC
+            npc.setRelationshipStatus("Fiance"); // harus diimplementasi di class NPC
             gifting(npc, new Ring("Wedding Ring", "ring")); // harus disesuain sama class ring nanti
             decreaseEnergy(10);
-            System.out.println("You proposed to " + npc.getName() + "."); // implementasi ini blom tentu dipake
+            System.out.println("You proposed to " + npc.getNPCName() + "."); // implementasi ini blom tentu dipake
         } else {
             decreaseEnergy(20);
             System.out.println("You are rejected"); // implementasi ini blom tentu dipake
@@ -228,18 +231,18 @@ public class PLayer {
         if (partner != null && partner.equals(npc) && partner.getRelationshipStatus().equals("fiance")) {
             return true; // bisa diimplementasi di class NPC
         } else {
-            System.out.println("You are not engaged to " + npc.getName() + "."); // implementasi ini blom tentu dipake
+            System.out.println("You are not engaged to " + npc.getNPCName() + "."); // implementasi ini blom tentu dipake
             return false;
         }
     }
 
     public void marry(NPC npc) { // ini masih banyak yang harus disesuain kyk mekanik menghabiskan waktu sampe time skip
         if (isMarriable(npc)) {
-            partner.setRelationshipStatus("married"); // harus diimplementasi di class NPC
+            partner.setRelationshipStatus("Spouse"); // harus diimplementasi di class NPC
             decreaseEnergy(80);
-            System.out.println("You are now married to " + partner.getName() + "."); // implementasi ini blom tentu dipake
+            System.out.println("You are now married to " + partner.getNPCName() + "."); // implementasi ini blom tentu dipake
         } else {
-            System.out.println("You are not engaged to " + npc.getName() + "."); // implementasi ini blom tentu dipake
+            System.out.println("You are not engaged to " + npc.getNPCName() + "."); // implementasi ini blom tentu dipake
         }
     }   
 }
