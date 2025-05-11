@@ -149,16 +149,4 @@ public class Fishing extends Action
     {
         startFishing();
     }
-
-    public static void main(String[] args) 
-    {
-    Point location = new Point(0,0);
-    Weather weather = new Weather();
-    Player player = new Player("Asep", "Male", "Spakbor", 100);
-    GameTime time = new GameTime();
-    GameClock clock = new GameClock(time);
-
-    Fishing fishing = new Fishing(location, weather, player, time, clock);
-    fishing.startFishing();
-    }
 }
