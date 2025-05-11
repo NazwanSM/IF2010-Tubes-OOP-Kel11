@@ -5,15 +5,21 @@ public class Fishing extends Action
 {
     private Point location;
     private Weather weatherCondition;
+    private Player player;
+    private GameTime gameTime;
+    private GameClock gameClock; 
 
-    public Fishing() 
+    public Fishing(Point location, Weather weatherCondition, Player player, GameTime gameTime, GameClock gameClock) 
     {
         super("Fishing", 5, 15);
         this.location = location;
         this.weatherCondition = weatherCondition;
+        this.player = player;
+        this.gameTime = gameTime;
+        this.gameClock = gameClock;
     }
 
-    public void startFishing(Player player, GameTime gameTime, GameClock gameClock) 
+    public void startFishing() 
     {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
@@ -23,35 +29,38 @@ public class Fishing extends Action
         gameTime.advance(timeRequired);
 
         //misal fish nya ini, tp harus nunggu class Fish dlu
-        String[] common = {"Carp", "Chub", "Bullhead"};
-        String[] regular = {"Halibut", "Sardine", "Salmon"};
-        String[] legendary = {"Legend", "Crimsonfish", "Glacierfish"};
+        String[] COMMON = {"Carp", "Chub", "Bullhead"};
+        String[] REGULAR = {"Halibut", "Sardine", "Salmon"};
+        String[] LEGENDARY = {"Legend", "Crimsonfish", "Glacierfish"};
         
         int fishRarity = random.nextInt(3);
-        String fishName;
-        String rarity;
-        int randomingRange, maxTry, price;
+
+        String fishName = "";
+        String rarity = "";
+        int randomingRange = 0;
+        int maxTry = 0;
+        int price = 0;
         
-        if (fishRarity == 0) //common
+        if (fishRarity == 0) //COMMON
         {
-            fishName = common[random.nextInt(common.length)];
-            rarity = "common";
+            fishName = COMMON[random.nextInt(COMMON.length)];
+            rarity = "COMMON";
             randomingRange = 10;
             maxTry = 10;
             price = 10;
         }
-        else if (fishRarity == 1) //regular
+        else if (fishRarity == 1) //REGULAR
         {
-            fishName = regular[random.nextInt(regular.length)];
-            rarity = "regular";
+            fishName = REGULAR[random.nextInt(REGULAR.length)];
+            rarity = "REGULAR";
             randomingRange = 100;
             maxTry = 10;
             price = 50;
         }
-        if (fishRarity == 2) //legendary
+        if (fishRarity == 2) //LEGENDARY
         {
-            fishName = legendary[random.nextInt(legendary.length)];
-            rarity = "legendary";
+            fishName = LEGENDARY[random.nextInt(LEGENDARY.length)];
+            rarity = "LEGENDARY";
             randomingRange = 500;
             maxTry = 7;
             price = 200;
@@ -62,8 +71,23 @@ public class Fishing extends Action
 
         for (int i = 1; i <= maxTry; i++)
         {
-            System.out.print("Attempt " + i + "/" + maxTry + ", guess the number (1-" + randomingRange + "): ");
-            int guess = scanner.nextInt();
+            System.out.print(rarity + " HIT! Attempt " + i + "/" + maxTry + ", guess the number (1-" + randomingRange + "): ");
+
+            String input = scanner.nextLine();
+
+        if (input.isBlank() || input.contains(" ") || !input.matches("\\d+")) {
+            System.out.println("Invalid input!");
+            i--;
+            continue;
+        }
+
+        if (input.length() > 3) {
+        System.out.println("Invalid input, number too large!");
+        i--;
+        continue;
+        }
+
+            int guess = Integer.parseInt(input);
 
             if (guess == targetRandoming) 
             {
@@ -76,24 +100,28 @@ public class Fishing extends Action
                 System.out.println("Wrong number, too low!");
             }
 
-            else
+            else if (guess > targetRandoming)
             {
                 System.out.println("Wrong number, too high!");
+            }
+            else
+            {
+                System.out.println("Invalid input!");
             }
         }
 
         if(caught)
         {
             Fish caughtFish = new Fish(name, "Fish", rarity, "Any", weatherCondition.getCurrentWeather(), location, gameTime, price);
-            player.addItemToInventory(caughtFish);
+            player.getInventory().addItem(caughtFish, 1);
+            System.out.println("Nice catch!");
         }
         else 
         {
-            System.out.println("The fish got away...");
+            System.out.println("The fish swam away...");
         }
 
         gameClock.resumeClock();
-        System.out.println("Fishing finished.");
     }
 
     public Point getLocation() 
@@ -119,5 +147,18 @@ public class Fishing extends Action
     @Override
     public void executeAction()
     {
+        startFishing();
+    }
+
+    public static void main(String[] args) 
+    {
+    Point location = new Point(0,0);
+    Weather weather = new Weather();
+    Player player = new Player("Asep", "Male", "Spakbor", 100);
+    GameTime time = new GameTime();
+    GameClock clock = new GameClock(time);
+
+    Fishing fishing = new Fishing(location, weather, player, time, clock);
+    fishing.startFishing();
     }
 }
