@@ -3,7 +3,7 @@ public abstract class Items {
     protected String type;
     protected int quantity;
 
-    public Items(String name, String type) {
+    public Items(String name, String type, int quantity) {
         this.name = name;
         this.type = type;
         this.quantity = 0;
