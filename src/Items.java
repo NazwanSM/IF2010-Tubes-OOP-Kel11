@@ -3,7 +3,7 @@ public abstract class Items {
     protected String type;
     protected int quantity;
 
-    public Items(String name, String type) {
+    public Items(String name, String type, int quantity) {
         this.name = name;
         this.type = type;
         this.quantity = 0;
@@ -36,5 +36,18 @@ public abstract class Items {
         } else {
             this.quantity = quantity;
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Items items = (Items) obj;
+        return name.equals(items.name); // Bandingkan berdasarkan nama
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode(); // Gunakan hashCode dari nama
     }
 }
