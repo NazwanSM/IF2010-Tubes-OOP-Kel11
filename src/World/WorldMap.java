@@ -1,15 +1,18 @@
 package World;
 
 import java.util.Scanner;
+import World.Object.DeployedObject;
+import Player.Player;
+import World.GameClock;
 
 public class WorldMap extends Map {
     private Player player;
-    private GameTime gameTime;
+    private GameClock gameClock;
 
-    public WorldMap(String name, int width, int length, Player player, GameTime gameTime) {
+    public WorldMap(String name, int width, int length, Player player, GameClock gameClock) {
         super(name, width, length);
         this.player = player;
-        this.gameTime = gameTime;
+        this.gameClock = gameClock;
     }
 
     public void interact() {
@@ -56,8 +59,9 @@ public class WorldMap extends Map {
         if (Destination != null) {
             player.setLocation(Destination);
             player.decreaseEnergy(10);
-            gameTime.advance(15);
+            gameClock.advance(15);
             System.out.println("Player is now here: " + Destination);
         }
+    
     }
 }

@@ -6,9 +6,9 @@ public class Farm {
     private String farmName;
     private Player player;
     private FarmMap farmMap;
-    private GameTime gameTime;
     private Season season;
     private Weather weather;
+    private GameClock gameClock;
     private int day; // hari ke-n dalam satu musim
     private Point playerPosition;
 
@@ -16,8 +16,8 @@ public class Farm {
         this.farmName = farmName;
         this.player = player;
         this.farmMap = new FarmMap("Spakbor Hills");
-        this.gameTime = new GameTime();
         this.season = new Season();
+        this.gameClock = new GameClock();
         this.weather = new Weather();
         this.day = 1;
         this.playerPosition = new Point(0, 0);  // Posisi awal pemain di (0, 0)
@@ -33,11 +33,11 @@ public class Farm {
     public FarmMap getFarmMap() { 
         return farmMap; 
     }
-    public GameTime getGameTime() { 
-        return gameTime; 
-    }
     public Season getSeason() { 
         return season; 
+    }
+    public GameClock getGameClock() { 
+        return gameClock; 
     }
     public Weather getWeather() { 
         return weather; 
@@ -67,7 +67,7 @@ public class Farm {
         }
 
         weather.nextWeather(season);
-        gameTime.skipToMorning();
+        gameClock.skipToMorning();
         farmMap.getTilesManagement().growCropsOneDay();
 
         System.out.println("Day " + day + " starts!");
@@ -89,14 +89,14 @@ public class Farm {
     }
 
     public void displayTimeInfo() {
-        System.out.println("Waktu: " + gameTime.getTime());
+        System.out.println("Waktu: " + gameClock.getTime());
         System.out.println("Musim: " + season.getCurrentSeason());
         System.out.println("Hari ke-" + day);
         System.out.println("Cuaca: " + weather.getCurrentWeather());
     }
 
     public void advanceTime(int inGameMinutes) {
-        gameTime.advance(inGameMinutes);
+        gameClock.advance(inGameMinutes);
     }
 
     public boolean isRainy() {

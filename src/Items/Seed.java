@@ -5,6 +5,7 @@ public class Seed extends Items implements Sellable {
     private int daysToHarvest;
     private int buyPrice;
     private int sellPrice;
+    private int daysPlanted;
 
     public Seed(String name, String season, int daysToHarvest, int buyPrice, int sellPrice) {
         super(name, "Seed");
@@ -12,6 +13,7 @@ public class Seed extends Items implements Sellable {
         this.daysToHarvest = daysToHarvest;
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
+        this.daysPlanted = 0;
     }
 
     public String getSeason() {
@@ -45,5 +47,17 @@ public class Seed extends Items implements Sellable {
     public void setSellPrice(int sellPrice) {
         this.sellPrice = sellPrice;
     }
+
+    public void growOneDay() {
+        if (daysPlanted < daysToHarvest) {
+            daysPlanted++;
+        }
+    }
+
+    public boolean isReadyToHarvest() {
+        return daysPlanted >= daysToHarvest;
+    }
+
+
 
 }

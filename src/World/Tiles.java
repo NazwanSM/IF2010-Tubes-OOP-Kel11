@@ -1,26 +1,28 @@
 package World;
 
 import Items.Seed;
+import Enum.TileState;
+import World.Object.DeployedObject;
 
 public class Tiles {
-    private String state; // "tillable", "tilled", "planted", "wet"
+    private TileState state; // "tillable", "tilled", "planted", "wet"
     private Seed plantedSeed;
     private DeployedObject object;
     private boolean isWet; // status tile basah karena Rainy
 
     public Tiles() {
-        this.state = "tillable";
+        this.state = TileState.TILLABLE;
         this.plantedSeed = null;
         this.object = null;
         this.isWet = false;
     }
 
     // --- State ---
-    public String getState() {
+    public TileState getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(TileState state) {
         this.state = state;
     }
 
@@ -52,8 +54,8 @@ public class Tiles {
     }
 
     public void setWet() {
-        if (state.equals("tillable") || state.equals("tilled") || state.equals("planted")) {
-            this.state = "wet";  // Mengubah status menjadi "wet" jika kondisi cocok
+        if (state.equals(TileState.TILLABLE) || state.equals(TileState.TILLED) || state.equals(TileState.PLANTED)) {
+            this.state = TileState.WET;  // Mengubah status menjadi "wet" jika kondisi cocok
         }
     }
 
@@ -63,11 +65,11 @@ public class Tiles {
 
     // --- Interaksi validasi ---
     public boolean isTillable() {
-        return state.equals("tillable") && !isOccupied();
+        return state.equals(TileState.TILLABLE) && !isOccupied();
     }
 
     public boolean isTilled() {
-        return state.equals("tilled");
+        return state.equals(TileState.TILLED);
     }
 
     public boolean isPlantable() {
@@ -75,7 +77,7 @@ public class Tiles {
     }
 
     public boolean isPlanted() {
-        return state.equals("planted") && plantedSeed != null;
+        return state.equals(TileState.PLANTED) && plantedSeed != null;
     }
 
     public boolean isHarvestable() {

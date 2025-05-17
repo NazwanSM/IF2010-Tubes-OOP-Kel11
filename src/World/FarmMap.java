@@ -1,6 +1,7 @@
 package World;
 
 import java.util.Random;
+import World.Object.DeployedObject;
 
 public class FarmMap extends Map {
     private Point playerPosition;

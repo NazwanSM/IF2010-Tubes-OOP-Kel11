@@ -1,4 +1,4 @@
-package World;
+package World.Object;
 
 public abstract class DeployedObject {
     protected String name;       
