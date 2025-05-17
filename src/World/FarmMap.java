@@ -1,3 +1,5 @@
+package World;
+
 import java.util.Random;
 
 public class FarmMap extends Map {

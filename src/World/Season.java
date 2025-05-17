@@ -1,3 +1,5 @@
+package World;
+
 public class Season {
     private String[] season = {"Spring", "Summer", "Fall", "Winter"};
     private int currentSeason = 0;

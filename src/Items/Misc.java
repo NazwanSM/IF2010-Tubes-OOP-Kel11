@@ -1,9 +1,10 @@
+package Items;
 public class Misc extends Items implements Sellable {
     private int buyPrice;
     private int sellPrice;
 
-    public Misc(String name, int buyPrice, int sellPrice, int quantity) {
-        super(name, "Misc", quantity);
+    public Misc(String name, int buyPrice, int sellPrice) {
+        super(name, "Misc");
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
     }

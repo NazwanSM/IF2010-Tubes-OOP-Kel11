@@ -1,3 +1,7 @@
+package World;
+
+import Items.Seed;
+
 public class Tiles {
     private String state; // "tillable", "tilled", "planted", "wet"
     private Seed plantedSeed;

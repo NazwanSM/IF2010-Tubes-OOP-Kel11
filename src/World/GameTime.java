@@ -1,3 +1,5 @@
+package World;
+
 public class GameTime {
     private int hours;
     private int minutes;

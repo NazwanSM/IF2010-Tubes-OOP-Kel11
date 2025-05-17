@@ -1,3 +1,5 @@
+package Actions;
+
 public abstract class Action {
     protected String name;
     protected int energyRequired;

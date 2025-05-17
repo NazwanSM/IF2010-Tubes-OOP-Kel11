@@ -1,3 +1,5 @@
+package World;
+
 import java.util.Scanner;
 
 public class WorldMap extends Map {

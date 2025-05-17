@@ -1,11 +1,13 @@
-public class Seeds extends Items implements Sellable {
+package Items;
+
+public class Seed extends Items implements Sellable {
     private String season;
     private int daysToHarvest;
     private int buyPrice;
     private int sellPrice;
 
-    public Seeds(String name, String season, int daysToHarvest, int buyPrice, int sellPrice, int quantity) {
-        super(name, "Seed", quantity);
+    public Seed(String name, String season, int daysToHarvest, int buyPrice, int sellPrice) {
+        super(name, "Seed");
         this.season = season;
         this.daysToHarvest = daysToHarvest;
         this.buyPrice = buyPrice;

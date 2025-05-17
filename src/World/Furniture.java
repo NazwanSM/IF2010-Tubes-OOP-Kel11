@@ -1,3 +1,4 @@
+package World;
 public abstract class Furniture {
     protected String type;
 

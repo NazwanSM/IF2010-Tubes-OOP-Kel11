@@ -1,3 +1,6 @@
+package Player;
+
+import Items.Items;
 import java.util.HashMap;
 import java.util.Map;
 

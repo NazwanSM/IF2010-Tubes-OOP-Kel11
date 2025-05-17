@@ -1,3 +1,7 @@
+package World;
+
+import Player.Player;
+
 public class Farm {
     private String farmName;
     private Player player;

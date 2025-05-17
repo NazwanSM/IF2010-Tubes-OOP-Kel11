@@ -1,3 +1,5 @@
+package World;
+
 public abstract class DeployedObject {
     protected String name;       
     protected String type;       

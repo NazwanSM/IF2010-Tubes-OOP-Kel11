@@ -1,12 +1,12 @@
+package Items;
 public abstract class Items {
     protected String name;
     protected String type;
     protected int quantity;
 
-    public Items(String name, String type, int quantity) {
+    public Items(String name, String type) {
         this.name = name;
         this.type = type;
-        this.quantity = 0;
     }
 
     public String getName() {

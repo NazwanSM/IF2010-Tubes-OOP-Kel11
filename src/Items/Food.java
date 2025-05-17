@@ -1,3 +1,4 @@
+package Items;
 public class Food extends Items implements Sellable {
     private int buyPrice;
     private int sellPrice;
@@ -5,8 +6,8 @@ public class Food extends Items implements Sellable {
 
 
 
-    public Food(String name, int buyPrice, int sellPrice, int energy, int quantity) {
-        super(name, "Food", quantity);
+    public Food(String name, int buyPrice, int sellPrice, int energy) {
+        super(name, "Food");
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
         this.energy = energy;

@@ -1,11 +1,13 @@
+package Items;
+
 public class Crops extends Items implements Sellable {
     private int buyPrice;
     private int sellPrice;
     private int energy;
     private String rarity;
 
-    public Crops(String name, int buyPrice, int sellPrice, int energy, String rarity, int quantity) {
-        super(name, "Crop", quantity);
+    public Crops(String name, int buyPrice, int sellPrice, int energy, String rarity) {
+        super(name, "Crop");
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
         this.energy = energy;

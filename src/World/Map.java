@@ -1,3 +1,5 @@
+package World;
+
 public abstract class Map {
     protected String name;         // Nama peta
     protected Tiles[][] tiles;     // Matriks tiles untuk peta

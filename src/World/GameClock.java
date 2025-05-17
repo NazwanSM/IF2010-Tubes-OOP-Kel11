@@ -1,3 +1,5 @@
+package World;
+
 public class GameClock extends Thread {
     private GameTime gameTime;
     private boolean isRunning = true;

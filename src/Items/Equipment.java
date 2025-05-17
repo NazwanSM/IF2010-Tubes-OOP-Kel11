@@ -1,8 +1,10 @@
+package Items;
+
 public class Equipment extends Items {
     private String function;
 
     public Equipment(String name, int quantity, String function) {
-        super(name, "Equipment", quantity);
+        super(name, "Equipment");
         this.function = function;
     }
 

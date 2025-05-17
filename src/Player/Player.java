@@ -1,6 +1,13 @@
+package Player;
+
 import java.util.List;
 import java.util.ArrayList;
-
+import Items.Items;
+import Items.ProposalRing;
+import World.NPC;
+import World.GameTime;
+import World.GameClock;
+import World.Point;
 public class Player {
     private String name;
     private String gender;

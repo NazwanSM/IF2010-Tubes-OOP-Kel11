@@ -1,4 +1,11 @@
+package Actions;
+
 import java.util.Map;
+import Items.Food;
+import Items.Items;
+import Items.Recipe;
+import Player.Player;
+import Player.Inventory;
 
 public class Cooking extends Action {
     private Player player;

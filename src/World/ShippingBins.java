@@ -1,5 +1,10 @@
+package World;
+
 import java.util.ArrayList;
 import java.util.List;
+import Items.Items;
+import Items.Sellable;
+import Player.Inventory;
 
 public class ShippingBins<Player> {
     private List<Items> listItemToSell;  // Daftar item yang ingin dijual
