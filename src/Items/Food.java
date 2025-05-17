@@ -1,5 +1,8 @@
 package Items;
-public class Food extends Items implements Sellable {
+
+import Player.Player;
+
+public class Food extends Items implements Sellable, Edible {
     private int buyPrice;
     private int sellPrice;
     private int energy;  
@@ -13,27 +16,35 @@ public class Food extends Items implements Sellable {
         this.energy = energy;
     }
 
-
     public int getBuyPrice() {
         return buyPrice;
     }
-
+    
     public void setBuyPrice(int buyPrice) {
         this.buyPrice = buyPrice;
     }
     
-    public int getSellPrice() {
-        return sellPrice;
-    }
     public void setSellPrice(int sellPrice) {
         this.sellPrice = sellPrice;
     }
+    
+    
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+    
+    @Override
+    public int getSellPrice() {
+        return sellPrice;
+    }
 
+    @Override
     public int getEnergy() {
         return energy;
     }
 
-    public void setEnergy(int energy) {
-        this.energy = energy;
+    @Override
+    public void eat(Player player) {
+        System.out.println(player.getName() + " memakan " + getName() + " dan mendapat " + getEnergy() + " energi!");
     }
 }

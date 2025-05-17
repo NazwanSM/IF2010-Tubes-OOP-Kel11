@@ -2,8 +2,9 @@ package Items;
 
 import java.util.Set;
 import Enum.FishRarity;
+import Player.Player;
 
-public class Fish extends Items implements Sellable {
+public class Fish extends Items implements Sellable, Edible {
     private FishRarity rarity;
     private Set<String> seasons;
     private int startHour;
@@ -11,6 +12,7 @@ public class Fish extends Items implements Sellable {
     private int hourRange;
     private Set<String> locations;
     private Set<String> weathers;
+    private final int energy = 1;
 
     public Fish(String name, FishRarity rarity,  Set<String> seasons, int startHour, int endHour, Set<String> weathers, Set<String> locations) {
         super(name, "Fish");
@@ -89,7 +91,7 @@ public class Fish extends Items implements Sellable {
             && weathers.contains(currentWeather)
             && locations.contains(currentLocation);
     }
-
+    @Override
     public int getSellPrice() {
         int C = switch (rarity) {
             case REGULAR -> 5;
@@ -110,5 +112,15 @@ public class Fish extends Items implements Sellable {
                           * (4.0 / locationCount);
 
         return (int) Math.round(multiplier * C);
+    }
+
+    @Override
+    public int getEnergy() {
+        return energy;
+    }
+
+    @Override
+    public void eat(Player player) {
+        System.out.println(player.getName() + " memakan " + getName() + " dan mendapat " + getEnergy() + " energi!");
     }
 }

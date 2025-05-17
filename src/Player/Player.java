@@ -1,11 +1,9 @@
 package Player;
 
-import java.util.List;
-import java.util.ArrayList;
 import Items.Items;
 import Items.ProposalRing;
+import Items.Edible;
 import World.NPC;
-import World.GameTime;
 import World.GameClock;
 import World.Point;
 public class Player {
@@ -14,14 +12,14 @@ public class Player {
     private int energy;
     private int chatCount;
     private String famName;
-    private NPC partner; // Blom dibkin class NPCnya
+    private NPC partner;
     private int gold;
     private Inventory inventory;
     private Point location;
     private static final int MAX_ENERGY = 100;
     private static final int MIN_ENERGY = -20;
-    private GameTime gameTime;
-    private GameClock gameClock; 
+    private GameClock gameClock;
+    private String place; 
 
 
     public Player(String name, String gender, String famName, int gold) {
@@ -32,8 +30,9 @@ public class Player {
         this.famName = famName;
         this.partner = null;
         this.gold = gold;
-        this.inventory = new Inventory(); // Blom dibkin class inventorynya
-        this.location = new Point(0, 0); // Blom dibkin class pointnya
+        this.inventory = new Inventory();
+        this.location = new Point(0, 0);
+        this.place = "Farm";
     }
 
     public String getName() {
@@ -66,6 +65,9 @@ public class Player {
 
     public Point getLocation() {
         return location;
+    }
+    public String getPlace() {
+        return place;
     }
 
     public void setName(String name) {
@@ -110,6 +112,10 @@ public class Player {
         this.location = location;
     }
 
+    public void setPlace(String place) {
+        this.place = place;
+    }
+    
     public void increaseEnergy(int amount) {
         setEnergy(this.energy + amount);
     }
@@ -127,24 +133,24 @@ public class Player {
     }
 
     public boolean hasItem(Items item) {
-        return inventory.hasItem(item); // harus diimplementasi di class inventory juga
+        return inventory.hasItem(item); 
     }
 
     public void addItemToInventory(Items item, int amount) {
-        inventory.addItem(item, amount); // harus diimplementasi di class inventory juga
+        inventory.addItem(item, amount); 
     }
 
     public void removeItemFromInventory(Items item, int amount) {
-        inventory.removeItem(item, amount); // harus diimplementasi di class inventory juga
+        inventory.removeItem(item, amount); 
     }
 
-    public void eating (Items eadible) {
-        if (eadible instanceof Edible) { 
-            Edible edibleItem = (Edible) eadible;
-            if (hasItem(edibleItem)) {
-                edibleItem.eat(this); // harus diimplementasi di class edible 
-                removeItemFromInventory(edibleItem, 1);
-                increaseEnergy(eadibleItem.getEnergy()); // harus diimplementasi di class edible
+    public void eating (Items item) {
+        if (item instanceof Edible) { 
+            Edible edibleItem = (Edible) item; // casting item ke edible
+            if (hasItem(item)) {
+                edibleItem.eat(this); 
+                removeItemFromInventory(item, 1);
+                increaseEnergy(edibleItem.getEnergy()); // harus diimplementasi di class edible
             } else {
                 System.out.println("You don't have this item in your inventory."); // implementasi ini blom tentu dipake
             }
@@ -165,13 +171,13 @@ public class Player {
 
     public void gifting(NPC npc, Items gift) {
         if (inventory.hasItem(gift)) {
-            if (npc.getLovedItems().contains(gift)) {
+            if (npc.getLovedItems().contains(gift.getName())) {
                 npc.increaseHeartPoints(25); 
             }
-            else if (npc.getLikedItems().contains(gift)) {
+            else if (npc.getLikedItems().contains(gift.getName())) {
                 npc.increaseHeartPoints(20); 
             }
-            else if (npc.getHatedItems().contains(gift)) {
+            else if (npc.getHatedItems().contains(gift.getName())) {
                 npc.decreaseHeartPoints(25); 
             }
 
@@ -209,7 +215,7 @@ public class Player {
     // }
 
     public void showTime() {
-        System.out.println("Current time: " + gameTime.getTime()); // harus diimplementasi di class GameTime
+        System.out.println("Current time: " + gameClock.getTime()); // harus diimplementasi di class GameTime
     }
 
     public void showLocation() {
@@ -263,8 +269,8 @@ public class Player {
             partner.setRelationshipStatus("Married");
             decreaseEnergy(80);
 
-            int currentHour = gameTime.getHours();
-            int currentMinute = gameTime.getMinutes();
+            int currentHour = gameClock.getHours();
+            int currentMinute = gameClock.getMinutes();
             int targetHour = 22;
             int targetMinute = 0;
 
@@ -276,7 +282,7 @@ public class Player {
                 minutesToAdvance += 24 * 60; // skip ke 22:00 hari berikutnya (opsional)
             }
 
-            gameTime.advance(minutesToAdvance);
+            gameClock.advance(minutesToAdvance);
 
             System.out.println("You are now married to " + partner.getNPCName() + ".");
             System.out.println("Time has skipped to 22:00. You are back home.");

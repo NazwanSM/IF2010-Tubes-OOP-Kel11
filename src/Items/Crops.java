@@ -1,16 +1,17 @@
 package Items;
 
-public class Crops extends Items implements Sellable {
+import Player.Player;
+
+public class Crops extends Items implements Sellable, Edible {
     private int buyPrice;
     private int sellPrice;
-    private int energy;
     private String rarity;
+    private final int energy = 3;
 
     public Crops(String name, int buyPrice, int sellPrice, int energy, String rarity) {
         super(name, "Crop");
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
-        this.energy = energy;
         this.rarity = rarity;
     }
 
@@ -19,31 +20,35 @@ public class Crops extends Items implements Sellable {
         return buyPrice;
     }
 
+    
+    public String getRarity() {
+        return rarity;
+    }
+    
+    public void setBuyPrice(int buyPrice) {
+        this.buyPrice = buyPrice;
+    }
+    
+    public void setSellPrice(int sellPrice) {
+        this.sellPrice = sellPrice;
+    }
+    
+    public void setRarity(String rarity) {
+        this.rarity = rarity;
+    }
+    
+    @Override
     public int getSellPrice() {
         return sellPrice;
     }
 
+    @Override
     public int getEnergy() {
         return energy;
     }
 
-    public String getRarity() {
-        return rarity;
-    }
-
-    public void setBuyPrice(int buyPrice) {
-        this.buyPrice = buyPrice;
-    }
-
-    public void setSellPrice(int sellPrice) {
-        this.sellPrice = sellPrice;
-    }
-
-    public void setEnergy(int energy) {
-        this.energy = energy;
-    }
-
-    public void setRarity(String rarity) {
-        this.rarity = rarity;
+    @Override
+    public void eat(Player player) {
+        System.out.println(player.getName() + " memakan " + getName() + " dan mendapat " + getEnergy() + " energi!");
     }
 }
