@@ -2,17 +2,19 @@ package World;
 
 import java.util.List;
 import java.util.Scanner;
+import Items.Items;
+import Player.Player;
 
 public class NPC {
     private String npcName;
     private int heartPoints;
-    private List<Items> lovedItems;
-    private List<Items> likedItems;
-    private List<Items> hatedItems;
+    private List<String> lovedItems;
+    private List<String> likedItems;
+    private List<String> hatedItems;
     private String relationshipStatus;
     private static final int MAX_HEART_POINTS = 150;
 
-    public NPC(String npcName, List<Items> lovedItems, List<Items> likedItems, List<Items> hatedItems) {
+    public NPC(String npcName, List<String> lovedItems, List<String> likedItems, List<String> hatedItems) {
         this.npcName = npcName;
         this.lovedItems = lovedItems;
         this.likedItems = likedItems;
@@ -29,15 +31,15 @@ public class NPC {
         return heartPoints;
     }
 
-    public List<Items> getLovedItems() {
+    public List<String> getLovedItems() {
         return lovedItems;
     }
 
-    public List<Items> getLikedItems() {
+    public List<String> getLikedItems() {
         return likedItems;
     }
 
-    public List<Items> getHatedItems() {
+    public List<String> getHatedItems() {
         return hatedItems;
     }
 
@@ -80,15 +82,15 @@ public class NPC {
         this.npcName = npcName;
     }
 
-    public void setLovedItems(List<Items> lovedItems) {
+    public void setLovedItems(List<String> lovedItems) {
         this.lovedItems = lovedItems;
     }
 
-    public void setLikedItems(List<Items> likedItems) {
+    public void setLikedItems(List<String> likedItems) {
         this.likedItems = likedItems;
     }
 
-    public void setHatedItems(List<Items> hatedItems) {
+    public void setHatedItems(List<String> hatedItems) {
         this.hatedItems = hatedItems;
     }
 
@@ -161,5 +163,7 @@ public class NPC {
                 System.out.println("Invalid choice. Please choose between 1 and 4.");
             }
         }
+
+        scanner.close();
     }
 }
