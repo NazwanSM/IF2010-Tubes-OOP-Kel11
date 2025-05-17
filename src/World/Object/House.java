@@ -1,3 +1,4 @@
+package World.Object;
 import World.Point;
 
 public class House {

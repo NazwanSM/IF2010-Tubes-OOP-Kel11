@@ -105,7 +105,7 @@ public class Farm {
 
     public void endDayAndSell() {
         System.out.println("Menjual barang dari shipping bin...");
-        player.getInventory().addGold(ShippingLogic.sell(farmMap)); // logika harga bisa dari file eksternal
+        player.sellItems(player);
         nextDay();
     }
 }

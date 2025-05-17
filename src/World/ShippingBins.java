@@ -5,14 +5,16 @@ import java.util.List;
 import Items.Items;
 import Items.Sellable;
 import Player.Inventory;
+import Player.Player;
 
-public class ShippingBins<Player> {
-    private List<Items> listItemToSell;  // Daftar item yang ingin dijual
-    private static final int MAX_BIN = 10;  // Batas jumlah item yang dapat ditambahkan ke Shipping Bin
+public class ShippingBins { 
+    private List<Items> listItemToSell;
+    private static final int MAX_BIN = 10;
 
     public ShippingBins() {
         listItemToSell = new ArrayList<>();
     }
+
 
     // Menambahkan item ke bin untuk dijual
     public void addItemsToBin(Items item, int amount, Inventory inventory) {
@@ -60,7 +62,6 @@ public class ShippingBins<Player> {
     // Menjual semua item yang ada di bin (otomatis ketika pemain tidur dan bangun)
     public void sellItems(Player player) {
         if (listItemToSell.isEmpty()) {
-            //System.out.println("Tidak ada item yang dapat dijual di Shipping Bin.");
             return;
         }
 
@@ -72,6 +73,9 @@ public class ShippingBins<Player> {
             }
         }
 
+        // Add gold to the player
+        player.addGold(totalSale);
+        
         System.out.println("Total hasil penjualan: " + totalSale + " gold.");
         listItemToSell.clear();
     }

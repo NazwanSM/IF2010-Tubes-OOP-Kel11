@@ -2,6 +2,8 @@ package World;
 
 import java.util.Random;
 import World.Object.DeployedObject;
+import World.Object.House;
+import World.Object.Pond;
 
 public class FarmMap extends Map {
     private Point playerPosition;
