@@ -8,9 +8,9 @@ import java.util.Scanner;
 
 import Items.Fish;
 import Player.Player;
-import World.Weather;
-import World.GameClock;
-import World.Season;
+import World.Environment.Weather;
+import World.Environment.GameClock;
+import World.Environment.Season;
 import Data.FishData;
 
 public class Fishing extends Action
@@ -22,14 +22,14 @@ public class Fishing extends Action
     private String currentSeason;
     private GameClock gameClock;
 
-    public Fishing(Season season, Weather weatherCondition, Player player, GameClock gameClock) 
+    public Fishing(Player player) 
     {
         super("Fishing", 5, 15);
         this.currentLocation = player.getPlace() ; // ini harusnya nanti diimplement di player
-        this.currentSeason = season.getCurrentSeason();
-        this.currentWeather = weatherCondition.getCurrentWeather();
+        this.currentSeason = Season.getInstance().getCurrentSeason();
+        this.currentWeather = Weather.getInstance().getCurrentWeather();
         this.player = player;
-        this.gameClock = gameClock;
+        this.gameClock =GameClock.getInstance();
         this.currentHour = gameClock.getHours();
     }
 

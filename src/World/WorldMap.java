@@ -3,16 +3,16 @@ package World;
 import java.util.Scanner;
 import World.Object.DeployedObject;
 import Player.Player;
-import World.GameClock;
+import World.Environment.GameClock;
 
 public class WorldMap extends Map {
     private Player player;
     private GameClock gameClock;
 
-    public WorldMap(String name, int width, int length, Player player, GameClock gameClock) {
+    public WorldMap(String name, int width, int length, Player player) {
         super(name, width, length);
         this.player = player;
-        this.gameClock = gameClock;
+        this.gameClock = GameClock.getInstance();
     }
 
     public void interact() {

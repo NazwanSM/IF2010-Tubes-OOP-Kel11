@@ -1,21 +1,35 @@
-package World;
+package World.Environment;
 
 import java.util.*;
 
 public class Weather {
+    private static volatile Weather instance;
+
     private String currentWeather;
-    private int rainyDaysThisSeason = 0;
+    private int rainyDaysThisSeason;
     private Random random = new Random();
 
     public Weather() {
         this.currentWeather = generateWeather();
+        this.rainyDaysThisSeason = 0;
+    }
+
+    public static Weather getInstance() {
+        if (instance == null) {
+            synchronized (Weather.class) {
+                if (instance == null) {
+                    instance = new Weather();
+                }
+            }
+        }
+        return instance;
     }
 
     public String getCurrentWeather() {
         return currentWeather;
     }
 
-    public void nextWeather(Season season) {
+    public synchronized void nextWeather(Season season) {
         this.currentWeather = generateWeather();
         if (isRainy()) {
             rainyDaysThisSeason++;
@@ -41,7 +55,7 @@ public class Weather {
     }
 
     // Cheat tool
-    public void setWeather(String weather) {
+    public synchronized void setWeather(String weather) {
         if (weather.equalsIgnoreCase("Rainy") || weather.equalsIgnoreCase("Sunny")) {
             this.currentWeather = weather;
         }

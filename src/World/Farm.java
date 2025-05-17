@@ -1,6 +1,10 @@
 package World;
 
 import Player.Player;
+import main.Game;
+import World.Environment.GameClock;
+import World.Environment.Season;
+import World.Environment.Weather;
 
 public class Farm {
     private String farmName;
@@ -16,9 +20,9 @@ public class Farm {
         this.farmName = farmName;
         this.player = player;
         this.farmMap = new FarmMap("Spakbor Hills");
-        this.season = new Season();
-        this.gameClock = new GameClock();
-        this.weather = new Weather();
+        this.season = Season.getInstance();
+        this.gameClock = GameClock.getInstance();
+        this.weather = Weather.getInstance();
         this.day = 1;
         this.playerPosition = new Point(0, 0);  // Posisi awal pemain di (0, 0)
     }
