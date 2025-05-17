@@ -10,8 +10,8 @@ import Items.Fish;
 import Player.Player;
 import World.Weather;
 import World.GameClock;
-import World.Point;
 import World.Season;
+import Data.FishData;
 
 public class Fishing extends Action
 {
@@ -22,10 +22,10 @@ public class Fishing extends Action
     private String currentSeason;
     private GameClock gameClock;
 
-    public Fishing(Point location, Season season, Weather weatherCondition, Player player, GameClock gameClock) 
+    public Fishing(Season season, Weather weatherCondition, Player player, GameClock gameClock) 
     {
         super("Fishing", 5, 15);
-        this.currentLocation = location.toString() ; // ini harusnya nanti diimplement di player
+        this.currentLocation = player.getPlace() ; // ini harusnya nanti diimplement di player
         this.currentSeason = season.getCurrentSeason();
         this.currentWeather = weatherCondition.getCurrentWeather();
         this.player = player;
@@ -42,7 +42,7 @@ public class Fishing extends Action
         player.decreaseEnergy(energyRequired); // harus ada handle exception kalo energy ga cukup
         gameClock.advance(timeRequired);
         
-        List<Fish> allFish = Fish.getAllFish();
+        List<Fish> allFish = FishData.getAllFish();
         List<Fish> validFish = new ArrayList<>();
         for (Fish fish : allFish) {
             if (fish.canBeCaught(currentSeason, currentHour, currentWeather, currentLocation)) {
