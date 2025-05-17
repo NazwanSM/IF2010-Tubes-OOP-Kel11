@@ -1,6 +1,8 @@
 package Items;
 import java.util.Map;
 
+import Player.Inventory;
+
 public class Recipe {
     private String itemID;
     private Food result;
