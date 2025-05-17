@@ -3,7 +3,7 @@ public abstract class Map {
     protected Tiles[][] tiles;     // Matriks tiles untuk peta
     protected int mapWidth;        // Lebar peta
     protected int mapLength;       // Panjang peta
- 
+
     // Konstruktor untuk menginisialisasi peta dengan nama dan dimensi
     public Map(String name, int mapWidth, int mapLength) {
         this.name = name;
