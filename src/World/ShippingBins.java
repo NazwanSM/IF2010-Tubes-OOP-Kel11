@@ -15,7 +15,7 @@ public class ShippingBins<Player> {
     }
 
     // Menambahkan item ke bin untuk dijual
-    public void addItemsToBin(Items item, int amount, Inventory inventory) {
+    public void addItemsToBin(Items item, int amount, Inventory inventory) { // Ini Action Selling, waktu inisialisasi harus pake Player.getInventory()
         // Periksa apakah Shipping Bin sudah penuh
         if (listItemToSell.size() >= MAX_BIN) {
             System.out.println("Shipping Bin penuh.");
