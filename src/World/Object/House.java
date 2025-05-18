@@ -1,51 +1,18 @@
 package World.Object;
 import World.Point;
+import Player.Player;
 
-public class House {
-    private String name;
-    private String type;
-    private int width;
-    private int length;
+public class House extends DeployedObject {
     private Point position;
 
-    public House(String name, String type, int width, int length, Point position) {
-        this.name = name;
-        this.type = type;
-        this.width = width;
-        this.length = length;
-        this.position = position;
+    public House(String name, String type, int width, int length) {
+        super(name, type, width, length); 
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
+    @Override
+    public void interact(Player player) {
+        System.out.println("You enter your house.");
+        // Add house interaction logic here
     }
 
     public Point getPosition() {

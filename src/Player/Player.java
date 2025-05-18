@@ -1,10 +1,11 @@
 package Player;
 
+
 import Items.Items;
 import Items.ProposalRing;
 import Items.Edible;
 import World.NPC;
-import World.GameClock;
+import World.Environment.GameClock;
 import World.Point;
 public class Player {
     private String name;
@@ -16,10 +17,10 @@ public class Player {
     private int gold;
     private Inventory inventory;
     private Point location;
+    private String place; 
+    private GameClock gameClock;
     private static final int MAX_ENERGY = 100;
     private static final int MIN_ENERGY = -20;
-    private GameClock gameClock;
-    private String place; 
 
 
     public Player(String name, String gender, String famName, int gold) {
@@ -33,6 +34,7 @@ public class Player {
         this.inventory = new Inventory();
         this.location = new Point(0, 0);
         this.place = "Farm";
+        this.gameClock = GameClock.getInstance();
     }
 
     public String getName() {
@@ -149,8 +151,9 @@ public class Player {
             Edible edibleItem = (Edible) item; // casting item ke edible
             if (hasItem(item)) {
                 edibleItem.eat(this); 
+                gameClock.advance(5);
                 removeItemFromInventory(item, 1);
-                increaseEnergy(edibleItem.getEnergy()); // harus diimplementasi di class edible
+                increaseEnergy(edibleItem.getEnergy()); 
             } else {
                 System.out.println("You don't have this item in your inventory."); // implementasi ini blom tentu dipake
             }
@@ -162,9 +165,11 @@ public class Player {
 
 
     public void chatting(NPC npc) {
-        System.out.println("Chatting with " + npc.getNPCName() + ": " + npc.getDialogue()); // harus diimplementasi di class NPC
-        npc.increaseHeartPoints(10); // harus diimplementasi di class NPC
-        decreaseEnergy(10); // ini juga harus disesuain sama class NPC
+        System.out.println("Chatting with " + npc.getNPCName() + ": " + npc.getDialogue());
+        npc.increaseHeartPoints(10);
+        decreaseEnergy(10);
+        gameClock.advance(10);
+
         // abis ini harus ada fungsi buat ngitung statistik berapa kali chatting dll
         chatCount++;
     }
@@ -181,9 +186,10 @@ public class Player {
                 npc.decreaseHeartPoints(25); 
             }
 
-            System.out.println("Giving " + gift.getName() + " to " + npc.getNPCName() + "."); // harus diimplementasi di class NPC
+            System.out.println("Giving " + gift.getName() + " to " + npc.getNPCName() + ".");
             removeItemFromInventory(gift, 1); // asumsi amount of gift selalu 1, nanti diganti kalo ada perubahan
 
+            gameClock.advance(10);
             decreaseEnergy(5);
         } else {
             System.out.println("You don't have this item in your inventory."); // implementasi ini blom tentu dipake
@@ -196,7 +202,7 @@ public class Player {
     }
 
 
-    public void playerSleeping() { // ini cuman buat ngatur energy doang, waktu dan lain lain diimplementasi di class lain
+    public void sleeping() {
         if (energy <= 0){
             setEnergy(10);
         }
@@ -206,7 +212,8 @@ public class Player {
         else {
             setEnergy(MAX_ENERGY);
         }
-        System.out.println("Player is sleeping. Energy restored to: " + energy); // implementasi ini blom tentu dipake
+        System.out.println("Player is sleeping. Energy restored to: " + energy); // implementasi ini blom tentu dipake;
+        gameClock.skipToMorning(); // ini harusnya ada di farm yang bkin nambah hari
     }
 
     // public void openInventory() {
@@ -215,11 +222,11 @@ public class Player {
     // }
 
     public void showTime() {
-        System.out.println("Current time: " + gameClock.getTime()); // harus diimplementasi di class GameTime
+        System.out.println("Current time: " + gameClock.getTime()); 
     }
 
     public void showLocation() {
-        System.out.println("Current location: " + location); // implementasi ini blom tentu dipake
+        System.out.println("Current location: " + location); 
     }
 
     public boolean isProposeable(NPC npc) {
@@ -242,6 +249,7 @@ public class Player {
     }
 
     public void propose(NPC npc) {
+        gameClock.advance(60);
         if (isProposeable(npc)) {
             partner = npc;
             npc.setRelationshipStatus("Fiance");

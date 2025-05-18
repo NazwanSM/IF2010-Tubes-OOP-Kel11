@@ -1,6 +1,9 @@
-package World;
+package World.Environment;
+
 
 public class GameClock extends Thread {
+    private static volatile GameClock instance;
+
     private int hours;
     private int minutes;
     private boolean isRunning = true;
@@ -9,6 +12,18 @@ public class GameClock extends Thread {
     public GameClock() {
         this.hours = 6;
         this.minutes = 0;
+    }
+
+    public static GameClock getInstance() {
+        if (instance == null) {
+            synchronized (GameClock.class) {
+                if (instance == null) {
+                    instance = new GameClock();
+                    instance.start();  // Mulai thread saat instance pertama dibuat
+                }
+            }
+        }
+        return instance;
     }
 
     public void run() {
@@ -21,6 +36,7 @@ public class GameClock extends Thread {
                 }
             } catch (InterruptedException e) {
                 System.out.println("Clock interrupted.");
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -42,17 +58,17 @@ public class GameClock extends Thread {
         return hours >= 18 || hours < 6;
     }
 
-    public void advance(int minutesToAdd) {
+    public synchronized void advance(int minutesToAdd) {
         int totalMinutes = hours * 60 + minutes + minutesToAdd;
         hours = (totalMinutes / 60) % 24;
         minutes = totalMinutes % 60;
     }
 
-    public void skipToMorning() {
+    public synchronized void skipToMorning() {
         this.hours = 6;
         this.minutes = 0;
     }
 
-    public int getHours() { return hours; }
-    public int getMinutes() { return minutes; }
+    public synchronized int getHours() { return hours; }
+    public synchronized int getMinutes() { return minutes; }
 }

@@ -1,4 +1,6 @@
 package World.Object;
+import Player.Player;
+
 public abstract class Furniture {
     protected String type;
 
@@ -14,5 +16,5 @@ public abstract class Furniture {
         this.type = type;
     }
 
-    public abstract void interact();
+    public abstract void interact(Player player);
 }

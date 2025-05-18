@@ -1,4 +1,4 @@
-package World;
+package World.Object;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,18 +7,26 @@ import Items.Sellable;
 import Player.Inventory;
 import Player.Player;
 
-public class ShippingBins { 
+public class ShippingBin extends DeployedObject { 
     private List<Items> listItemToSell;
     private static final int MAX_BIN = 10;
 
-    public ShippingBins() {
+    public ShippingBin() {
+        super("Shipping Bin", "ShippingBin", 2, 2); // Call to super constructor with required parameters
         listItemToSell = new ArrayList<>();
     }
 
+    @Override
+    public void interact(Player player) {
+        // Implement required abstract method from DeployedObject
+        System.out.println("You interact with the shipping bin.");
+        displayItemsInBin();
+        // Additional interaction logic could go here
+    }
 
     // Menambahkan item ke bin untuk dijual
     public void addItemsToBin(Items item, int amount, Inventory inventory) {
-        // Periksa apakah Shipping Bin sudah penuh
+        // ...existing code...
         if (listItemToSell.size() >= MAX_BIN) {
             System.out.println("Shipping Bin penuh.");
             return;

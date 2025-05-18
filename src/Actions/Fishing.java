@@ -8,9 +8,9 @@ import java.util.Scanner;
 
 import Items.Fish;
 import Player.Player;
-import World.Weather;
-import World.GameClock;
-import World.Season;
+import World.Environment.GameClock;
+import World.Environment.Season;
+import World.Environment.Weather;
 import Data.FishData;
 
 public class Fishing extends Action

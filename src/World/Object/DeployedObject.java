@@ -1,3 +1,6 @@
+package World.Object;
+import Player.Player;
+
 public abstract class DeployedObject {
     protected String name;       
     protected String type;       
@@ -42,6 +45,13 @@ public abstract class DeployedObject {
     public void setLength(int length) {
         this.length = length;
     }
+    public String getSymbol() {
+    // Return first letter of type by default
+    if (type != null && !type.isEmpty()) {
+        return type.substring(0, 1);
+    }
+    return "O"; // Default symbol
+}
 
-    public abstract void interact();
+    public abstract void interact(Player player);
 }
