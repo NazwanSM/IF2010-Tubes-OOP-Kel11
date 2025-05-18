@@ -123,8 +123,16 @@ public class Player {
     }
 
     public void decreaseEnergy(int amount) {
-        setEnergy(this.energy - amount);
+        int newEnergy = this.energy - amount;
+        if (newEnergy < MIN_ENERGY) {
+            this.energy = MIN_ENERGY;
+            System.out.println("You are exhausted! Automatically sleeping...");
+            sleeping();
+        } else {
+            setEnergy(newEnergy);
+        }
     }
+
 
     public void addGold(int amount) { // ini masih harus disesuain sama statistik akhir
         setGold(this.gold + amount);
