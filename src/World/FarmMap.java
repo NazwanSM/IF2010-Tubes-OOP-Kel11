@@ -29,11 +29,11 @@ public class FarmMap extends Map {
         }
         
         // Fix: Provide proper constructor arguments for House
-        House house = new House("Player House", "Small House", 6, 6);
+        House house = new House("Player House");
         placeDeployedObject(house, 6, 6);
         
         // Fix: Provide proper constructor arguments for Pond
-        Pond pond = new Pond("Farm Pond", 4, 3);
+        Pond pond = new Pond("Farm Pond");
         placeDeployedObjectRandom(pond);
         
         placeShippingBinNearHouse();

@@ -5,8 +5,8 @@ import Player.Player;
 public class House extends DeployedObject {
     private Point position;
 
-    public House(String name, String type, int width, int length) {
-        super(name, type, width, length); 
+    public House(String name) {
+        super(name, "House", 6, 6); 
     }
 
     @Override

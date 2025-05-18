@@ -12,6 +12,8 @@ public class Cooking extends Action {
     private Food food;
     private int fuelRequired;
 
+    // bikin constructor yang parameternya cuma player?
+    
     public Cooking(Player player, Recipe recipe, Food food, int fuelRequired) {
         super("Cooking", 10, 60);
         this.player = player;

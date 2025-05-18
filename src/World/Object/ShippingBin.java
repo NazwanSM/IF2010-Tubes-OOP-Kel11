@@ -12,16 +12,17 @@ public class ShippingBin extends DeployedObject {
     private static final int MAX_BIN = 10;
 
     public ShippingBin() {
-        super("Shipping Bin", "ShippingBin", 2, 2); // Call to super constructor with required parameters
+        super("Shipping Bin", "ShippingBin", 3, 2);
         listItemToSell = new ArrayList<>();
     }
 
     @Override
     public void interact(Player player) {
-        // Implement required abstract method from DeployedObject
         System.out.println("You interact with the shipping bin.");
         displayItemsInBin();
-        // Additional interaction logic could go here
+        // tambahin menu untuk menambah item ke bin
+        // tambahin menu untuk menjual item di bin
+        // tambahin menu untuk mengeluarkan item dari bin
     }
 
     // Menambahkan item ke bin untuk dijual

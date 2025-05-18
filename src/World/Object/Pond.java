@@ -8,8 +8,8 @@ import World.Environment.Weather;
 
 
 public class Pond extends DeployedObject {
-    public Pond(String name, int width, int length) {
-        super(name, "Pond", width, length);
+    public Pond(String name) {
+        super(name, "Pond", 4, 3);
     }
 
     public void interact(Player player) {

@@ -17,6 +17,6 @@ public class Stove extends Furniture {
         System.out.println("Do you want to cook something?");
         
         Cooking cooking = new Cooking(player);
-        cooking.executeAction();
+        cooking.executeAction(); // implemetasi interaksi dengan stove
     }
 }
