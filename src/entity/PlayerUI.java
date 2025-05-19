@@ -7,6 +7,7 @@ import main.KeyHandler;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.awt.Rectangle;
 
 public class PlayerUI extends Entity {
     GamePanel gp;
@@ -15,6 +16,12 @@ public class PlayerUI extends Entity {
     public PlayerUI (GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
+
+        solidArea = new Rectangle();
+        solidArea.x = 3*2;
+        solidArea.y = 16*2;
+        solidArea.width = 10*2;
+        solidArea.height = 14*2;
 
         setDefaultValues();
         getPlayerImage();
@@ -52,19 +59,35 @@ public class PlayerUI extends Entity {
         if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
             if (keyH.upPressed == true) {
                 direction = "up";
-                y -= speed;
             }
             else if (keyH.downPressed == true) {
                 direction = "down";
-                y += speed;
             }
             else if (keyH.leftPressed == true) {
                 direction = "left";
-                x -= speed;
             }
             else if (keyH.rightPressed == true) {
                 direction = "right";
-                x += speed;
+            }
+        
+            // Check for collision
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
+            if (collisionOn == false) {
+                switch (direction) {
+                    case "up":
+                        y -= speed;
+                        break;
+                    case "down":
+                        y += speed;
+                        break;
+                    case "left":
+                        x -= speed;
+                        break;
+                    case "right":
+                        x += speed;
+                        break;
+                }
             }
     
             spriteCounter++;
