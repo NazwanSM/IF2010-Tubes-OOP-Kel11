@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import entity.PlayerUI;
+import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -16,6 +17,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int tileSize = originalTileSize * scale; 
     public final int maxScreenCol = 32;
     public final int maxScreenRow = 32;
+    public final int maxWorldCol = 32;
+    public final int maxWorldRow = 32;
     public final int screenWidth = tileSize * maxScreenCol; 
     public final int screenHeight = tileSize * maxScreenRow; 
 
@@ -25,8 +28,14 @@ public class GamePanel extends JPanel implements Runnable {
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
+    public AssetSetter aSetter = new AssetSetter(this);
+    public SuperObject[] objects = new SuperObject[20];
     public CollisionChecker cChecker = new CollisionChecker(this);
     public PlayerUI player = new PlayerUI(this, keyH);
+
+    public void setupGame() {
+        aSetter.setObject();
+    }
 
 
     public GamePanel() {
@@ -65,7 +74,6 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (timer >= 1000000000) {
-                System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -83,6 +91,15 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Tile
         tileM.draw(g2);
+
+        // Object
+        for (SuperObject obj : objects) {
+            if (obj != null) {
+                obj.draw(g2, this);
+            }
+        }
+
+        // Player
         player.draw(g2);
 
         g2.dispose();

@@ -6,6 +6,7 @@ import main.GamePanel;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
+import main.UtilityTool;
 
 
 public class TileManager {
@@ -24,85 +25,27 @@ public class TileManager {
     }
 
     public void getTileImage() {
+        setup (0, "/summer/0-Grass", false);
+        setup (1, "/summer/1-Tillable", false);
+        setup (2, "/summer/2-Grass_Tillable_Top_Left", false);
+        setup (3, "/summer/3-Grass_Tillable_Top", false);
+        setup (4, "/summer/4-Grass_Tillable_Top_Right", false);
+        setup (5, "/summer/5-Grass_Tillable_Right", false);
+        setup (6, "/summer/6-Grass_Tillable_Bottom_Right", false);
+        setup (7, "/summer/7-Grass_Tillable_Bottom", false);
+        setup (8, "/summer/8-Grass_Tillable_Bottom_Left", false);
+        setup (9, "/summer/9-Grass_Tillable_Left", false);
+    }
+
+    public void setup(int index, String imagePath, boolean collision) {
+
+        UtilityTool uTool = new UtilityTool();
+
         try {
-            tile[0] = new Tile();
-            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/summer/0-Grass.png"));
-
-            tile[1] = new Tile();
-            tile[1].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/summer/1-Tillable.png"));
-
-            tile[2] = new Tile();
-            tile[2].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/summer/2-Grass_Tillable_Top_Left.png"));
-
-            tile[3] = new Tile();
-            tile[3].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/summer/3-Grass_Tillable_Top.png"));
-            
-            tile[4] = new Tile();
-            tile[4].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/summer/4-Grass_Tillable_Top_Right.png"));
-
-            tile[5] = new Tile();
-            tile[5].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/summer/5-Grass_Tillable_Right.png"));
-
-            tile[6] = new Tile();
-            tile[6].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/summer/6-Grass_Tillable_Bottom_Right.png"));
-
-            tile[7] = new Tile();
-            tile[7].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/summer/7-Grass_Tillable_Bottom.png"));
-
-            tile[8] = new Tile();
-            tile[8].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/summer/8-Grass_Tillable_Bottom_Left.png"));
-
-            tile[9] = new Tile();
-            tile[9].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/summer/9-Grass_Tillable_Left.png"));
-
-            tile[10] = new Tile();
-            tile[10].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/pond/10-Pond01.png"));
-            tile[10].collision = true;
-
-            tile[11] = new Tile();
-            tile[11].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/pond/11-Pond02.png"));
-            tile[11].collision = true;
-
-            tile[12] = new Tile();
-            tile[12].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/pond/12-Pond03.png"));
-            tile[12].collision = true;
-
-            tile[13] = new Tile();
-            tile[13].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/pond/13-Pond04.png"));
-            tile[13].collision = true;
-
-            tile[14] = new Tile();
-            tile[14].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/pond/14-Pond05.png"));
-            tile[14].collision = true;
-
-            tile[15] = new Tile();
-            tile[15].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/pond/15-Pond06.png"));
-            tile[15].collision = true;
-
-            tile[16] = new Tile();
-            tile[16].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/pond/16-Pond07.png"));
-            tile[16].collision = true;
-
-            tile[17] = new Tile();
-            tile[17].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/pond/17-Pond08.png"));
-            tile[17].collision = true;
-
-            tile[18] = new Tile();
-            tile[18].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/pond/18-Pond09.png"));
-            tile[18].collision = true;
-
-            tile[19] = new Tile();
-            tile[19].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/pond/19-Pond10.png"));
-            tile[19].collision = true;
-
-            tile[20] = new Tile();
-            tile[20].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/pond/20-Pond11.png"));
-            tile[20].collision = true;
-
-            tile[21] = new Tile();
-            tile[21].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/pond/21-Pond12.png"));
-            tile[21].collision = true;
-
+            tile[index] = new Tile();
+            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/resource/tiles/" + imagePath + ".png"));
+            tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
+            tile[index].collision = collision;
         } catch (Exception e) {
             e.printStackTrace();
         }

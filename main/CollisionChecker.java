@@ -2,6 +2,7 @@ package main;
 
 import entity.Entity;
 
+
 public class CollisionChecker {
 
     GamePanel gp;
@@ -56,5 +57,65 @@ public class CollisionChecker {
                 }
                 break;
         }
+    }
+
+    public int checkObject(Entity entity, boolean player) {
+        int index = 999;
+
+        for (int i = 0; i < gp.objects.length; i++) {
+            if (gp.objects[i] != null) {
+                // Calculate entity solid area position in world
+                int entitySolidAreaWorldX = entity.x + entity.solidArea.x;
+                int entitySolidAreaWorldY = entity.y + entity.solidArea.y;
+                
+                // Calculate object solid area position in world (adjust if objects use tile-based coordinates)
+                int objectSolidAreaWorldX = (gp.objects[i].x * gp.tileSize) + gp.objects[i].solidArea.x;
+                int objectSolidAreaWorldY = (gp.objects[i].y * gp.tileSize) + gp.objects[i].solidArea.y;
+                
+                // Create temporary rectangles for collision detection
+                java.awt.Rectangle entityRect = new java.awt.Rectangle(
+                    entitySolidAreaWorldX, 
+                    entitySolidAreaWorldY,
+                    entity.solidArea.width, 
+                    entity.solidArea.height
+                );
+                
+                java.awt.Rectangle objectRect = new java.awt.Rectangle(
+                    objectSolidAreaWorldX, 
+                    objectSolidAreaWorldY,
+                    gp.objects[i].solidArea.width, 
+                    gp.objects[i].solidArea.height
+                );
+
+                // Adjust entity rectangle based on movement direction
+                switch (entity.direction) {
+                    case "up":
+                        entityRect.y -= entity.speed;
+                        break;
+                    case "down":
+                        entityRect.y += entity.speed;
+                        break;
+                    case "left":
+                        entityRect.x -= entity.speed;
+                        break;
+                    case "right":
+                        entityRect.x += entity.speed;
+                        break;
+                }
+
+                // Check collision with temporary rectangles
+                if (entityRect.intersects(objectRect)) {
+                    if (gp.objects[i].collision == true) {
+                        entity.collisionOn = true;
+                    }
+                    if (player == true) {
+                        index = i;
+                        System.out.println("Player collided with object: " + gp.objects[i].name);
+                    }
+                }
+            }
+        }
+        
+        return index;
     }
 }

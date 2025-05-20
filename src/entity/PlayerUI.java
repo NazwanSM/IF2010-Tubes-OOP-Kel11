@@ -1,14 +1,13 @@
 package entity;
 
 import java.awt.Graphics2D;
-
 import main.GamePanel;
 import main.KeyHandler;
+import main.UtilityTool;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.awt.Rectangle;
-
 public class PlayerUI extends Entity {
     GamePanel gp;
     KeyHandler keyH;
@@ -20,8 +19,10 @@ public class PlayerUI extends Entity {
         solidArea = new Rectangle();
         solidArea.x = 3*2;
         solidArea.y = 16*2;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
         solidArea.width = 10*2;
-        solidArea.height = 14*2;
+        solidArea.height = 14*2 - 2;
 
         setDefaultValues();
         getPlayerImage();
@@ -35,23 +36,33 @@ public class PlayerUI extends Entity {
     }
 
     public void getPlayerImage () {
-        try {
-            up1 = ImageIO.read(getClass().getResourceAsStream("/resource/player/Up1.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/resource/player/Up2.png"));
-            up3 = ImageIO.read(getClass().getResourceAsStream("/resource/player/Up3.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/resource/player/Down1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/resource/player/Down2.png"));
-            down3 = ImageIO.read(getClass().getResourceAsStream("/resource/player/Down3.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/resource/player/Left1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/resource/player/Left2.png"));
-            left3 = ImageIO.read(getClass().getResourceAsStream("/resource/player/Left3.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/resource/player/Right1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/resource/player/Right2.png"));
-            right3 = ImageIO.read(getClass().getResourceAsStream("/resource/player/Right3.png"));
+        up1 = setup("Up1");
+        up2 = setup("Up2");
+        up3 = setup("Up3");
+        down1 = setup("Down1");
+        down2 = setup("Down2");
+        down3 = setup("Down3");
+        left1 = setup("Left1");
+        left2 = setup("Left2");
+        left3 = setup("Left3");
+        right1 = setup("Right1");
+        right2 = setup("Right2");
+        right3 = setup("Right3");
+    }
 
-        } catch (IOException e) {
+    public BufferedImage setup(String imageName) {
+
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream("/resource/player/" + imageName + ".png"));
+            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize * 2);
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
+        return image;
     }
 
     public void update() {
@@ -73,6 +84,7 @@ public class PlayerUI extends Entity {
             // Check for collision
             collisionOn = false;
             gp.cChecker.checkTile(this);
+            int objIndex = gp.cChecker.checkObject(this, true);
             if (collisionOn == false) {
                 switch (direction) {
                     case "up":
@@ -158,6 +170,6 @@ public class PlayerUI extends Entity {
                 }
                 break;
         }
-        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize * 2, null);
+        g2.drawImage(image, x, y, null);
     }
 }
