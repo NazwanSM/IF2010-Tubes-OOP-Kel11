@@ -120,6 +120,9 @@ public class PlayerUI extends Entity {
         }
     }
 
+    // public void INTERACT (bkin fungsi interact barang barang yang disentuh di sini)
+    // gp.ui.showMessage("You have picked up " + gp.objects[objIndex].name); buat bkin notifikasi
+
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
 
