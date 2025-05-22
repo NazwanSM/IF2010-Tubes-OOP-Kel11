@@ -4,7 +4,7 @@ import java.util.Map;
 import Items.Food;
 import Items.Items;
 import Items.Recipe;
-import Player.Player;
+import entity.player.Player;
 
 public class Cooking extends Action {
     private Player player;

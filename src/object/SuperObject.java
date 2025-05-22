@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 import main.GamePanel;
 
-public class SuperObject {
+public abstract class SuperObject {
     public BufferedImage image;
     public String name;
     public boolean collision = false;

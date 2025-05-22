@@ -13,15 +13,16 @@ public class TileManager {
     
     GamePanel gp;
     public Tile[] tile;
-    public int mapTileNum[][];
+    public int mapTileNum[][][];
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
-        tile = new Tile[50];
-        mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
+        tile = new Tile[100];
+        mapTileNum = new int[gp.maxMap][gp.maxScreenCol][gp.maxScreenRow];
 
         getTileImage();
-        loadMap("map1.txt");
+        loadMap("map1.txt", 0);
+        loadMap("house.txt", 1);
     }
 
     public void getTileImage() {
@@ -35,6 +36,24 @@ public class TileManager {
         setup (7, "/summer/7-Grass_Tillable_Bottom", false);
         setup (8, "/summer/8-Grass_Tillable_Bottom_Left", false);
         setup (9, "/summer/9-Grass_Tillable_Left", false);
+        setup (10, "/house/House_Tiles_1", false);
+        setup (11, "/house/House_Tiles_2", false);
+        setup (12, "/house/House_Tiles_3", false);
+        setup (13, "/house/House_Tiles_4", false);
+        setup (14, "/house/House_Tiles_5", false);
+        setup (15, "/house/House_Tiles_6", false);
+        setup (16, "/house/House_Tiles_7", false);
+        setup (17, "/house/House_Tiles_8", false);
+        setup (18, "/house/House_Tiles_9", false);
+        setup (19, "/house/House_Tiles_10", false);
+        setup (20, "/house/House_Tiles_11", false);
+        setup (21, "/house/House_Tiles_12", false);
+        setup (22, "/house/House_Tiles_13", false);
+        setup (23, "/house/House_Tiles_14", false);
+        setup (24, "/house/House_Tiles_15", false);
+        setup (25, "/house/House_Tiles_16", false);
+        setup (26, "/house/Black", false);
+
     }
 
     public void setup(int index, String imagePath, boolean collision) {
@@ -51,7 +70,7 @@ public class TileManager {
         }
     }
 
-    public void loadMap(String filePath) {
+    public void loadMap(String filePath, int map) {
         try {
             InputStream is = getClass().getResourceAsStream("/resource/maps/" + filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -65,7 +84,7 @@ public class TileManager {
                 while (col < gp.maxScreenCol) {
                     String numbers[] = line.split(" ");
                     int num = Integer.parseInt(numbers[col]);
-                    mapTileNum[col][row] = num;
+                    mapTileNum[map][col][row] = num;
                     col++;
                 }
                 if (col == gp.maxScreenCol) {
@@ -89,7 +108,7 @@ public class TileManager {
         int y = 0;
 
         while (col < gp.maxScreenCol && row < gp.maxScreenRow) {
-            int tileNum = mapTileNum[col][row];
+            int tileNum = mapTileNum[gp.currentMap][col][row];
 
             g2.drawImage(tile[tileNum].image, x, y, gp.tileSize, gp.tileSize, null);
             col++;

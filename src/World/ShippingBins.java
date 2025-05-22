@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import Items.Items;
 import Items.Sellable;
-import Player.Inventory;
+import entity.player.Inventory;
 
 public class ShippingBins<Player> {
     private List<Items> listItemToSell;  // Daftar item yang ingin dijual

@@ -2,7 +2,7 @@ package World;
 
 import java.util.Scanner;
 import World.Object.DeployedObject;
-import Player.Player;
+import entity.player.Player;
 import World.Environment.GameClock;
 
 public class WorldMap extends Map {

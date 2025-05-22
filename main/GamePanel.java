@@ -1,11 +1,15 @@
 package main;
 
 import javax.swing.JPanel;
+
+import entity.player.PlayerUI;
+import entity.player.Player;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import entity.PlayerUI;
+
 import object.SuperObject;
 import tile.TileManager;
 
@@ -22,11 +26,14 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenWidth = tileSize * maxScreenCol; 
     public final int screenHeight = tileSize * maxScreenRow; 
 
+    public final int maxMap = 10;
+    public int currentMap = 0;
+
     // FPS
     final int FPS = 60;
 
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
     Sound music = new Sound();
     Sound se = new Sound();
     public AssetSetter aSetter = new AssetSetter(this);
@@ -35,13 +42,21 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
 
     // Entity and object
-    public PlayerUI player = new PlayerUI(this, keyH);
+    public Player playerData = new Player("Nazwan", "Male", "Farm", 1000); // ini cuman contoh doang
+    public PlayerUI player = new PlayerUI(this, keyH, playerData);
     public SuperObject[] objects = new SuperObject[20];
 
     public void setupGame() {
         aSetter.setObject();
         playMusic(0);
+        stopMusic();
+        gameState = playState;
     }
+
+    // Game State
+    public int gameState;
+    public final int playState = 0;
+    public final int pauseState = 1;
 
 
     public GamePanel() {
@@ -86,7 +101,12 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        player.update();
+        if (gameState == playState) {
+            player.update();
+        }
+        else if (gameState == pauseState) {
+            // Pause logic
+        }
     }
 
     public void paintComponent(Graphics g){

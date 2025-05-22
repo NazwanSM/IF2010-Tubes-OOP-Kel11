@@ -8,6 +8,7 @@ import java.awt.Color;
 public class UI {
     
     GamePanel gp;
+    Graphics2D g2;
     Font helv_40, helv_60B;
     BufferedImage staminaBar;
     public boolean messageOn = false;
@@ -32,45 +33,71 @@ public class UI {
 
     public void draw(Graphics2D g2) {
 
-        if (gameFinished){
-            g2.setFont(helv_40);
-            g2.setColor(Color.white);
+        // if (gameFinished){
+        //     g2.setFont(helv_40);
+        //     g2.setColor(Color.white);
             
-            String text;
-            int textLength;
-            int x;
-            int y;
+        //     String text;
+        //     int textLength;
+        //     int x;
+        //     int y;
 
-            text = "Game Over"; // ini contoh doang
-            textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        //     text = "Game Over"; // ini contoh doang
+        //     textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 
-            x = gp.screenWidth / 2 - textLength / 2;
-            y = gp.screenHeight / 2 - (gp.tileSize*3);
-            g2.drawString(text, x, y);
+        //     x = gp.screenWidth / 2 - textLength / 2;
+        //     y = gp.screenHeight / 2 - (gp.tileSize*3);
+        //     g2.drawString(text, x, y);
+
+        // }
+        // else {
+        //     g2.setFont(helv_40);
+        //     g2.setColor(Color.white);
+        //     // g2.drawImage(staminaBar, gp.tilesSize/2, gp.tileSize, gp.tileSize, null); stamina bar blom dibkin
+        //     g2.drawString("Stamina", 74, 65);
+
+        //     // TIME
+        //     playTime += (double) 1 / 60; // ini nanti mah buat DAY
+        //     // g2.drawString("Time")
+    
+        //     if (messageOn) {
+        //         g2.setFont(g2.getFont().deriveFont(30F));
+        //         g2.drawString(message, 25, 100);
+        //         messageOn = false;
+    
+        //         messageCounter++;
+    
+        //         if (messageCounter > 120) {
+        //             messageCounter = 0;
+        //             messageOn = false;
+        //         }
+        //     }
+        // }
+
+        this.g2 = g2;
+        g2.setFont(helv_40);
+        g2.setColor(Color.white);
+
+        if(gp.gameState == gp.playState) {
 
         }
-        else {
-            g2.setFont(helv_40);
-            g2.setColor(Color.white);
-            // g2.drawImage(staminaBar, gp.tilesSize/2, gp.tileSize, gp.tileSize, null); stamina bar blom dibkin
-            g2.drawString("Stamina", 74, 65);
-
-            // TIME
-            playTime += (double) 1 / 60; // ini nanti mah buat DAY
-            // g2.drawString("Time")
-    
-            if (messageOn) {
-                g2.setFont(g2.getFont().deriveFont(30F));
-                g2.drawString(message, 25, 100);
-                messageOn = false;
-    
-                messageCounter++;
-    
-                if (messageCounter > 120) {
-                    messageCounter = 0;
-                    messageOn = false;
-                }
-            }
+        else if(gp.gameState == gp.pauseState) {
+            drawPauseScreen();
         }
+    }
+
+    public void drawPauseScreen() {
+        g2.setFont(helv_60B);
+        String text = "PAUSED";
+        int x = getXforCenteredText(text);
+        int y = gp.screenHeight / 2;
+
+        g2.drawString(text, x, y);
+    }
+
+    public int getXforCenteredText(String text) {
+        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        int x = gp.screenWidth / 2 - length / 2;
+        return x;
     }
 }

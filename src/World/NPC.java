@@ -3,7 +3,7 @@ package World;
 import java.util.List;
 import java.util.Scanner;
 import Items.Items;
-import Player.Player;
+import entity.player.Player;
 
 public class NPC {
     private String npcName;

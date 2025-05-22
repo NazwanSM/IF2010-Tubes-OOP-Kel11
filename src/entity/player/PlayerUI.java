@@ -1,4 +1,4 @@
-package entity;
+package entity.player;
 
 import java.awt.Graphics2D;
 import main.GamePanel;
@@ -6,15 +6,20 @@ import main.KeyHandler;
 import main.UtilityTool;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+
+import entity.Entity;
+
 import java.io.IOException;
 import java.awt.Rectangle;
 public class PlayerUI extends Entity {
-    GamePanel gp;
     KeyHandler keyH;
+    Player player;
 
-    public PlayerUI (GamePanel gp, KeyHandler keyH) {
+    public PlayerUI (GamePanel gp, KeyHandler keyH, Player player) {
+        super(gp);
         this.gp = gp;
         this.keyH = keyH;
+        this.player = player;
 
         solidArea = new Rectangle();
         solidArea.x = 3*2;

@@ -4,11 +4,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
+
+    GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed;
 
+    public KeyHandler(GamePanel gp) {
+        this.gp = gp;
+
+    }
     @Override
     public void keyTyped(KeyEvent e) {
-        // Not used
     }
 
     @Override
@@ -39,6 +44,25 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_RIGHT:
                 rightPressed = true;
                 break;
+            case KeyEvent.VK_ESCAPE:
+                if (gp.gameState == gp.playState) {
+                    gp.gameState = gp.pauseState;
+                } else if (gp.gameState == gp.pauseState) {
+                    gp.gameState = gp.playState;
+                }
+                break;
+
+            case KeyEvent.VK_R:
+                switch (gp.currentMap) {
+                    case 0:
+                        gp.tileM.loadMap("map1", 0);
+                        break;
+                    case 1:
+                        gp.tileM.loadMap("house", 1);
+                        break;
+                    default:
+                        break;
+                }
             default:
                 break;
         }

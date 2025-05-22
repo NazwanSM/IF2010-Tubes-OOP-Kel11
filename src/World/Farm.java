@@ -1,6 +1,6 @@
 package World;
 
-import Player.Player;
+import entity.player.Player;
 import World.Environment.GameClock;
 import World.Environment.Season;
 import World.Environment.Weather;

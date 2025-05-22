@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 
 import Items.Fish;
-import Player.Player;
+import entity.player.Player;
 import World.Environment.Weather;
 import World.Environment.GameClock;
 import World.Environment.Season;

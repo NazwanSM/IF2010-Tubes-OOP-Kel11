@@ -1,4 +1,4 @@
-package Player;
+package entity.player;
 
 import Items.Items;
 import java.util.HashMap;
