@@ -7,10 +7,10 @@ public class KeyHandler implements KeyListener {
 
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed;
+    boolean showDebugText = false;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
-
     }
     @Override
     public void keyTyped(KeyEvent e) {
@@ -55,14 +55,20 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_R:
                 switch (gp.currentMap) {
                     case 0:
-                        gp.tileM.loadMap("map1", 0);
+                        gp.tileM.loadMap("map1.txt", 0);
                         break;
                     case 1:
-                        gp.tileM.loadMap("house", 1);
+                        gp.tileM.loadMap("house.txt", 1);
                         break;
                     default:
                         break;
                 }
+                break;
+            case KeyEvent.VK_T:
+                if (gp.gameState == gp.playState) {
+                    showDebugText = !showDebugText;
+                }
+                break;
             default:
                 break;
         }

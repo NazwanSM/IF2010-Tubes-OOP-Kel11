@@ -15,8 +15,7 @@ public class Player {
     private NPC partner;
     private int gold;
     private Inventory inventory;
-    private Point location;
-    private String place; 
+    private Point location; 
     private GameClock gameClock;
     private static final int MAX_ENERGY = 100;
     private static final int MIN_ENERGY = -20;
@@ -32,7 +31,6 @@ public class Player {
         this.gold = gold;
         this.inventory = new Inventory();
         this.location = new Point(0, 0);
-        this.place = "Farm";
         this.gameClock = GameClock.getInstance();
     }
 
@@ -67,9 +65,7 @@ public class Player {
     public Point getLocation() {
         return location;
     }
-    public String getPlace() {
-        return place;
-    }
+
 
     public void setName(String name) {
         this.name = name;
@@ -111,10 +107,6 @@ public class Player {
 
     public void setLocation(Point location) {
         this.location = location;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
     }
     
     public void increaseEnergy(int amount) {

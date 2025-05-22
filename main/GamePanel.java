@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Font;
 
 import object.SuperObject;
 import tile.TileManager;
@@ -42,12 +43,13 @@ public class GamePanel extends JPanel implements Runnable {
     public AssetSetter aSetter = new AssetSetter(this);
     public CollisionChecker cChecker = new CollisionChecker(this);
     public UI ui = new UI(this);
+    public EventHandler eHandler = new EventHandler(this);
     Thread gameThread;
 
     // Entity and object
     public Player playerData = new Player("Nazwan", "Male", "Farm", 1000); // ini cuman contoh doang
     public PlayerUI player = new PlayerUI(this, keyH, playerData);
-    public SuperObject[] objects = new SuperObject[20];
+    public SuperObject[][] objects = new SuperObject[maxMap][20];
 
     public void setupGame() {
         aSetter.setObject();
@@ -60,6 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int gameState;
     public final int playState = 0;
     public final int pauseState = 1;
+    public final int dialogueState = 2;
 
 
     public GamePanel() {
@@ -120,9 +123,9 @@ public class GamePanel extends JPanel implements Runnable {
         tileM.draw(g2);
 
         // Object
-        for (SuperObject obj : objects) {
-            if (obj != null) {
-                obj.draw(g2, this);
+        for (int i = 0; i < objects[currentMap].length; i++) {
+            if (objects[currentMap][i] != null) {
+                objects[currentMap][i].draw(g2, this);
             }
         }
 
@@ -131,6 +134,21 @@ public class GamePanel extends JPanel implements Runnable {
 
         // UI
         ui.draw(g2);
+
+        // Debugging
+        if (keyH.showDebugText) {
+            g2.setFont(new Font("Helvetica", Font.PLAIN, 20));
+            g2.setColor(Color.white);
+            int x = 10;
+            int y = 400;
+            int lineHeight = 20;
+
+            g2.drawString("Debug Info", x, y);
+            g2.drawString("WorldX " + player.worldX, x, y); y+= lineHeight;
+            g2.drawString("WorldY " + player.worldY, x, y); y+= lineHeight;
+            g2.drawString("Col " + (player.worldX + player.solidArea.x)/tileSize, x, y); y+= lineHeight;
+            g2.drawString("Row " + (player.worldY + player.solidArea.y)/tileSize, x, y); y+= lineHeight;
+        }
 
         g2.dispose();
     }

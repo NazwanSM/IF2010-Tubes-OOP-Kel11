@@ -62,14 +62,14 @@ public class CollisionChecker {
     public int checkObject(Entity entity, boolean player) {
         int index = 999;
 
-        for (int i = 0; i < gp.objects.length; i++) {
-            if (gp.objects[i] != null) {
+        for (int i = 0; i < gp.objects[gp.currentMap].length; i++) {
+            if (gp.objects[gp.currentMap][i] != null) {
 
                 int entitySolidAreaWorldX = entity.worldX + entity.solidArea.x;
                 int entitySolidAreaWorldY = entity.worldY + entity.solidArea.y;
                 
-                int objectSolidAreaWorldX = (gp.objects[i].worldX * gp.tileSize) + gp.objects[i].solidArea.x;
-                int objectSolidAreaWorldY = (gp.objects[i].worldY * gp.tileSize) + gp.objects[i].solidArea.y;
+                int objectSolidAreaWorldX = (gp.objects[gp.currentMap][i].worldX * gp.tileSize) + gp.objects[gp.currentMap][i].solidArea.x;
+                int objectSolidAreaWorldY = (gp.objects[gp.currentMap][i].worldY * gp.tileSize) + gp.objects[gp.currentMap][i].solidArea.y;
                 
                 java.awt.Rectangle entityRect = new java.awt.Rectangle(
                     entitySolidAreaWorldX, 
@@ -81,8 +81,8 @@ public class CollisionChecker {
                 java.awt.Rectangle objectRect = new java.awt.Rectangle(
                     objectSolidAreaWorldX, 
                     objectSolidAreaWorldY,
-                    gp.objects[i].solidArea.width, 
-                    gp.objects[i].solidArea.height
+                    gp.objects[gp.currentMap][i].solidArea.width, 
+                    gp.objects[gp.currentMap][i].solidArea.height
                 );
 
                 switch (entity.direction) {
@@ -101,12 +101,12 @@ public class CollisionChecker {
                 }
 
                 if (entityRect.intersects(objectRect)) {
-                    if (gp.objects[i].collision == true) {
+                    if (gp.objects[gp.currentMap][i].collision == true) {
                         entity.collisionOn = true;
                     }
                     if (player == true) {
                         index = i;
-                        System.out.println("Player collided with object: " + gp.objects[i].name);
+                        System.out.println("Player collided with object: " + gp.objects[gp.currentMap][i].name);
                     }
                 }
             }

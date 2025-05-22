@@ -97,6 +97,10 @@ public class PlayerUI extends Entity {
             collisionOn = false;
             gp.cChecker.checkTile(this);
             int objIndex = gp.cChecker.checkObject(this, true); //ini nanti buat tes object apa
+
+            // Check event
+            gp.eHandler.checkEvent();
+
             if (collisionOn == false) {
                 switch (direction) {
                     case "up":
