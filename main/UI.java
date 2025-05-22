@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.BasicStroke;
 
 public class UI {
     
@@ -15,8 +16,7 @@ public class UI {
     public String message = "";
     public int messageCounter = 0;
     public boolean gameFinished = false; // ini buat nanti kalau udah ending
-
-    double playTime;
+    public String curretDialog = "";
     
 
     public UI(GamePanel gp) {
@@ -84,6 +84,9 @@ public class UI {
         else if(gp.gameState == gp.pauseState) {
             drawPauseScreen();
         }
+        else if(gp.gameState == gp.dialogueState) {
+            drawDialogueScreen();
+        }
     }
 
     public void drawPauseScreen() {
@@ -94,10 +97,41 @@ public class UI {
 
         g2.drawString(text, x, y);
     }
+    
+    public void drawDialogueScreen(){
+        int x = gp.tileSize * 2;
+        int y = gp.tileSize / 2;
+        int width = gp.screenWidth - (gp.tileSize * 4);
+        int height = gp.tileSize * 4;
+        drawSubWindow(x, y, width, height);
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 28F));
+        x += gp.tileSize;
+        y += gp.tileSize;
+        g2.drawString(curretDialog, x, y);
+
+        for (String line : curretDialog.split("\n")) {
+            g2.drawString(line, x, y);
+            y += 40;
+        }
+    }
+
+    public void drawSubWindow(int x, int y, int width, int height) {
+        
+        Color c = new Color(15,15,15,199);
+        g2.setColor(c);
+        g2.fillRoundRect(x, y, width, height, 35, 35);
+
+        c = new Color(81,64,58,255);
+        g2.setColor(c);
+        g2.setStroke(new BasicStroke(5));
+        g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
+    }
 
     public int getXforCenteredText(String text) {
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = gp.screenWidth / 2 - length / 2;
         return x;
     }
+
 }
