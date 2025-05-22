@@ -1,6 +1,6 @@
 package Items;
 
-import Player.Player;
+import entity.player.Player;
 
 public interface Edible {
     int getEnergy();

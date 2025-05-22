@@ -1,6 +1,6 @@
 package Items;
 
-import Player.Player;
+import entity.player.Player;
 
 public class Crops extends Items implements Sellable, Edible {
     private int buyPrice;

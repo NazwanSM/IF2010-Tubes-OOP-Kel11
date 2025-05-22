@@ -1,7 +1,7 @@
 package Items;
 import java.util.Map;
 
-import Player.Inventory;
+import entity.player.Inventory;
 
 public class Recipe {
     private String itemID;

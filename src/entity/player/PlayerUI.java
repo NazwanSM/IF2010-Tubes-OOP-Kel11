@@ -6,6 +6,7 @@ import main.KeyHandler;
 import main.UtilityTool;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+// import java.awt.Color;
 
 import entity.Entity;
 
@@ -15,28 +16,34 @@ public class PlayerUI extends Entity {
     KeyHandler keyH;
     Player player;
 
+    public final int screenX;
+    public final int screenY;
+
     public PlayerUI (GamePanel gp, KeyHandler keyH, Player player) {
         super(gp);
         this.gp = gp;
         this.keyH = keyH;
         this.player = player;
 
+        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+        screenY = gp.screenHeight / 2 - (gp.tileSize / 2) - gp.tileSize;
+
         solidArea = new Rectangle();
-        solidArea.x = 3*2;
-        solidArea.y = 16*2;
+        solidArea.x = 3*3;
+        solidArea.y = 16*3;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-        solidArea.width = 10*2;
-        solidArea.height = 14*2 - 2;
+        solidArea.width = 10*3;
+        solidArea.height = 14*3 - 2;
 
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues() {
-        x = 100;
-        y = 100;
-        speed = 4;
+        worldX = gp.tileSize * 15;
+        worldY = gp.tileSize * 15;
+        speed = 5;
         direction = "down";
     }
 
@@ -89,20 +96,20 @@ public class PlayerUI extends Entity {
             // Check for collision
             collisionOn = false;
             gp.cChecker.checkTile(this);
-            int objIndex = gp.cChecker.checkObject(this, true);
+            int objIndex = gp.cChecker.checkObject(this, true); //ini nanti buat tes object apa
             if (collisionOn == false) {
                 switch (direction) {
                     case "up":
-                        y -= speed;
+                        worldY -= speed;
                         break;
                     case "down":
-                        y += speed;
+                        worldY += speed;
                         break;
                     case "left":
-                        x -= speed;
+                        worldX -= speed;
                         break;
                     case "right":
-                        x += speed;
+                        worldX += speed;
                         break;
                 }
             }
@@ -178,6 +185,11 @@ public class PlayerUI extends Entity {
                 }
                 break;
         }
-        g2.drawImage(image, x, y, null);
+        g2.drawImage(image, screenX, screenY, null);
+
+        // Draw solid area for debugging
+        // g2.setColor(Color.RED);
+        // g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+        // g2.setColor(Color.BLUE);
     }
 }

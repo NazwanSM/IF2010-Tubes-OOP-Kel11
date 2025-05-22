@@ -12,10 +12,10 @@ public class CollisionChecker {
     }
 
     public void checkTile(Entity entity) {
-        int entityLeftX = entity.x + entity.solidArea.x;
-        int entityRightX = entity.x + entity.solidArea.x + entity.solidArea.width;
-        int entityTopY = entity.y + entity.solidArea.y;
-        int entityBottomY = entity.y + entity.solidArea.y + entity.solidArea.height;
+        int entityLeftX = entity.worldX + entity.solidArea.x;
+        int entityRightX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
+        int entityTopY = entity.worldY + entity.solidArea.y;
+        int entityBottomY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
 
         int entityLeftCol = entityLeftX / gp.tileSize;
         int entityRightCol = entityRightX / gp.tileSize;
@@ -64,15 +64,13 @@ public class CollisionChecker {
 
         for (int i = 0; i < gp.objects.length; i++) {
             if (gp.objects[i] != null) {
-                // Calculate entity solid area position in world
-                int entitySolidAreaWorldX = entity.x + entity.solidArea.x;
-                int entitySolidAreaWorldY = entity.y + entity.solidArea.y;
+
+                int entitySolidAreaWorldX = entity.worldX + entity.solidArea.x;
+                int entitySolidAreaWorldY = entity.worldY + entity.solidArea.y;
                 
-                // Calculate object solid area position in world (adjust if objects use tile-based coordinates)
-                int objectSolidAreaWorldX = (gp.objects[i].x * gp.tileSize) + gp.objects[i].solidArea.x;
-                int objectSolidAreaWorldY = (gp.objects[i].y * gp.tileSize) + gp.objects[i].solidArea.y;
+                int objectSolidAreaWorldX = (gp.objects[i].worldX * gp.tileSize) + gp.objects[i].solidArea.x;
+                int objectSolidAreaWorldY = (gp.objects[i].worldY * gp.tileSize) + gp.objects[i].solidArea.y;
                 
-                // Create temporary rectangles for collision detection
                 java.awt.Rectangle entityRect = new java.awt.Rectangle(
                     entitySolidAreaWorldX, 
                     entitySolidAreaWorldY,
@@ -87,7 +85,6 @@ public class CollisionChecker {
                     gp.objects[i].solidArea.height
                 );
 
-                // Adjust entity rectangle based on movement direction
                 switch (entity.direction) {
                     case "up":
                         entityRect.y -= entity.speed;
@@ -103,7 +100,6 @@ public class CollisionChecker {
                         break;
                 }
 
-                // Check collision with temporary rectangles
                 if (entityRect.intersects(objectRect)) {
                     if (gp.objects[i].collision == true) {
                         entity.collisionOn = true;

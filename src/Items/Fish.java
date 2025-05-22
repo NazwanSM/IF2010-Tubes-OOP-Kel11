@@ -2,8 +2,7 @@ package Items;
 
 import java.util.Set;
 import Enum.FishRarity;
-import Player.Player;
-
+import entity.player.Player;
 public class Fish extends Items implements Sellable, Edible {
     private FishRarity rarity;
     private Set<String> seasons;

@@ -13,33 +13,33 @@ public class AssetSetter {
     }
 
     public void setObject() {
-        int[][] objectMap = loadObjectMap("/resource/maps/object_map.txt", gp.maxScreenCol, gp.maxScreenRow);
+        int[][] objectMap = loadObjectMap("/resource/maps/object_map.txt", gp.maxWorldCol, gp.maxWorldRow);
         int objIndex = 0;
 
-        for (int row = 0; row < gp.maxScreenRow; row++) {
-            for (int col = 0; col < gp.maxScreenCol; col++) {
+        for (int row = 0; row < gp.maxWorldRow; row++) {
+            for (int col = 0; col < gp.maxWorldCol; col++) {
                 int id = objectMap[col][row];
                 if (id == 0) continue;
 
                 switch (id) {
                     case 1: // House
                     OBJ_House house = new OBJ_House(gp);
-                    house.x = col;
-                    house.y = row;
+                    house.worldX = col;
+                    house.worldY = row;
                     gp.objects[objIndex++] = house;
                     break;
 
                     case 2: // Shipping Bin
                         OBJ_ShippingBin bin = new OBJ_ShippingBin(gp);
-                        bin.x = col;
-                        bin.y = row;
+                        bin.worldX = col;
+                        bin.worldY = row;
                         gp.objects[objIndex++] = bin;
                         break;
 
                     case 3: // Pond
                         OBJ_Pond pond = new OBJ_Pond(gp);
-                        pond.x = col;
-                        pond.y = row;
+                        pond.worldX = col;
+                        pond.worldY = row;
                         gp.objects[objIndex++] = pond;
                         break;
 

@@ -4,23 +4,22 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 import main.GamePanel;
+// import java.awt.Color;
 
 public abstract class SuperObject {
     public BufferedImage image;
     public String name;
     public boolean collision = false;
-    public int x, y;
+    public int worldX, worldY;
     public int width = 1, height = 1;
     public Rectangle solidArea = new Rectangle(0, 0, 1, 1);
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
 
     public void draw(Graphics2D g2, GamePanel gp) {
-    // Hitung posisi di layar relatif terhadap player
-        int screenX = x * gp.tileSize - gp.player.x + gp.player.x;
-        int screenY = y * gp.tileSize - gp.player.y + gp.player.y;
+        int screenX = worldX * gp.tileSize - gp.player.worldX + gp.player.screenX;
+        int screenY = worldY * gp.tileSize - gp.player.worldY + gp.player.screenY;
 
-        // Gambar satu kali, skalakan sesuai ukuran object (dalam tile)
         g2.drawImage(
             image,
             screenX,
@@ -29,5 +28,10 @@ public abstract class SuperObject {
             gp.tileSize * height,   // height dalam pixel
             null
         );
+
+        // Debugging
+        // g2.setColor(Color.RED);
+        // g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+
     }
 }
