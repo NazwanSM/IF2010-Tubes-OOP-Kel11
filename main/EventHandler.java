@@ -47,20 +47,20 @@ public class EventHandler {
 
         if (canTouchEvent) {
             // Keluar masuk rumah
-            if(hit(0,26,19,"any")) {
+            if(hit(0,13,8,"any")) {
                 teleport(1, 14, 24);
             }
-            else if(hit(0,27,19,"any")) {
+            else if(hit(0,14,8,"any")) {
                 teleport(1, 14, 24);
             }
             else if(hit(1,14,26,"any")) {
-                teleport(0, 26, 19);
+                teleport(0, 14, 8);
             }
             else if(hit(1,15,26,"any")) {
-                teleport(0, 26, 19);
+                teleport(0, 14, 8);
             }
             else if(hit(1,16,26,"any")) {
-                teleport(0, 26, 19);
+                teleport(0, 14, 8);
             }
         }
     }

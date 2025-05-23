@@ -14,6 +14,9 @@ public class TileManager {
     GamePanel gp;
     public Tile[] tile;
     public int mapTileNum[][][];
+    public int randomMap[] = {0, 1, 2, 3, 4};
+    public int randomMapIndex = 0;
+
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -27,15 +30,15 @@ public class TileManager {
 
     public void getTileImage() {
         setup (0, "/summer/0-Grass", false);
-        setup (1, "/summer/1-Tillable", false);
-        setup (2, "/summer/2-Grass_Tillable_Top_Left", false);
-        setup (3, "/summer/3-Grass_Tillable_Top", false);
-        setup (4, "/summer/4-Grass_Tillable_Top_Right", false);
-        setup (5, "/summer/5-Grass_Tillable_Right", false);
-        setup (6, "/summer/6-Grass_Tillable_Bottom_Right", false);
-        setup (7, "/summer/7-Grass_Tillable_Bottom", false);
-        setup (8, "/summer/8-Grass_Tillable_Bottom_Left", false);
-        setup (9, "/summer/9-Grass_Tillable_Left", false);
+        setup (1, "/summer/1-Road", false);
+        setup (2, "/summer/2-Grass_Road_Top_Left", false);
+        setup (3, "/summer/3-Grass_Road_Top", false);
+        setup (4, "/summer/4-Grass_Road_Top_Right", false);
+        setup (5, "/summer/5-Grass_Road_Right", false);
+        setup (6, "/summer/6-Grass_Road_Bottom_Right", false);
+        setup (7, "/summer/7-Grass_Road_Bottom", false);
+        setup (8, "/summer/8-Grass_Road_Bottom_Left", false);
+        setup (9, "/summer/9-Grass_Road_Left", false);
         setup (10, "/house/House_Tiles_1", false);
         setup (11, "/house/House_Tiles_2", false);
         setup (12, "/house/House_Tiles_3", false);
@@ -52,7 +55,11 @@ public class TileManager {
         setup (23, "/house/House_Tiles_14", false);
         setup (24, "/house/House_Tiles_15", false);
         setup (25, "/house/House_Tiles_16", false);
-        setup (26, "/house/Black", false);
+        setup (26, "/house/Black", true);
+        setup (27, "/summer/Soil", true);
+        setup (28, "/summer/Grass_Road_Corner_UR", false);
+        setup (29, "/summer/Grass_Road_Corner_BR", false);
+        setup (30, "/summer/Grass_Road_Corner_BL", false);
 
     }
 
