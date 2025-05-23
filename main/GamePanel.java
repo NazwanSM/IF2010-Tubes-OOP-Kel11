@@ -53,16 +53,16 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame() {
         aSetter.setObject();
-        playMusic(0);
-        stopMusic();
-        gameState = playState;
+        // playMusic(0);
+        gameState = titleState;
     }
 
     // Game State
     public int gameState;
-    public final int playState = 0;
-    public final int pauseState = 1;
-    public final int dialogueState = 2;
+    public final int titleState = 0;
+    public final int playState = 1;
+    public final int pauseState = 2;
+    public final int dialogueState = 3;
 
 
     public GamePanel() {
@@ -119,21 +119,29 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // Tile
-        tileM.draw(g2);
-
-        // Object
-        for (int i = 0; i < objects[currentMap].length; i++) {
-            if (objects[currentMap][i] != null) {
-                objects[currentMap][i].draw(g2, this);
-            }
+        // TITLE SCREEN
+        if (gameState == titleState) {
+            ui.draw(g2);
         }
 
-        // Player
-        player.draw(g2);
+        else {
+            // TILE
+            tileM.draw(g2);
+    
+            // Object
+            for (int i = 0; i < objects[currentMap].length; i++) {
+                if (objects[currentMap][i] != null) {
+                    objects[currentMap][i].draw(g2, this);
+                }
+            }
+    
+            // PLAYER
+            player.draw(g2);
+    
+            // UI
+            ui.draw(g2);
+        }
 
-        // UI
-        ui.draw(g2);
 
         // Debugging
         if (keyH.showDebugText) {
