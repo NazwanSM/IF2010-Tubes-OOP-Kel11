@@ -1,9 +1,10 @@
 package World;
 
 import java.util.List;
-import java.util.Scanner;
 import Items.Items;
 import entity.player.Player;
+import main.GamePanel;
+import main.UI;
 
 public class NPC {
     private String npcName;
@@ -16,8 +17,8 @@ public class NPC {
 
     public NPC(String npcName, List<String> lovedItems, List<String> likedItems, List<String> hatedItems) {
         this.npcName = npcName;
-        this.lovedItems = lovedItems;
-        this.likedItems = likedItems;
+        this.lovedItems = lovedItems != null ? lovedItems : List.of();
+        this.likedItems = likedItems != null ? likedItems : List.of();
         this.hatedItems = hatedItems;
         this.relationshipStatus = "Single";
         this.heartPoints = 0;
@@ -116,54 +117,28 @@ public class NPC {
         }
     }
 
-    public void interact(Player player) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("What would you like to do with " + npcName + "?");
-        System.out.println("1. Chat");
-        System.out.println("2. Gift");
-        System.out.println("3. Propose");
-        System.out.println("4. Marry");
+    /**
+     * Untuk sekarang, kita akan biarkan ini sebagai placeholder,
+     * karena interaksi akan lebih banyak di-drive oleh Player dan UI.
+     */
+    public void startInteractionSequence(Player playerLogic, UI gameUI) { // Menggunakan Player data logic dan UI
+        // Daripada Scanner, saatnya menggunakan sistem dialog GUI Anda.
+        // 1. PlayerUI mendeteksi pemain dekat NPCUI dan menekan tombol aksi.
+        // 2. GamePanel/PlayerUI mendapatkan referensi ke AbstractNPCLogic ini.
+        // 3. Panggil metode yang sesuai di Player.java, misalnya player.chatting(this),
+        //    yang kemudian akan mengambil dialog dari this.getDialogue().
+        // 4. Dialog tersebut ditampilkan melalui gameUI.curretDialog dan gp.gameState = gp.dialogueState [cite: 5]
 
-        int choice = -1;
-        while (choice < 1 || choice > 4) {
-            System.out.print("Enter your choice (1-4): ");
-            choice = scanner.nextInt();
-            scanner.nextLine();
+        // Contoh: Jika aksi 'chat' dipilih (melalui GUI nantinya):
+        // String dialogue = getDialogue();
+        // gameUI.curretDialog = dialogue;
+        // gameUI.gp.gameState = gameUI.gp.dialogueState; // Mengatur game state untuk menampilkan dialog
 
-            if (choice == 1) {
-                player.chatting(this);
-            }
-
-            if (choice == 2) {
-                System.out.print("Enter the name of the item you want to give: ");
-                String itemName = scanner.nextLine();
-                Items gift = null;
-                for (Items item : player.getInventory().checkInventory().keySet()) {
-                    if (gift == null && item.getName().equalsIgnoreCase(itemName)) {
-                        gift = item;
-                    }
-                }
-                if (gift != null) {
-                    player.gifting(this, gift);
-                }
-                else {
-                    System.out.println("Item not found in your inventory.");
-                }
-            }
-
-            if (choice == 3) {
-                player.propose(this);
-            }
-
-            if (choice == 4) {
-                player.marry(this);
-            }
-
-            if (choice < 1 || choice > 4) {
-                System.out.println("Invalid choice. Please choose between 1 and 4.");
-            }
-        }
-
-        scanner.close();
+        System.out.println("Interaksi dengan " + npcName + " dimulai (Versi Logika). UI akan menangani tampilan.");
+        // Logika untuk menampilkan pilihan (Chat, Gift, etc.) akan ada di UI / Game State Manager Anda
     }
+
+    // Anda bisa menambahkan metode abstrak di sini jika ada perilaku yang *harus*
+    // diimplementasikan secara unik oleh setiap NPC turunan.
+    // public abstract void performUniqueDailyRoutine();
 }
