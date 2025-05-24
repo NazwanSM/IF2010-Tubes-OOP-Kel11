@@ -159,27 +159,6 @@ public class UI {
         if (titleScreenState == 0) {
 
             g2.drawImage(titleScreenBackground, 0, 0, gp.screenWidth, gp.screenHeight, null);
-    
-            g2.setFont(titleFont.deriveFont(Font.PLAIN, 110F));
-            String textLine1 = "SPAKBOR";
-            String textLine2 = "HILLS";
-    
-            int x1 = getXforCenteredText(textLine1);
-            int y1 = gp.tileSize * 3 - gp.tileSize / 4; 
-            int x2 = getXforCenteredText(textLine2);
-            int lineHeight;
-            if (g2.getFontMetrics() != null) {
-                lineHeight = g2.getFontMetrics().getHeight();
-            } else {
-                lineHeight = (int)(gp.tileSize * 1.5);
-            }
-            int y2 = y1 + lineHeight;
-    
-            g2.setColor(new Color(206, 82, 82, 255)); 
-            g2.drawString(textLine1, x1, y1);
-    
-            g2.setColor(new Color(206, 82, 82, 255)); 
-            g2.drawString(textLine2, x2, y2);
             
             int x = gp.screenWidth / 2 - gp.tileSize / 2;
             int y = gp.tileSize * 6;

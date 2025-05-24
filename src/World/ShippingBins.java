@@ -2,13 +2,14 @@ package World;
 
 import java.util.ArrayList;
 import java.util.List;
-import Items.Items;
-import Items.Sellable;
+
 import entity.player.Inventory;
+import items.Items;
+import items.Sellable;
 
 public class ShippingBins<Player> {
     private List<Items> listItemToSell;  // Daftar item yang ingin dijual
-    private static final int MAX_BIN = 10;  // Batas jumlah item yang dapat ditambahkan ke Shipping Bin
+    private static final int MAX_BIN = 16;  // Batas jumlah item yang dapat ditambahkan ke Shipping Bin
 
     public ShippingBins() {
         listItemToSell = new ArrayList<>();

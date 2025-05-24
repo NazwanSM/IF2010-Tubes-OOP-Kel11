@@ -26,6 +26,7 @@ public class TileManager {
         getTileImage();
         loadMap("map1.txt", 0);
         loadMap("house.txt", 1);
+        loadMap("forestRiver.txt", 2);
     }
 
     public void getTileImage() {
@@ -60,7 +61,42 @@ public class TileManager {
         setup (28, "/summer/Grass_Road_Corner_UR", false);
         setup (29, "/summer/Grass_Road_Corner_BR", false);
         setup (30, "/summer/Grass_Road_Corner_BL", false);
-
+        setup (31, "/forestRiver/ForestRiver_1", true);
+        setup (32, "/forestRiver/ForestRiver_2", true);
+        setup (33, "/forestRiver/ForestRiver_3", true);
+        setup (34, "/forestRiver/ForestRiver_4", true);
+        setup (35, "/forestRiver/ForestRiver_5", false);
+        setup (36, "/forestRiver/ForestRiver_6", false);
+        setup (37, "/forestRiver/ForestRiver_7", true);
+        setup (38, "/forestRiver/ForestRiver_8", true);
+        setup (39, "/forestRiver/ForestRiver_9", true);
+        setup (40, "/forestRiver/ForestRiver_10", true);
+        setup (41, "/forestRiver/ForestRiver_11", false);
+        setup (42, "/forestRiver/ForestRiver_12", false);
+        setup (43, "/forestRiver/ForestRiver_13", true);
+        setup (44, "/forestRiver/ForestRiver_14", true);
+        setup (45, "/forestRiver/ForestRiver_15", true);
+        setup (46, "/forestRiver/ForestRiver_16", true);
+        setup (47, "/forestRiver/ForestRiver_17", false);
+        setup (48, "/forestRiver/ForestRiver_18", false);
+        setup (49, "/forestRiver/ForestRiver_19", true);
+        setup (50, "/forestRiver/ForestRiver_20", true);
+        setup (51, "/forestRiver/ForestRiver_21", true);
+        setup (52, "/forestRiver/ForestRiver_22", true);
+        setup (53, "/forestRiver/ForestRiver_23", false);
+        setup (54, "/forestRiver/ForestRiver_24", false);
+        setup (55, "/forestRiver/ForestRiver_25", true);
+        setup (56, "/forestRiver/ForestRiver_26", true);
+        setup (57, "/forestRiver/ForestRiver_27", true);
+        setup (58, "/forestRiver/ForestRiver_28", true);
+        setup (59, "/forestRiver/ForestRiver_29", false);
+        setup (60, "/forestRiver/ForestRiver_30", false);
+        setup (61, "/forestRiver/ForestRiver_31", true);
+        setup (62, "/forestRiver/ForestRiver_32", true);
+        setup (63, "/forestRiver/ForestRiver_33", true);
+        setup (64, "/forestRiver/ForestRiver_34", true);
+        setup (65, "/forestRiver/ForestRiver_35", false);
+        setup (66, "/forestRiver/ForestRiver_36", false);
     }
 
     public void setup(int index, String imagePath, boolean collision) {
