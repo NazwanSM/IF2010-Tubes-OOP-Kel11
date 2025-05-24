@@ -12,6 +12,9 @@ import java.awt.Graphics2D;
 import java.awt.Font;
 
 import object.SuperObject;
+import statistics.IStatisticProvider;
+import statistics.IStatisticTracker;
+// import statistics.StatisticsManager;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -48,9 +51,12 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
 
     // Entity and object
-    public Player playerData = new Player("Nazwan", "Male", "Farm", 1000); // ini cuman contoh doang
+    public Player playerData = new Player("Nazwan", "Male", "Farm", 1000, this); // ini cuman contoh doang
     public PlayerUI player = new PlayerUI(this, keyH, playerData);
     public SuperObject[][] objects = new SuperObject[maxMap][20];
+    public IStatisticTracker statisticTracker;
+    public IStatisticProvider statisticProvider;
+    // StatisticsManager manager = new StatisticsManager();
 
     public void setupGame() {
         aSetter.setObject();
@@ -64,6 +70,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int playState = 1;
     public final int pauseState = 2;
     public final int dialogueState = 3;
+    public final int statsDisplayState = 4;
+    public final int inventoryState = 5;
 
 
     public GamePanel() {
@@ -74,6 +82,8 @@ public class GamePanel extends JPanel implements Runnable {
         this.addMouseListener(mouseH);
         this.addMouseMotionListener(mouseH);
         this.setFocusable(true);
+        // this.statisticTracker = manager;
+        // this.statisticProvider = manager;
     }
 
     public void startGameThread() {
@@ -116,6 +126,10 @@ public class GamePanel extends JPanel implements Runnable {
         else if (gameState == pauseState) {
             // Pause logic
         }
+
+        // if (statisticProvider.isAnyMilestoneAchieved() && gameState != statsDisplayState) {
+        //     gameState = statsDisplayState;
+        // }
     }
 
     public void paintComponent(Graphics g){
