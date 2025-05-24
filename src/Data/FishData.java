@@ -1,10 +1,10 @@
-package Data;
+package data;
 
 import java.util.List;
 import java.util.Set;
 
 import Enum.FishRarity;
-import Items.Fish;
+import items.Fish;
 
 public class FishData {
     private static List<Fish> allFish = List.of(

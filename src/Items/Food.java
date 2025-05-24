@@ -1,19 +1,18 @@
-package Items;
+package items;
 
 import entity.player.Player;
 
 public class Food extends Items implements Sellable, Edible {
+    private int energy;  
     private int buyPrice;
     private int sellPrice;
-    private int energy;  
 
-
-
-    public Food(String name, int buyPrice, int sellPrice, int energy) {
+    public Food(String name, int energy, int buyPrice, int sellPrice) {
         super(name, "Food");
+        this.energy = energy;
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
-        this.energy = energy;
+        loadImage("/resource/items/food/" + name.toLowerCase() + ".png");
     }
 
     public int getBuyPrice() {

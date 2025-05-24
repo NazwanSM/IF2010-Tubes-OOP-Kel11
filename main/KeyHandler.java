@@ -23,7 +23,38 @@ public class KeyHandler implements KeyListener {
         int keyCode = e.getKeyCode();
 
         if (gp.gameState == gp.titleState) {
+            titleState(keyCode);
+        }
+
+        else if (gp.gameState == gp.playState) {
+            playState(keyCode);
+        }
+        else if (gp.gameState == gp.pauseState) {
             switch (keyCode) {
+                case KeyEvent.VK_ESCAPE:
+                    gp.gameState = gp.playState;
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (gp.gameState == gp.dialogueState) {
+            switch (keyCode) {
+                case KeyEvent.VK_ENTER:
+                    gp.gameState = gp.playState;
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (gp.gameState == gp.inventoryState) {
+            inventoryState(keyCode);
+        }
+    }
+
+    public void titleState(int keyCode){
+        gp.playSE(3);
+        switch (keyCode) {
                 case KeyEvent.VK_A:
                     if (gp.ui.commandNum == 0) {
                         lastNum = 0;
@@ -42,6 +73,7 @@ public class KeyHandler implements KeyListener {
                     else {
                         gp.ui.commandNum--;
                     }
+                    gp.playSE(2);
                     break;
                 case KeyEvent.VK_D:
                     if (gp.ui.commandNum == 8) {
@@ -61,6 +93,7 @@ public class KeyHandler implements KeyListener {
                     else {
                         gp.ui.commandNum++;
                     }
+                    gp.playSE(2);
                     break;
                 case KeyEvent.VK_W:
                     if (gp.ui.commandNum == 0) {
@@ -87,6 +120,7 @@ public class KeyHandler implements KeyListener {
                     else if (gp.ui.commandNum == 7) {
                         gp.ui.commandNum = 3;
                     }
+                    gp.playSE(2);
                     break;
                 case KeyEvent.VK_S:
                     if (gp.ui.commandNum == 0) {
@@ -113,6 +147,7 @@ public class KeyHandler implements KeyListener {
                     else if (gp.ui.commandNum == 7) {
                         gp.ui.commandNum = 3;
                     }
+                    gp.playSE(2);
                     break;
                 case KeyEvent.VK_ENTER:
                     if (gp.ui.commandNum == 0) {
@@ -152,10 +187,10 @@ public class KeyHandler implements KeyListener {
                 default:
                     break;
             }
-        }
+    }
 
-        else if (gp.gameState == gp.playState) {
-            switch (keyCode) {
+    public void playState(int keyCode) {
+        switch (keyCode) {
                 case KeyEvent.VK_W:
                     upPressed = true;
                     break;
@@ -201,27 +236,51 @@ public class KeyHandler implements KeyListener {
                         showDebugText = !showDebugText;
                     }
                     break;
-                default:
-                    break;
-            }
-        }
-        else if (gp.gameState == gp.pauseState) {
-            switch (keyCode) {
-                case KeyEvent.VK_ESCAPE:
-                    gp.gameState = gp.playState;
+                case KeyEvent.VK_I:
+                    gp.gameState = gp.inventoryState;
                     break;
                 default:
                     break;
             }
-        }
-        else if (gp.gameState == gp.dialogueState) {
-            switch (keyCode) {
-                case KeyEvent.VK_ENTER:
-                    gp.gameState = gp.playState;
-                    break;
-                default:
-                    break;
-            }
+    }
+    
+    public void inventoryState(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.VK_W:
+                if (gp.ui.slotRow > 0) {
+                    gp.ui.slotRow--;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_S:
+                if (gp.ui.slotRow < 3) {
+                    gp.ui.slotRow++;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_A:
+                if (gp.ui.slotCol > 0) {
+                    gp.ui.slotCol--;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_D:
+                if (gp.ui.slotCol < 4) {
+                    gp.ui.slotCol++;
+                }
+                gp.playSE(3);
+                break;
+            // case KeyEvent.VK_ENTER:
+            //     gp.ui.selectItem();
+            //     break;
+            case KeyEvent.VK_ESCAPE:
+                gp.gameState = gp.playState;
+                break;
+            case KeyEvent.VK_I:
+                gp.gameState = gp.playState;
+                break;
+            default:
+                break;
         }
     }
 

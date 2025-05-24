@@ -1,4 +1,4 @@
-package Items;
+package items;
 public class Misc extends Items implements Sellable {
     private int buyPrice;
     private int sellPrice;
@@ -7,6 +7,7 @@ public class Misc extends Items implements Sellable {
         super(name, "Misc");
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
+
     }
 
     // Getter and Setter for the new attributes

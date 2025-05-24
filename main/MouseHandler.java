@@ -26,37 +26,39 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     }
 
     private void initializeButtonAreas() {
-        int buttonWidth1 = gp.tileSize * 4 / 2;
-        int buttonHeight1 = gp.tileSize * 3 / 2;
-
-        int x_newGame = gp.screenWidth / 2 - gp.tileSize * 5 + gp.tileSize / 4;
-        int y_row1 = gp.tileSize * 8;
-        newGameArea = new Rectangle(x_newGame, y_row1, buttonWidth1, buttonHeight1);
-
-        int x_loadGame = gp.screenWidth / 2 - gp.tileSize * 2 - gp.tileSize / 4;
-        loadGameArea = new Rectangle(x_loadGame, y_row1, buttonWidth1, buttonHeight1);
-
-        int x_help = gp.screenWidth / 2 + gp.tileSize / 4;
-        helpArea = new Rectangle(x_help, y_row1, buttonWidth1, buttonHeight1);
-
-        int x_action = gp.screenWidth / 2 + gp.tileSize * 3 - gp.tileSize / 4;
-        actionArea = new Rectangle(x_action, y_row1, buttonWidth1, buttonHeight1);
-
-        int y_row2 = gp.tileSize * 10;
-        playerArea = new Rectangle(x_newGame, y_row2, buttonWidth1, buttonHeight1); 
-        objectArea = new Rectangle(x_loadGame, y_row2, buttonWidth1, buttonHeight1);
-        statsArea = new Rectangle(x_help, y_row2, buttonWidth1, buttonHeight1);
-        exitGameArea = new Rectangle(x_action, y_row2, buttonWidth1, buttonHeight1);
-
-        int buttonWidth2 = gp.tileSize * 7 / 3;
-        int buttonHeight2 = gp.tileSize * 3 / 3;
-        int y_row3 = gp.tileSize * 6 + gp.tileSize * 3 + gp.tileSize / 4;
-
-        int x_credits = gp.screenWidth / 2 - gp.tileSize * 7 - gp.tileSize / 4;
-        creditsArea = new Rectangle(x_credits, y_row3, buttonWidth2, buttonHeight2);
-
-        int x_back = gp.screenWidth / 2 + gp.tileSize * 5;
-        backArea = new Rectangle(x_back, y_row3, buttonWidth2, buttonHeight2);
+        if (gp.gameState == gp.titleState) {
+            int buttonWidth1 = gp.tileSize * 4 / 2;
+            int buttonHeight1 = gp.tileSize * 3 / 2;
+    
+            int x_newGame = gp.screenWidth / 2 - gp.tileSize * 5 + gp.tileSize / 4;
+            int y_row1 = gp.tileSize * 8;
+            newGameArea = new Rectangle(x_newGame, y_row1, buttonWidth1, buttonHeight1);
+    
+            int x_loadGame = gp.screenWidth / 2 - gp.tileSize * 2 - gp.tileSize / 4;
+            loadGameArea = new Rectangle(x_loadGame, y_row1, buttonWidth1, buttonHeight1);
+    
+            int x_help = gp.screenWidth / 2 + gp.tileSize / 4;
+            helpArea = new Rectangle(x_help, y_row1, buttonWidth1, buttonHeight1);
+    
+            int x_action = gp.screenWidth / 2 + gp.tileSize * 3 - gp.tileSize / 4;
+            actionArea = new Rectangle(x_action, y_row1, buttonWidth1, buttonHeight1);
+    
+            int y_row2 = gp.tileSize * 10;
+            playerArea = new Rectangle(x_newGame, y_row2, buttonWidth1, buttonHeight1); 
+            objectArea = new Rectangle(x_loadGame, y_row2, buttonWidth1, buttonHeight1);
+            statsArea = new Rectangle(x_help, y_row2, buttonWidth1, buttonHeight1);
+            exitGameArea = new Rectangle(x_action, y_row2, buttonWidth1, buttonHeight1);
+    
+            int buttonWidth2 = gp.tileSize * 7 / 3;
+            int buttonHeight2 = gp.tileSize * 3 / 3;
+            int y_row3 = gp.tileSize * 6 + gp.tileSize * 3 + gp.tileSize / 4;
+    
+            int x_credits = gp.screenWidth / 2 - gp.tileSize * 7 - gp.tileSize / 4;
+            creditsArea = new Rectangle(x_credits, y_row3, buttonWidth2, buttonHeight2);
+    
+            int x_back = gp.screenWidth / 2 + gp.tileSize * 5;
+            backArea = new Rectangle(x_back, y_row3, buttonWidth2, buttonHeight2);
+        }
     }
 
     @Override
@@ -99,6 +101,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
         }
         
         gp.ui.commandNum = currentCommand; 
+        gp.playSE(3);
 
         switch (currentCommand) {
             case 0: // New Game

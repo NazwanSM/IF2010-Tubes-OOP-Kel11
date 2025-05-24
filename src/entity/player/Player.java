@@ -1,37 +1,41 @@
 package entity.player;
 
-import Items.Items;
-import Items.ProposalRing;
-import Items.Edible;
 import World.NPC;
 import World.Environment.GameClock;
+import items.Edible;
+import items.Items;
+import items.ProposalRing;
+import statistics.IStatisticTracker;
 import World.Point;
+import main.GamePanel;
 public class Player {
     private String name;
     private String gender;
     private int energy;
-    private int chatCount;
     private String famName;
     private NPC partner;
     private int gold;
     private Inventory inventory;
     private Point location; 
     private GameClock gameClock;
-    private static final int MAX_ENERGY = 100;
-    private static final int MIN_ENERGY = -20;
+    public static final int MAX_ENERGY = 100;
+    public static final int MIN_ENERGY = -20;
+    private IStatisticTracker statisticTracker;
 
-
-    public Player(String name, String gender, String famName, int gold) {
+    public Player(String name, String gender, String famName, int gold, GamePanel gp) {
         this.name = name;
         this.gender = gender;
         this.energy = MAX_ENERGY;
-        this.chatCount = 0;
         this.famName = famName;
         this.partner = null;
         this.gold = gold;
         this.inventory = new Inventory();
         this.location = new Point(0, 0);
         this.gameClock = GameClock.getInstance();
+        this.statisticTracker = gp.statisticTracker;
+
+        DefaultInventoryInitializer inventoryInitializer = new DefaultInventoryInitializer();
+        inventoryInitializer.setDefaultItems(this.inventory);
     }
 
     public String getName() {
@@ -64,6 +68,10 @@ public class Player {
 
     public Point getLocation() {
         return location;
+    }
+
+    public GameClock getGameClock() {
+        return gameClock;
     }
 
 
@@ -117,12 +125,16 @@ public class Player {
         setEnergy(this.energy - amount);
     }
 
-    public void addGold(int amount) { // ini masih harus disesuain sama statistik akhir
+    public void addGold(int amount) {
         setGold(this.gold + amount);
+        statisticTracker.trackIncome(amount);
     }
 
-    public void subtractGold(int amount) { // ini masih harus disesuain sama statistik akhir
+    public void subtractGold(int amount) { 
         setGold(this.gold - amount);
+        if (amount > 0) {
+            statisticTracker.trackExpenditure(amount);
+        }
     }
 
     public boolean hasItem(Items item) {
@@ -160,9 +172,8 @@ public class Player {
         npc.increaseHeartPoints(10);
         decreaseEnergy(10);
         gameClock.advance(10);
-
-        // abis ini harus ada fungsi buat ngitung statistik berapa kali chatting dll
-        chatCount++;
+        
+        this.statisticTracker.trackNPCChat(npc.getNPCName());
     }
 
     public void gifting(NPC npc, Items gift) {

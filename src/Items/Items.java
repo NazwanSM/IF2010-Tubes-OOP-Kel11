@@ -1,8 +1,14 @@
-package Items;
+package items;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
 public abstract class Items {
     protected String name;
     protected String type;
-    protected int quantity;
+    protected BufferedImage itemImage;
 
     public Items(String name, String type) {
         this.name = name;
@@ -16,11 +22,6 @@ public abstract class Items {
     public String getType() {
         return type;
     }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
     
     public void setName(String name) {
         this.name = name;
@@ -30,11 +31,18 @@ public abstract class Items {
         this.type = type;
     }
 
-    public void setQuantity(int quantity) {
-        if (quantity < 0) {
-            this.quantity = 0;
-        } else {
-            this.quantity = quantity;
+    public BufferedImage getItemImage() {
+        return itemImage;
+    }
+
+    protected void loadImage(String imagePath) {
+        try {
+            InputStream is = getClass().getResourceAsStream(imagePath);
+            this.itemImage = ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
         }
     }
 

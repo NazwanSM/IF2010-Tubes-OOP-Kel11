@@ -1,18 +1,21 @@
-package Items;
+package items;
 
 import entity.player.Player;
 
 public class Crops extends Items implements Sellable, Edible {
     private int buyPrice;
     private int sellPrice;
-    private String rarity;
-    private final int energy = 3;
+    private static final int ENERGY = 3;
+    private int energy;
+    private int quantityPerHarvest;
 
-    public Crops(String name, int buyPrice, int sellPrice, int energy, String rarity) {
+    public Crops(String name, int buyPrice, int sellPrice, int quantityPerHarvest) {
         super(name, "Crop");
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
-        this.rarity = rarity;
+        this.energy = ENERGY;
+        this.quantityPerHarvest = quantityPerHarvest;
+        loadImage("/resource/items/crops/" + name.toLowerCase() + ".png");
     }
 
     // Getter and Setter
@@ -20,11 +23,10 @@ public class Crops extends Items implements Sellable, Edible {
         return buyPrice;
     }
 
-    
-    public String getRarity() {
-        return rarity;
+    public int getQuantityPerHarvest() {
+        return quantityPerHarvest;
     }
-    
+
     public void setBuyPrice(int buyPrice) {
         this.buyPrice = buyPrice;
     }
@@ -32,10 +34,11 @@ public class Crops extends Items implements Sellable, Edible {
     public void setSellPrice(int sellPrice) {
         this.sellPrice = sellPrice;
     }
-    
-    public void setRarity(String rarity) {
-        this.rarity = rarity;
+
+    public void setQuantityPerHarvest(int quantityPerHarvest) {
+        this.quantityPerHarvest = quantityPerHarvest;
     }
+    
     
     @Override
     public int getSellPrice() {

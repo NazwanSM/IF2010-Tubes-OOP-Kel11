@@ -1,23 +1,26 @@
-package Items;
+package items;
+
+import java.util.Set;
 
 public class Seed extends Items implements Sellable {
-    private String season;
+    private Set<String> seasons;
     private int daysToHarvest;
     private int buyPrice;
     private int sellPrice;
     private int daysPlanted;
 
-    public Seed(String name, String season, int daysToHarvest, int buyPrice, int sellPrice) {
+    public Seed(String name, Set<String> seasons, int daysToHarvest, int buyPrice, int sellPrice) {
         super(name, "Seed");
-        this.season = season;
+        this.seasons = seasons;
         this.daysToHarvest = daysToHarvest;
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
         this.daysPlanted = 0;
+        loadImage("/resource/items/seed/" + name.toLowerCase() + ".png");
     }
 
-    public String getSeason() {
-        return season;
+    public Set<String> getSeason() {
+        return seasons;
     }
 
     public int getDaysToHarvest() {
@@ -28,12 +31,8 @@ public class Seed extends Items implements Sellable {
         return buyPrice;
     }
 
-    public int getSellPrice() {
-        return sellPrice;
-    }
-
-    public void setSeason(String season) {
-        this.season = season;
+    public void setSeason(Set<String> seasons) {
+        this.seasons = seasons;
     }
 
     public void setDaysToHarvest(int daysToHarvest) {
@@ -58,6 +57,8 @@ public class Seed extends Items implements Sellable {
         return daysPlanted >= daysToHarvest;
     }
 
-
-
+    @Override
+    public int getSellPrice() {
+        return sellPrice;
+    }
 }

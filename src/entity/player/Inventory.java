@@ -1,8 +1,9 @@
 package entity.player;
 
-import Items.Items;
 import java.util.HashMap;
 import java.util.Map;
+
+import items.Items;
 
 public class Inventory {
     private Map<Items, Integer> items;

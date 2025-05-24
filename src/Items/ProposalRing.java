@@ -1,8 +1,8 @@
-package Items;
+package items;
 
 public class ProposalRing extends Items {
     public ProposalRing(String name, String type) {
         super(name, type);
-        setQuantity(1);
+        loadImage("/resource/items/proposal_ring/" + name.toLowerCase() + ".png");
     }
 }

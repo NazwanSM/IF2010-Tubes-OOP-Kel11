@@ -1,4 +1,4 @@
-package Items;
+package items;
 
 import java.util.Set;
 import Enum.FishRarity;
@@ -25,7 +25,9 @@ public class Fish extends Items implements Sellable, Edible {
         } 
         this.weathers = weathers;
         this.locations = locations;
-        this.rarity = rarity;}
+        this.rarity = rarity;
+        loadImage("/resource/items/fish/" + name.toLowerCase() + ".png");
+    }
 
     // Getter and Setter
     public Set<String> getSeason() {

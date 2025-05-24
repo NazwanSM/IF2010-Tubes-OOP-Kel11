@@ -1,4 +1,4 @@
-package Items;
+package items;
 
 import entity.player.Player;
 
