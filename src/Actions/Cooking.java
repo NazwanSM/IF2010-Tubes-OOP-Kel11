@@ -1,10 +1,10 @@
 package Actions;
 
-import java.util.Map;
-import Items.Food;
-import Items.Items;
-import Items.Recipe;
 import entity.player.Player;
+import items.Food;
+import items.Items;
+import items.Recipe;
+import java.util.Map;
 
 public class Cooking extends Action {
     private Player player;
@@ -20,53 +20,72 @@ public class Cooking extends Action {
         this.fuelRequired = fuelRequired;
     }
 
+    public boolean hasIngredients(Player player) {
+        Map<Items, Integer> itemsMap = player.getInventory().checkInventory();
+        for (Map.Entry<Items, Integer> requiredItems : recipe.getIngredient().entrySet()) {
+            Items items = requiredItems.getKey();
+            int requiredAmount = requiredItems.getValue();
+            if (!itemsMap.containsKey(items) || itemsMap.get(items) < requiredAmount) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void startCooking() {
-        if (recipe.isAvailable(player.getInventory())) {
-            if (player.getEnergy() >= energyRequired) {
-                player.decreaseEnergy(energyRequired);
-
-                Map <Items, Integer> fuel = player.getInventory().checkInventory();
-                Items fuelUsed = null;
-                int foodCount = 1;
-
-                for (Items item : fuel.keySet()) {
-                    String name = item.getName();
-                    int qty = fuel.get(item);
-
-                    if (name.equals("Firewood") && qty >= 1) {
-                        fuelUsed = item;
-                        foodCount = 1;
-                    }
-                    else if (name.equals("Coal") && qty >= 1) {
-                        fuelUsed = item;
-                        foodCount = 2;
-                    }
-                }
-
-                if (fuelUsed == null) {
-                    System.out.println("Not enough fuel to cook!");
-                }
-                else {
-                    for (Map.Entry<Items, Integer> entry : recipe.getIngredient().entrySet()) {
-                        Items ingredient = entry.getKey();
-                        int qty = entry.getValue() * foodCount;
-                        player.removeItemFromInventory(ingredient, qty);
-                    }
-
-                    player.removeItemFromInventory(fuelUsed, 1);
-
-                    System.out.println("Cooking " + food.getName() + "...");
-                    player.addItemToInventory(food, foodCount);
-                    System.out.println("Cooking successful! " + food.getName() + " is ready.");
-                }
-            }
-            else {
-                System.out.println("Not enough energy to cook!");
-            }
+        if (!recipe.isUnlocked()) {
+            System.out.println("This recipe is locked. You haven't met the unlock requirements.");
+            return;
         }
-        else {
+
+        if (!hasIngredients(player)) {
             System.out.println("Required ingredients are not available in your inventory.");
+            return;
         }
+
+        if (player.getEnergy() < energyRequired) {
+            System.out.println("Not enough energy to cook!");
+            return;
+        }
+
+        Map<Items, Integer> inventoryMap = player.getInventory().checkInventory();
+        Items fuelUsed = null;
+        int foodCount = 1;
+
+        for (Items item : inventoryMap.keySet()) {
+            String name = item.getName();
+            int qty = inventoryMap.get(item);
+
+            if (name.equals("Firewood") && qty >= 1) {
+                fuelUsed = item;
+                foodCount = 1;
+                // break;
+            } else if (name.equals("Coal") && qty >= 1) {
+                fuelUsed = item;
+                foodCount = 2;
+                // break;
+            }
+        }
+
+        if (fuelUsed == null) {
+            System.out.println("Not enough fuel to cook!");
+            return;
+        }
+
+        // Jalankan proses memasak
+        player.decreaseEnergy(energyRequired);
+
+        for (Map.Entry<Items, Integer> entry : recipe.getIngredient().entrySet()) {
+            Items ingredient = entry.getKey();
+            int qty = entry.getValue() * foodCount;
+            player.removeItemFromInventory(ingredient, qty);
+        }
+
+        player.removeItemFromInventory(fuelUsed, 1);
+
+        System.out.println("Cooking " + food.getName() + "...");
+        player.addItemToInventory(food, foodCount);
+        System.out.println("Cooking successful! " + food.getName() + " is ready.");
     }
 
     public Recipe getRecipe() {

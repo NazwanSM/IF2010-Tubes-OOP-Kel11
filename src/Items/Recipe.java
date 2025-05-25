@@ -1,17 +1,19 @@
 package items;
 import java.util.Map;
 
-import entity.player.Inventory;
-
 public class Recipe {
     private String itemID;
     private Food result;
     private Map<Items, Integer> ingredient;
+    private boolean unlocked;
+    private String unlockInfo;
 
-    public Recipe(String itemID, Food result, Map<Items, Integer> ingredient) {
+    public Recipe(String itemID, Food result, Map<Items, Integer> ingredient, boolean unlocked, String unlockInfo) {
         this.itemID = itemID;
         this.result = result;
         this.ingredient = ingredient;
+        this.unlocked = unlocked;
+        this.unlockInfo = unlockInfo;
     }
 
     public String getItemID() {
@@ -26,16 +28,20 @@ public class Recipe {
         return ingredient;
     }
 
-    public boolean isAvailable(Inventory inventory) {
-        Map<Items, Integer> itemsMap = inventory.checkInventory();
-        for (Map.Entry<Items, Integer> requiredItems : ingredient.entrySet()) {
-            Items items = requiredItems.getKey();
-            int requiredAmount = requiredItems.getValue();
-            if (!itemsMap.containsKey(items) || itemsMap.get(items) <= requiredAmount) {
-                return false;
-            }
-        }
-        return true;
+    public boolean isUnlocked() {
+        return unlocked;
+    }
+
+    public String getUnlockInfo() {
+        return unlockInfo;
+    }
+
+    public void setUnlockInfo(String unlockInfo) {
+        this.unlockInfo = unlockInfo;
+    }
+
+    public void setUnlocked(boolean unlocked) {
+        this.unlocked = unlocked;
     }
 
     public void setItemID(String itemID) {
