@@ -7,6 +7,7 @@ import main.GamePanel;
 
 public class OBJ_Pond extends SuperObject {
     public OBJ_Pond(GamePanel gp) {
+        super(gp);
         name = "Pond";
         collision = true;
         width = 4;
@@ -17,5 +18,11 @@ public class OBJ_Pond extends SuperObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void interact() {
+        gp.gameState = gp.dialogueState;
+        gp.ui.curretDialog = "You see a pond here. It looks peaceful and serene.";
     }
 }

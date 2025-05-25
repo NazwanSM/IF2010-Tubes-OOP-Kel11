@@ -10,6 +10,7 @@ import java.awt.Rectangle;
 public class OBJ_House extends SuperObject {
 
     public OBJ_House(GamePanel gp) {
+        super(gp);
         name = "House";
         collision = true;
         width = 6;
@@ -20,5 +21,11 @@ public class OBJ_House extends SuperObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void interact() {
+        gp.gameState = gp.dialogueState;
+        gp.ui.curretDialog = "You see a house here. It looks cozy and welcoming.";
     }
 }

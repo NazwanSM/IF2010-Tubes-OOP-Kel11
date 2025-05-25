@@ -137,7 +137,6 @@ public class CollisionChecker {
                     }
                     if (player == true) {
                         index = i;
-                        System.out.println("Player collided with object: " + gp.objects[gp.currentMap][i].name);
                     }
                 }
             }
