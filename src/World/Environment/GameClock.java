@@ -32,14 +32,13 @@ public class GameClock extends Thread {
                 Thread.sleep(1000); // 1 detik dunia nyata
                 if (!isPaused) {
                     advance(5); // 5 menit waktu game
-                    System.out.println("Waktu sekarang: " + getTime());
                 }
             } catch (InterruptedException e) {
                 System.out.println("Clock interrupted.");
                 Thread.currentThread().interrupt();
             }
         }
-    }
+    }   
 
     public void stopClock() { isRunning = false; }
     public void pauseClock() { isPaused = true; }

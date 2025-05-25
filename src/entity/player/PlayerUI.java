@@ -21,7 +21,6 @@ public class PlayerUI extends Entity {
 
     public PlayerUI (GamePanel gp, KeyHandler keyH, Player player) {
         super(gp);
-        this.gp = gp;
         this.keyH = keyH;
         this.player = player;
 
@@ -96,12 +95,13 @@ public class PlayerUI extends Entity {
             // Check for collision
             collisionOn = false;
             gp.cChecker.checkTile(this);
-            gp.cChecker.checkObject(this, true); //ini nanti buat tes object apa
+            int obj = gp.cChecker.checkObject(this, true); //ini nanti buat tes object apa
+            interact(obj);
 
             // Check event
             gp.eHandler.checkEvent();
 
-            if (collisionOn == false) {
+            if (collisionOn == false && keyH.enterPressed == false) {
                 switch (direction) {
                     case "up":
                         worldY -= speed;
@@ -117,6 +117,8 @@ public class PlayerUI extends Entity {
                         break;
                 }
             }
+
+            keyH.enterPressed = false;
     
             spriteCounter++;
             if (spriteCounter > 12) {
@@ -136,8 +138,13 @@ public class PlayerUI extends Entity {
         }
     }
 
-    // public void INTERACT (bkin fungsi interact barang barang yang disentuh di sini)
-    // gp.ui.showMessage("You have picked up " + gp.objects[objIndex].name); buat bkin notifikasi
+    public void interact (int i){
+        if (i != 999) {
+            if (keyH.enterPressed == true) {
+                gp.objects[gp.currentMap][i].interact();
+            }
+        }
+    }
 
     public void draw(Graphics2D g2) {
         BufferedImage image = null;

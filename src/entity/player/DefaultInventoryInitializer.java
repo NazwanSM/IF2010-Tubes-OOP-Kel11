@@ -2,7 +2,8 @@ package entity.player;
 
 
 import items.Items;
-import data.SeedData;    
+import data.SeedData;
+import data.CropsData;
 import data.EquipmentData;
 
 public class DefaultInventoryInitializer {
@@ -25,6 +26,8 @@ public class DefaultInventoryInitializer {
         playerInventory.addItem(pickaxePrototype, 1);
         Items fishingRodPrototype = EquipmentData.getEquipmentByName("FishingRod");
         playerInventory.addItem(fishingRodPrototype, 1);
+        Items tomato = CropsData.getCropByName("Tomato");
+        playerInventory.addItem(tomato, 5);
 
         System.out.println("Inventaris default berhasil diinisialisasi.");
     }

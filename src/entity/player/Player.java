@@ -21,6 +21,7 @@ public class Player {
     public static final int MAX_ENERGY = 100;
     public static final int MIN_ENERGY = -20;
     private IStatisticTracker statisticTracker;
+    private GamePanel gp;
 
     public Player(String name, String gender, String famName, int gold, GamePanel gp) {
         this.name = name;
@@ -33,6 +34,7 @@ public class Player {
         this.location = new Point(0, 0);
         this.gameClock = GameClock.getInstance();
         this.statisticTracker = gp.statisticTracker;
+        this.gp = gp;
 
         DefaultInventoryInitializer inventoryInitializer = new DefaultInventoryInitializer();
         inventoryInitializer.setDefaultItems(this.inventory);
@@ -158,11 +160,11 @@ public class Player {
                 removeItemFromInventory(item, 1);
                 increaseEnergy(edibleItem.getEnergy()); 
             } else {
-                System.out.println("You don't have this item in your inventory."); // implementasi ini blom tentu dipake
+                gp.ui.addMessage("You don't have this item in your inventory."); // implementasi ini blom tentu dipake
             }
         } 
         else {
-            System.out.println("This item is not edible."); // ini juga
+            gp.ui.addMessage("This item is not edible."); // ini juga
         }   
     }
 

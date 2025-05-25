@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Color;
-import java.awt.BasicStroke;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +13,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import items.Edible;
 import items.Items;
 
 public class UI {
@@ -23,8 +23,8 @@ public class UI {
     Font stdw, titleFont;
     BufferedImage staminaBar;
     public boolean messageOn = false;
-    public String message = "";
-    public int messageCounter = 0;
+    ArrayList<String> message = new ArrayList<>();
+    ArrayList<Integer> messageCounter = new ArrayList<>();
     public boolean gameFinished = false; // ini buat nanti kalau udah ending
     public String curretDialog = "";
     private BufferedImage titleScreenBackground;
@@ -51,10 +51,27 @@ public class UI {
     // nanti ada save game tapi blom dibkin mager
     private BufferedImage inventoryPanel;
     private BufferedImage inventorySelected;
+    private BufferedImage dialoguePanel;
+    private BufferedImage clockHUD;
+    private BufferedImage arrow1;
+    private BufferedImage arrow2;
+    private BufferedImage arrow3;
+    private BufferedImage worldMapMenu;
+    private BufferedImage menu1;
+    private BufferedImage menu2;
+    private BufferedImage menu3;
+    private BufferedImage menu4;
+    private BufferedImage menu5;
+    private BufferedImage menu6;
+    private BufferedImage menu7;
+    private BufferedImage menu8;
+    private BufferedImage menu9;
+    private BufferedImage menu10;
     public int commandNum = 0;
     public int titleScreenState = 0;
     public int slotCol = 0;
     public int slotRow = 0;
+    public int worldMapNum = 0;
 
     
 
@@ -111,6 +128,39 @@ public class UI {
             inventoryPanel = ImageIO.read(bgIs);
             bgIs = getClass().getResourceAsStream("/resource/ui/InventorySelected.png");
             inventorySelected = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/DialoguePanel.png");
+            dialoguePanel = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/ClockHUD.png");
+            clockHUD = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/Arrow1.png");
+            arrow1 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/Arrow2.png");
+            arrow2 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/Arrow3.png");
+            arrow3 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/WorldMapMenu.png");
+            worldMapMenu = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/menu1.png");
+            menu1 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/menu2.png");
+            menu2 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/menu3.png");
+            menu3 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/menu4.png");
+            menu4 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/menu5.png");
+            menu5 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/menu6.png");
+            menu6 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/menu7.png");
+            menu7 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/menu8.png");
+            menu8 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/menu9.png");
+            menu9 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/menu10.png");
+            menu10 = ImageIO.read(bgIs);
+
         }
         catch (FontFormatException e) {
             e.printStackTrace();
@@ -119,11 +169,6 @@ public class UI {
             e.printStackTrace();
         }
         // stamina bar blom dibkin
-    }
-
-    public void showMessage(String text) { // ini harus disesuain lagi
-        message = text;
-        messageOn = true;
     }
 
     public void draw(Graphics2D g2) {
@@ -136,21 +181,53 @@ public class UI {
         if (gp.gameState == gp.titleState){
             drawTitleScreen();
         }
+        else {
+            drawClockHUD();
+            if(gp.gameState == gp.playState) {
+                drawMessage();
+            }
+            else if(gp.gameState == gp.pauseState) {
+                drawPauseScreen();
+            }
+            else if(gp.gameState == gp.dialogueState) {
+                drawDialogueScreen();
+            }
+            else if(gp.gameState == gp.statsDisplayState) {
+                drawStatsScreen();
+            }
+            else if(gp.gameState == gp.inventoryState) {
+                drawMessage();
+                drawInventory();
+            }
+            else if(gp.gameState == gp.worldMapState) {
+                drawWorldMap();
+            }
+        }
+    }
 
-        else if(gp.gameState == gp.playState) {
+    public void drawClockHUD() {
+        int x = gp.tileSize / 2 - gp.tileSize / 4 + gp.tileSize * 10 + gp.tileSize / 2 + gp.tileSize / 8;
+        int y = gp.tileSize / 2 - gp.tileSize / 4;
+        g2.drawImage(clockHUD, x, y, gp.tileSize * 5, gp.tileSize * 4, null);
 
+        // Clock
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30F));
+        g2.setColor(new Color(23,8,31,255));
+        g2.drawString(gp.environtmentManager.getGameClock().getTime(), x + gp.tileSize * 2, y + gp.tileSize * 2 + gp.tileSize / 4 + gp.tileSize / 12);
+
+        // Gold
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 39F));
+        g2.setColor(new Color(23,8,31,255));
+        g2.drawString("" + gp.playerData.getGold(), x + gp.tileSize * 2 - gp.tileSize + gp.tileSize / 4, y + gp.tileSize * 3 + gp.tileSize / 4 + gp.tileSize / 3 + gp.tileSize / 17);
+
+        if (gp.environtmentManager.getGameClock().getHours() >= 6 && gp.environtmentManager.getGameClock().getHours() < 13) {
+            g2.drawImage(arrow1, x - gp.tileSize / 4 - gp.tileSize / 8 , y - gp.tileSize / 16 - gp.tileSize / 16, gp.tileSize * 3, gp.tileSize * 3, null);
         }
-        else if(gp.gameState == gp.pauseState) {
-            drawPauseScreen();
+        else if (gp.environtmentManager.getGameClock().getHours() >= 13){
+            g2.drawImage(arrow2, x - gp.tileSize / 4 - gp.tileSize / 8 , y - gp.tileSize / 16 - gp.tileSize / 16, gp.tileSize * 3, gp.tileSize * 3, null);
         }
-        else if(gp.gameState == gp.dialogueState) {
-            drawDialogueScreen();
-        }
-        else if(gp.gameState == gp.statsDisplayState) {
-            drawStatsScreen();
-        }
-        else if(gp.gameState == gp.inventoryState) {
-            drawInventory();
+        else if (gp.environtmentManager.getGameClock().getHours() >= 20 && gp.environtmentManager.getGameClock().getHours() < 6){
+            g2.drawImage(arrow3, x - gp.tileSize / 4 - gp.tileSize / 8 , y - gp.tileSize / 16 - gp.tileSize / 16, gp.tileSize * 3, gp.tileSize * 3, null);
         }
     }
 
@@ -251,14 +328,16 @@ public class UI {
     }
     
     public void drawDialogueScreen() {
+        gp.playSE(5);
         int x = gp.tileSize * 2;
-        int y = gp.tileSize / 2;
-        int width = gp.screenWidth - (gp.tileSize * 4);
-        int height = gp.tileSize * 4;
+        int y = gp.tileSize * 9 - gp.tileSize / 2;
+        int width = gp.tileSize * 12;
+        int height = gp.tileSize * 3;
         drawSubWindow(x, y, width, height);
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 28F));
-        x += gp.tileSize;
+        g2.setColor(Color.white);
+        x += gp.tileSize / 2;
         y += gp.tileSize;
         g2.drawString(curretDialog, x, y);
 
@@ -270,14 +349,7 @@ public class UI {
 
     public void drawSubWindow(int x, int y, int width, int height) {
         
-        Color c = new Color(15,15,15,199);
-        g2.setColor(c);
-        g2.fillRoundRect(x, y, width, height, 35, 35);
-
-        c = new Color(81,64,58,255);
-        g2.setColor(c);
-        g2.setStroke(new BasicStroke(5));
-        g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
+        g2.drawImage(dialoguePanel, x, y, width, height, null);
     }
 
     public void drawStatsScreen() {
@@ -333,7 +405,7 @@ public class UI {
     }
     
     public void drawInventory() {
-        int x = gp.tileSize * 8;
+        int x = gp.tileSize / 2 - gp.tileSize - gp.tileSize / 8;
         int y = gp.tileSize / 2 - gp.tileSize;
         int width = gp.tileSize * 7;
         int height = gp.tileSize * 7;
@@ -388,14 +460,97 @@ public class UI {
             String itemName = selectedItem.getName();
             String itemNum = String.valueOf(playerItemsMap.get(selectedItem));
             g2.drawString(itemNum + " - " + itemName, textX, textY + gp.tileSize * 6);
+            if (gp.keyH.enterPressed) {
+                if (selectedItem instanceof Edible){
+                    gp.playerData.eating(selectedItem);
+                    addMessage(selectedItem.getName() + " berhasil dimakan!");
+                    gp.playSE(4);
+                }
+                gp.keyH.enterPressed = false;
+            }
         } else {
             g2.drawString("No item selected", textX, textY + gp.tileSize * 6);
+        }
+
+    }
+
+    public void drawWorldMap() {
+        int x = gp.tileSize * 2 + gp.tileSize / 2;
+        int y = gp.tileSize * 2 + gp.tileSize / 2;
+        int width = (gp.tileSize * 22) / 2;
+        int height = (gp.tileSize * 14 + 10) / 2;
+        g2.drawImage(worldMapMenu, x, y, width, height, null);
+
+        if (worldMapNum == 0) {
+            g2.drawImage(menu1, x, y ,width, height,  null);
+        }
+        if (worldMapNum == 1) {
+            g2.drawImage(menu2, x, y ,width, height,  null);
+        }
+        if (worldMapNum == 2) {
+            g2.drawImage(menu3, x, y ,width, height,  null);
+        }
+        if (worldMapNum == 3) {
+            g2.drawImage(menu4, x, y ,width, height,  null);
+        }
+        if (worldMapNum == 4) {
+            g2.drawImage(menu5, x, y ,width, height,  null);
+        }
+        if (worldMapNum == 5) {
+            g2.drawImage(menu6, x, y ,width, height,  null);
+        }
+        if (worldMapNum == 6) {
+            g2.drawImage(menu7, x, y ,width, height,  null);
+        }
+        if (worldMapNum == 7) {
+            g2.drawImage(menu8, x, y ,width, height,  null);
+        }
+        if (worldMapNum == 8) {
+            g2.drawImage(menu9, x, y ,width, height,  null);
+        }
+        if (worldMapNum == 9) {
+            g2.drawImage(menu10, x, y ,width, height,  null);
         }
     }
 
     public int getItemIndexSlot() {
         int itemIndex = slotCol + (slotRow * 5);
         return itemIndex;
+    }
+
+    public void drawMessage() {
+        int messageX = gp.tileSize * 10;
+        int messageY = gp.tileSize * 4 + gp.tileSize / 2 + gp.tileSize / 4;
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD,24F));
+
+        for(int i = 0; i < message.size(); i++)
+        {
+            if(message.get(i) != null)
+            {
+                //Shadow
+                g2.setColor(Color.black);
+                g2.drawString(message.get(i), messageX+2,messageY+2);
+                //Text
+                g2.setColor(Color.white);
+                g2.drawString(message.get(i), messageX,messageY);
+
+                int counter = messageCounter.get(i) + 1; 
+                messageCounter.set(i,counter);           
+                messageY += 50;
+
+                if(messageCounter.get(i) > 150)          
+                {
+                    message.remove(i);
+                    messageCounter.remove(i);
+                }
+            }
+
+        }
+    }
+
+    public void addMessage(String text) {
+        message.add(text);
+        messageCounter.add(0);
     }
 
     public int getXforCenteredText(String text) {

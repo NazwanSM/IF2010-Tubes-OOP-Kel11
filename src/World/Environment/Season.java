@@ -3,7 +3,7 @@ package World.Environment;
 public class Season { // blom implementasi Cop yang mati waktu perubahan season
     private static volatile Season instance;
 
-    private String[] season = {"Spring", "Summer", "Fall", "Winter"};
+    private String[] season = {"Summer", "Spring", "Fall", "Winter"};
     private int currentSeason;
     private int dayCounter;
     private static final int MAX_DAYS_IN_SEASON = 10;

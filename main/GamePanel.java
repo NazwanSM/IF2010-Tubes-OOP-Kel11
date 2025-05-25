@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldRow = 32;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
-    public final int maxMap = 10;
+    public final int maxMap = 15;
     public int currentMap = 0;
 
     // FPS
@@ -48,6 +48,7 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker cChecker = new CollisionChecker(this);
     public UI ui = new UI(this);
     public EventHandler eHandler = new EventHandler(this);
+    public EnvirontmentManager environtmentManager = new EnvirontmentManager();
     Thread gameThread;
 
     // Entity and object
@@ -72,6 +73,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int dialogueState = 3;
     public final int statsDisplayState = 4;
     public final int inventoryState = 5;
+    public final int worldMapState = 6;
 
 
     public GamePanel() {

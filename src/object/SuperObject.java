@@ -15,6 +15,11 @@ public abstract class SuperObject {
     public Rectangle solidArea = new Rectangle(0, 0, 1, 1);
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
+    public GamePanel gp;
+
+    public SuperObject(GamePanel gp) {
+        this.gp = gp;
+    }
 
     public void draw(Graphics2D g2, GamePanel gp) {
         int screenX = worldX * gp.tileSize - gp.player.worldX + gp.player.screenX;
@@ -34,4 +39,6 @@ public abstract class SuperObject {
         // g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 
     }
+
+    abstract public void interact();
 }

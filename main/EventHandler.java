@@ -48,25 +48,59 @@ public class EventHandler {
         if (canTouchEvent) {
             // Keluar masuk rumah
             if(hit(0,13,8,"any")) {
-                teleport(1, 14, 24);
+                teleport(1, 15, 24);
             }
             else if(hit(0,14,8,"any")) {
-                teleport(1, 14, 24);
+                teleport(1, 15, 24);
             }
-            else if(hit(1,14,26,"any")) {
+            else if(hit(0,15,8, "any")) {
+                teleport(1, 15, 24);
+            }
+            else if(hit(1,14,27,"any")) {
                 teleport(0, 14, 8);
             }
-            else if(hit(1,15,26,"any")) {
+            else if(hit(1,15,27,"any")) {
                 teleport(0, 14, 8);
             }
-            else if(hit(1,16,26,"any")) {
+            else if(hit(1,16,27,"any")) {
+                teleport(0, 14, 8);
+            }
+            else if(hit(1,17,27,"any")) {
                 teleport(0, 14, 8);
             }
 
+            // World Map
             else if(hit(0,31,11,"right")) {
-                teleport(2, 18, 15);
+                gp.gameState = gp.worldMapState;
             }
-            else if(hit(2,18,15,"right")) {
+            else if(hit(2, 18, 15,"any")) {
+                teleport(0, 31, 11);
+            }
+            else if(hit(3, 16, 12, "any")) {
+                teleport(0, 31, 11);
+            }
+            else if(hit(4, 16, 12, "any")) {
+                teleport(0, 31, 11);
+            }
+            else if(hit(5, 13, 12, "any")) {
+                teleport(0, 31, 11);
+            }
+            else if(hit(6, 16, 17, "any")) {
+                teleport(0, 31, 11);
+            }
+            else if(hit(7, 13, 16, "any")) {
+                teleport(0, 31, 11);
+            }
+            else if(hit(8, 18, 16, "any")) {
+                teleport(0, 31, 11);
+            }
+            else if(hit(9, 18, 14,"right")) {
+                teleport(0, 31, 11);
+            }
+            else if(hit(9, 18, 15,"any")) {
+                teleport(0, 31, 11);
+            }
+            else if(hit(10,16,17,"any")) {
                 teleport(0, 31, 11);
             }
         }

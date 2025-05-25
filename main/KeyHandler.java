@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shiftPressed, spacePressed, escPressed;
     boolean showDebugText = false;
     int lastNum = 0;
     int lastNum2 = 7;
@@ -49,6 +49,9 @@ public class KeyHandler implements KeyListener {
         }
         else if (gp.gameState == gp.inventoryState) {
             inventoryState(keyCode);
+        }
+        else if (gp.gameState == gp.worldMapState) {
+            worldMapState(keyCode);
         }
     }
 
@@ -239,6 +242,8 @@ public class KeyHandler implements KeyListener {
                 case KeyEvent.VK_I:
                     gp.gameState = gp.inventoryState;
                     break;
+                case KeyEvent.VK_ENTER:
+                    enterPressed = true;
                 default:
                     break;
             }
@@ -270,9 +275,9 @@ public class KeyHandler implements KeyListener {
                 }
                 gp.playSE(3);
                 break;
-            // case KeyEvent.VK_ENTER:
-            //     gp.ui.selectItem();
-            //     break;
+            case KeyEvent.VK_ENTER:
+                enterPressed = true;
+                break;
             case KeyEvent.VK_ESCAPE:
                 gp.gameState = gp.playState;
                 break;
@@ -284,6 +289,133 @@ public class KeyHandler implements KeyListener {
         }
     }
 
+    public void worldMapState(int keyCode) {
+        switch (keyCode) {
+                case KeyEvent.VK_A:
+                    if (gp.ui.worldMapNum == 0) {
+                        gp.ui.worldMapNum = 5;
+                    }
+                    else if (gp.ui.worldMapNum == 1) {
+                        gp.ui.worldMapNum = 6;
+                    }
+                    else if (gp.ui.worldMapNum == 2) {
+                        gp.ui.worldMapNum = 7;
+                    }
+                    else if (gp.ui.worldMapNum == 3) {
+                        gp.ui.worldMapNum = 8;
+                    }
+                    else if (gp.ui.worldMapNum == 4) {
+                        gp.ui.worldMapNum = 9;
+                    }
+                    else if (gp.ui.worldMapNum == 5) {
+                        gp.ui.worldMapNum = 0;
+                    }
+                    else if (gp.ui.worldMapNum == 6) {
+                        gp.ui.worldMapNum = 1;
+                    }
+                    else if (gp.ui.worldMapNum == 7) {
+                        gp.ui.worldMapNum = 2;
+                    }    
+                    else if (gp.ui.worldMapNum == 8) {
+                        gp.ui.worldMapNum = 3;
+                    }
+                    else if (gp.ui.worldMapNum == 9) {
+                        gp.ui.worldMapNum = 4;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_D:
+                    if (gp.ui.worldMapNum == 0) {
+                        gp.ui.worldMapNum = 5;
+                    }
+                    else if (gp.ui.worldMapNum == 1) {
+                        gp.ui.worldMapNum = 6;
+                    }
+                    else if (gp.ui.worldMapNum == 2) {
+                        gp.ui.worldMapNum = 7;
+                    }
+                    else if (gp.ui.worldMapNum == 3) {
+                        gp.ui.worldMapNum = 8;
+                    }
+                    else if (gp.ui.worldMapNum == 4) {
+                        gp.ui.worldMapNum = 9;
+                    }
+                    else if (gp.ui.worldMapNum == 5) {
+                        gp.ui.worldMapNum = 0;
+                    }
+                    else if (gp.ui.worldMapNum == 6) {
+                        gp.ui.worldMapNum = 1;
+                    }
+                    else if (gp.ui.worldMapNum == 7) {
+                        gp.ui.worldMapNum = 2;
+                    }    
+                    else if (gp.ui.worldMapNum == 8) {
+                        gp.ui.worldMapNum = 3;
+                    }
+                    else if (gp.ui.worldMapNum == 9) {
+                        gp.ui.worldMapNum = 4;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_W:
+                    if (gp.ui.worldMapNum == 0) {
+                        gp.ui.worldMapNum = 4;
+                    }
+                    else if (gp.ui.worldMapNum == 5) {
+                        gp.ui.worldMapNum = 9;
+                    }
+                    else {
+                        gp.ui.worldMapNum--;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_S:
+                    if (gp.ui.worldMapNum == 4) {
+                        gp.ui.worldMapNum = 0;
+                    }
+                    else if (gp.ui.worldMapNum == 9) {
+                        gp.ui.worldMapNum = 5;
+                    }
+                    else {
+                        gp.ui.worldMapNum++;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_ENTER:
+                    if (gp.ui.worldMapNum == 0) {
+                        gp.eHandler.teleport(2, 18, 14);
+                    }
+                    else if (gp.ui.worldMapNum == 1) {
+                        gp.eHandler.teleport(3, 16, 11);
+                    }
+                    else if (gp.ui.worldMapNum == 2) {
+                        gp.eHandler.teleport(4, 16, 11);
+                    }
+                    else if (gp.ui.worldMapNum == 3) {
+                        gp.eHandler.teleport(5, 13, 11);
+                    }
+                    else if (gp.ui.worldMapNum == 4) {
+                        gp.eHandler.teleport(6, 16, 16);
+                    }
+                    else if (gp.ui.worldMapNum == 5) {
+                        gp.eHandler.teleport(7, 13, 15);
+                    }
+                    else if (gp.ui.worldMapNum == 6) {
+                        gp.eHandler.teleport(8, 18, 15);
+                    }
+                    else if (gp.ui.worldMapNum == 7) {
+                        gp.eHandler.teleport(9, 18, 14);
+                    }
+                    else if (gp.ui.worldMapNum == 8) {
+                        gp.eHandler.teleport(10, 16, 16);
+                    }
+                    gp.gameState = gp.playState;
+                    gp.playSE(3);
+                    break;
+                default:
+                    break;
+            }
+    }
     @Override
     public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -311,6 +443,9 @@ public class KeyHandler implements KeyListener {
                 break;
             case KeyEvent.VK_RIGHT:
                 rightPressed = false;
+                break;
+            case KeyEvent.VK_ENTER:
+                enterPressed = false;
                 break;
             default:
                 break;
