@@ -68,4 +68,13 @@ public class Inventory {
             System.out.println("Item: " + entry.getKey().getName() + " | Quantity: " + entry.getValue());
         }
     }
+
+    public Items getItemByName(String itemName) {
+        for (Items item : items.keySet()) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                return item;
+            }
+        }
+        return null;
+    }
 }

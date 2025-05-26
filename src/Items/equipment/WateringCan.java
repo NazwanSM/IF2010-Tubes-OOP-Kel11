@@ -1,9 +1,9 @@
 // File: Items/tools/WateringCan.java
 package items.equipment;
 
+import main.GamePanel;
 // import Actions.WateringAction; // Impor kelas Action yang sesuai
 import entity.player.Player;
-import main.GamePanel;
 
 public class WateringCan extends Equipment {
 

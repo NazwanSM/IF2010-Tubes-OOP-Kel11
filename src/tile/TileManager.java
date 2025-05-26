@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import main.UtilityTool;
+import java.awt.Color;
 
 
 public class TileManager {
@@ -15,16 +16,15 @@ public class TileManager {
     public Tile[] tile;
     public int mapTileNum[][][];
     public int randomMap[] = {0, 1, 2, 3, 4};
-    public int randomMapIndex = 0;
 
 
-    public TileManager(GamePanel gp) {
+    public TileManager(GamePanel gp, int randomMapIndex) {
         this.gp = gp;
         tile = new Tile[999];
         mapTileNum = new int[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
-        loadMap("map1.txt", 0);
+        loadMap("map"+ randomMapIndex +".txt", 0);
         loadMap("house.txt", 1);
         loadMap("forestRiver.txt", 2);
         loadMap("mountainLake.txt", 3);
@@ -969,6 +969,49 @@ public class TileManager {
         setup (928, "/dascoHouse/Dasco_34", true);
         setup (929, "/dascoHouse/Dasco_35", true);
         setup (930, "/dascoHouse/Dasco_36", true);
+        setup (931, "/summer/Grass_Road_Corner_UL", false);
+        setup (932, "/winter/KiriAtas", false);
+        setup (933, "/winter/Atas", false);
+        setup (934, "/winter/KananAtas", false);
+        setup (935, "/winter/Kanan", false);
+        setup (936, "/winter/KananBawah", false);
+        setup (937, "/winter/Bawah", false);
+        setup (938, "/winter/KiriBawah", false);
+        setup (939, "/winter/Kiri", false);
+        setup (940, "/winter/UpperRight", false);
+        setup (941, "/winter/BottomRight", false);
+        setup (942, "/winter/BottomLeft", false);
+        setup (943, "/winter/UpperLeft", false);
+        setup (944, "/winter/Grass", false);
+        setup (945, "/winter/Snow", false);
+        setup (946, "/spring/Grass", false);
+        setup (947, "/spring/Road", false);
+        setup (948, "/spring/KiriAtas", false);
+        setup (949, "/spring/Atas", false);
+        setup (950, "/spring/KananAtas", false);
+        setup (951, "/spring/Kanan", false);
+        setup (952, "/spring/KananBawah", false);
+        setup (953, "/spring/Bawah", false);
+        setup (954, "/spring/KiriBawah", false);
+        setup (955, "/spring/Kiri", false);
+        setup (956, "/spring/UpperRight", false);
+        setup (957, "/spring/BottomRight", false);
+        setup (958, "/spring/BottomLeft", false);
+        setup (959, "/spring/UpperLeft", false);
+        setup (960, "/fall/Grass", false);
+        setup (961, "/fall/Road", false);
+        setup (962, "/fall/KiriAtas", false);
+        setup (963, "/fall/Atas", false);
+        setup (964, "/fall/KananAtas", false);
+        setup (965, "/fall/Kanan", false);
+        setup (966, "/fall/KananBawah", false);
+        setup (967, "/fall/Bawah", false);
+        setup (968, "/fall/KiriBawah", false);
+        setup (969, "/fall/Kiri", false);
+        setup (970, "/fall/UpperRight", false);
+        setup (971, "/fall/BottomRight", false);
+        setup (972, "/fall/BottomLeft", false);
+        setup (973, "/fall/UpperLeft", false);
     }
 
     public void setup(int index, String imagePath, boolean collision) {
@@ -1014,6 +1057,89 @@ public class TileManager {
         }
     }
 
+    public int getEffectiveTileID(int baseTileID) {
+        String currentSeasonName = "Summer";
+        if (gp.farm != null && gp.farm.getSeason() != null) {
+            currentSeasonName = gp.farm.getSeason().getCurrentSeason();
+        }
+        switch (baseTileID) {
+            case 0:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 944;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 946;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 960;
+                return 0;
+            case 1:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 945;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 947;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 961;
+                return 1;
+
+            case 2:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 932;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 948;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 962;
+                return 2;
+            case 3:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 933;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 949;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 963;
+                return 3;
+            case 4:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 934;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 950;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 964;
+                return 4;
+            case 5:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 935;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 951;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 965;
+                return 5;
+            case 6:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 936;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 952;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 966;
+                return 6;
+            case 7:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 937;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 953;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 967;
+                return 7;
+            case 8:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 938;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 954;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 968;
+                return 8;
+            case 9:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 939;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 955;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 969;
+                return 9;
+            case 28:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 940;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 956;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 970;
+                return 28;
+            case 29:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 941;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 957;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 971;
+                return 29;
+            case 30:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 942;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 958;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 972;
+                return 30;
+            case 931:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 943;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 959;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 973;
+                return 931;
+
+            default:
+                return baseTileID;
+        }
+    }
+
 
     public void draw(Graphics2D g2) {
         
@@ -1021,7 +1147,27 @@ public class TileManager {
         int worldRow = 0;
 
         while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
-            int tileNum = mapTileNum[gp.currentMap][worldCol][worldRow];
+            int baseTileNum = mapTileNum[gp.currentMap][worldCol][worldRow];
+
+            int effectiveTileNum = getEffectiveTileID(baseTileNum);
+
+            if (effectiveTileNum < 0 || effectiveTileNum >= tile.length || tile[effectiveTileNum] == null || tile[effectiveTileNum].image == null) {
+                if (baseTileNum >= 0 && baseTileNum < tile.length && tile[baseTileNum] != null && tile[baseTileNum].image != null) {
+                    effectiveTileNum = baseTileNum; 
+                } else {
+                    g2.setColor(Color.DARK_GRAY);
+                    int screenXError = worldCol * gp.tileSize - gp.player.worldX + gp.player.screenX;
+                    int screenYError = worldRow * gp.tileSize - gp.player.worldY + gp.player.screenY;
+                    g2.fillRect(screenXError, screenYError, gp.tileSize, gp.tileSize);
+                    
+                    worldCol++;
+                    if (worldCol == gp.maxWorldCol) {
+                        worldCol = 0;
+                        worldRow++;
+                    }
+                    continue; 
+                }
+            }
 
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;
@@ -1036,9 +1182,8 @@ public class TileManager {
                 worldY + gp.tileSize > cameraTopWorldY &&
                 worldY < cameraTopWorldY + gp.screenHeight) {
                 
-                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(tile[effectiveTileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             }
-
 
             worldCol++;
             

@@ -2,7 +2,7 @@ package data;
 
 import java.util.ArrayList;
 import java.util.List;
-import World.NPC;
+import entity.NPC.NPC;
 
 public class NPCData {
     private static List<NPC> allNPCs;
@@ -59,5 +59,13 @@ public class NPCData {
                 .filter(n -> n.getNPCName().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public static List<String> getAllNPCNames() {
+        List<String> npcNames = new ArrayList<>();
+        for (NPC npc : allNPCs) {
+            npcNames.add(npc.getNPCName());
+        }
+        return npcNames;
     }
 }

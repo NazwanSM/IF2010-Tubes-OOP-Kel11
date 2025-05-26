@@ -26,7 +26,7 @@ public class Fish extends Items implements Sellable, Edible {
         this.weathers = weathers;
         this.locations = locations;
         this.rarity = rarity;
-        loadImage("/resource/items/fish/" + name.toLowerCase() + ".png");
+        loadImage("/resource/items/fish/" + name + ".png");
     }
 
     // Getter and Setter

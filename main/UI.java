@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 import items.Edible;
 import items.Items;
@@ -21,12 +22,11 @@ public class UI {
     GamePanel gp;
     Graphics2D g2;
     Font stdw, titleFont;
-    BufferedImage staminaBar;
     public boolean messageOn = false;
     ArrayList<String> message = new ArrayList<>();
     ArrayList<Integer> messageCounter = new ArrayList<>();
     public boolean gameFinished = false; // ini buat nanti kalau udah ending
-    public String curretDialog = "";
+    public String currentDialog = "";
     private BufferedImage titleScreenBackground;
     private BufferedImage newGame;
     private BufferedImage loadGame;
@@ -67,6 +67,19 @@ public class UI {
     private BufferedImage menu8;
     private BufferedImage menu9;
     private BufferedImage menu10;
+    private BufferedImage playerDown;
+    private BufferedImage summer;
+    private BufferedImage fall;
+    private BufferedImage winter;
+    private BufferedImage spring;
+    private BufferedImage rainy;
+    private BufferedImage sunny;
+    private BufferedImage staminaBar;
+    private BufferedImage staminaBar1;
+    private BufferedImage staminaBar2;
+    private BufferedImage staminaBar3;
+    private BufferedImage staminaBar4;
+    private BufferedImage staminaBar5;
     public int commandNum = 0;
     public int titleScreenState = 0;
     public int slotCol = 0;
@@ -160,7 +173,32 @@ public class UI {
             menu9 = ImageIO.read(bgIs);
             bgIs = getClass().getResourceAsStream("/resource/ui/menu10.png");
             menu10 = ImageIO.read(bgIs);
-
+            bgIs = getClass().getResourceAsStream("/resource/player/Down1.png");
+            playerDown = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/Summer.png");
+            summer = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/Fall.png");
+            fall = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/Winter.png");
+            winter = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/Spring.png");
+            spring = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/Rainy.png");
+            rainy = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/Sunny.png");
+            sunny = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/StaminaBar.png");
+            staminaBar = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/StaminaBar1.png");
+            staminaBar1 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/StaminaBar2.png");
+            staminaBar2 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/StaminaBar3.png");
+            staminaBar3 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/StaminaBar4.png");
+            staminaBar4 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/StaminaBar5.png");
+            staminaBar5 = ImageIO.read(bgIs);
         }
         catch (FontFormatException e) {
             e.printStackTrace();
@@ -183,6 +221,7 @@ public class UI {
         }
         else {
             drawClockHUD();
+            drawStaminaBar();
             if(gp.gameState == gp.playState) {
                 drawMessage();
             }
@@ -202,32 +241,120 @@ public class UI {
             else if(gp.gameState == gp.worldMapState) {
                 drawWorldMap();
             }
+            else if(gp.gameState == gp.cheatState) {
+                g2.setFont(stdw.deriveFont(Font.BOLD, 30F));
+                g2.setColor(Color.YELLOW);
+                String cheatText = "Cheat Mode Active - Check Dialog";
+                int x = getXforCenteredText(cheatText);
+                int y = gp.screenHeight / 2;
+                g2.drawString(cheatText, x, y);
+            }
         }
     }
 
+    public void processCheatInputs() {
+        if (gp.gameState != gp.cheatState) { 
+            if (gp.keyH.cPressed) gp.keyH.cPressed = false; 
+            return;
+        }
+
+        String seasonInput = JOptionPane.showInputDialog(gp, "Enter the season (Summer, Fall, Winter, Spring):", "Cheat: Set Season", JOptionPane.PLAIN_MESSAGE);
+        if (seasonInput != null && !seasonInput.trim().isEmpty()) {
+            if (gp.farm != null) gp.farm.cheatSetSeason(seasonInput.trim()); 
+            else System.err.println("Farm object is null in UI.processCheatInputs for season.");
+        } else if (seasonInput == null) { 
+            gp.gameState = gp.playState; 
+            gp.keyH.cPressed = false;    
+            if(gp instanceof GamePanel) ((GamePanel)gp).alreadyProcessedCheatKey = false; 
+            return;
+        }
+
+
+        String weatherInput = JOptionPane.showInputDialog(gp, "Enter the weather (Rainy, Sunny):", "Cheat: Set Weather", JOptionPane.PLAIN_MESSAGE);
+        if (weatherInput != null && !weatherInput.trim().isEmpty()) {
+            if (gp.farm != null) gp.farm.cheatSetWeather(weatherInput.trim()); 
+            else System.err.println("Farm object is null in UI.processCheatInputs for weather.");
+        } else if (weatherInput == null) { 
+            gp.gameState = gp.playState; 
+            gp.keyH.cPressed = false;
+            if(gp instanceof GamePanel) ((GamePanel)gp).alreadyProcessedCheatKey = false;
+            return;
+        }
+
+        gp.gameState = gp.playState; 
+        gp.keyH.cPressed = false;    
+        if(gp instanceof GamePanel) ((GamePanel)gp).alreadyProcessedCheatKey = false; 
+    }
+    
     public void drawClockHUD() {
         int x = gp.tileSize / 2 - gp.tileSize / 4 + gp.tileSize * 10 + gp.tileSize / 2 + gp.tileSize / 8;
         int y = gp.tileSize / 2 - gp.tileSize / 4;
+
+        // Weather
+        if (gp.farm.getWeather().isRainy()) {
+            g2.drawImage(rainy, x + gp.tileSize + gp.tileSize / 2 + gp.tileSize / 4 + gp.tileSize / 8, y + gp.tileSize * 2 - gp.tileSize / 2 - gp.tileSize / 4 - gp.tileSize / 4 - gp.tileSize / 8 - gp.tileSize / 32, gp.tileSize, gp.tileSize, null);
+        } 
+        else {
+            g2.drawImage(sunny, x + gp.tileSize + gp.tileSize / 2 + gp.tileSize / 4 + gp.tileSize / 8, y + gp.tileSize * 2 - gp.tileSize / 2 - gp.tileSize / 4 - gp.tileSize / 4 - gp.tileSize / 8 - gp.tileSize / 32, gp.tileSize, gp.tileSize, null);
+        }
+
+        // Season
+        if (gp.farm.getSeason().getCurrentSeason() == "Summer") {
+            g2.drawImage(summer, x + gp.tileSize + gp.tileSize / 2 + gp.tileSize / 4 + gp.tileSize * 2 - gp.tileSize / 4 - gp.tileSize / 8, y + gp.tileSize * 2 - gp.tileSize / 2 - gp.tileSize / 4 - gp.tileSize / 4 - gp.tileSize / 8, gp.tileSize, gp.tileSize, null);
+        } 
+        else if (gp.farm.getSeason().getCurrentSeason() == "Spring") {
+            g2.drawImage(spring, x + gp.tileSize + gp.tileSize / 2 + gp.tileSize / 4 + gp.tileSize * 2 - gp.tileSize / 4 - gp.tileSize / 8, y + gp.tileSize * 2 - gp.tileSize / 2 - gp.tileSize / 4 - gp.tileSize / 4 - gp.tileSize / 8, gp.tileSize, gp.tileSize, null);
+        } 
+        else if (gp.farm.getSeason().getCurrentSeason() == "Fall") {
+            g2.drawImage(fall, x + gp.tileSize + gp.tileSize / 2 + gp.tileSize / 4 + gp.tileSize * 2 - gp.tileSize / 4 - gp.tileSize / 8, y + gp.tileSize * 2 - gp.tileSize / 2 - gp.tileSize / 4 - gp.tileSize / 4 - gp.tileSize / 8, gp.tileSize, gp.tileSize, null);
+        } 
+        else if (gp.farm.getSeason().getCurrentSeason() == "Winter") {
+            g2.drawImage(winter, x + gp.tileSize + gp.tileSize / 2 + gp.tileSize / 4 + gp.tileSize * 2 - gp.tileSize / 4 - gp.tileSize / 8, y + gp.tileSize * 2 - gp.tileSize / 2 - gp.tileSize / 4 - gp.tileSize / 4 - gp.tileSize / 8, gp.tileSize, gp.tileSize, null);
+        }
+        
+        // Clock HUD
         g2.drawImage(clockHUD, x, y, gp.tileSize * 5, gp.tileSize * 4, null);
 
         // Clock
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30F));
         g2.setColor(new Color(23,8,31,255));
-        g2.drawString(gp.environtmentManager.getGameClock().getTime(), x + gp.tileSize * 2, y + gp.tileSize * 2 + gp.tileSize / 4 + gp.tileSize / 12);
+        g2.drawString(gp.farm.getGameClock().getTime(), x + gp.tileSize * 2, y + gp.tileSize * 2 + gp.tileSize / 4 + gp.tileSize / 12);
 
         // Gold
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 39F));
         g2.setColor(new Color(23,8,31,255));
         g2.drawString("" + gp.playerData.getGold(), x + gp.tileSize * 2 - gp.tileSize + gp.tileSize / 4, y + gp.tileSize * 3 + gp.tileSize / 4 + gp.tileSize / 3 + gp.tileSize / 17);
 
-        if (gp.environtmentManager.getGameClock().getHours() >= 6 && gp.environtmentManager.getGameClock().getHours() < 13) {
+        // Clock
+        if (gp.farm.getGameClock().getHours() >= 6 && gp.farm.getGameClock().getHours() < 13) {
             g2.drawImage(arrow1, x - gp.tileSize / 4 - gp.tileSize / 8 , y - gp.tileSize / 16 - gp.tileSize / 16, gp.tileSize * 3, gp.tileSize * 3, null);
         }
-        else if (gp.environtmentManager.getGameClock().getHours() >= 13){
+        else if (gp.farm.getGameClock().getHours() >= 13){
             g2.drawImage(arrow2, x - gp.tileSize / 4 - gp.tileSize / 8 , y - gp.tileSize / 16 - gp.tileSize / 16, gp.tileSize * 3, gp.tileSize * 3, null);
         }
-        else if (gp.environtmentManager.getGameClock().getHours() >= 20 && gp.environtmentManager.getGameClock().getHours() < 6){
+        else if (gp.farm.getGameClock().getHours() >= 20 && gp.farm.getGameClock().getHours() < 6){
             g2.drawImage(arrow3, x - gp.tileSize / 4 - gp.tileSize / 8 , y - gp.tileSize / 16 - gp.tileSize / 16, gp.tileSize * 3, gp.tileSize * 3, null);
+        }
+        // Day
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24F));
+        g2.drawString("Day - " + gp.farm.getDay(), x + gp.tileSize * 2, y + gp.tileSize / 2 + gp.tileSize / 4 + gp.tileSize / 12);
+    }
+
+    public void drawStaminaBar() {
+        int x = gp.tileSize / 2 - gp.tileSize / 4 + gp.tileSize * 10 + gp.tileSize / 2 + gp.tileSize / 8 + gp.tileSize / 2 + gp.tileSize / 8;
+        int y = gp.tileSize / 2 - gp.tileSize / 4 + gp.tileSize * 4;
+        if (gp.playerData.getEnergy() > 80) {
+            g2.drawImage(staminaBar, x, y, gp.tileSize * 4, gp.tileSize, null);
+        } else if (gp.playerData.getEnergy() > 60) {
+            g2.drawImage(staminaBar1, x, y, gp.tileSize * 4, gp.tileSize, null);
+        } else if (gp.playerData.getEnergy() > 40) {
+            g2.drawImage(staminaBar2, x, y, gp.tileSize * 4, gp.tileSize, null);
+        } else if (gp.playerData.getEnergy() > 20) {
+            g2.drawImage(staminaBar3, x, y, gp.tileSize * 4, gp.tileSize, null);
+        } else if (gp.playerData.getEnergy() > 0) {
+            g2.drawImage(staminaBar4, x, y, gp.tileSize * 4, gp.tileSize, null);
+        } else {
+            g2.drawImage(staminaBar5, x, y, gp.tileSize * 4, gp.tileSize, null);
         }
     }
 
@@ -239,7 +366,7 @@ public class UI {
             
             int x = gp.screenWidth / 2 - gp.tileSize / 2;
             int y = gp.tileSize * 6;
-            g2.drawImage(gp.player.down1, x, y, gp.tileSize, gp.tileSize*2, null);
+            g2.drawImage(playerDown, x, y, gp.tileSize, gp.tileSize*2, null);
     
             x = gp.screenWidth / 2 - gp.tileSize * 5 + gp.tileSize / 4;
             y = gp.tileSize * 8;
@@ -339,9 +466,9 @@ public class UI {
         g2.setColor(Color.white);
         x += gp.tileSize / 2;
         y += gp.tileSize;
-        g2.drawString(curretDialog, x, y);
+        g2.drawString(currentDialog, x, y);
 
-        for (String line : curretDialog.split("\n")) {
+        for (String line : currentDialog.split("\n")) {
             g2.drawString(line, x, y);
             y += 40;
         }
@@ -462,7 +589,7 @@ public class UI {
             g2.drawString(itemNum + " - " + itemName, textX, textY + gp.tileSize * 6);
             if (gp.keyH.enterPressed) {
                 if (selectedItem instanceof Edible){
-                    gp.playerData.eating(selectedItem);
+                    gp.playerData.performAction("eat", selectedItem.getName());;
                     addMessage(selectedItem.getName() + " berhasil dimakan!");
                     gp.playSE(4);
                 }
@@ -513,14 +640,50 @@ public class UI {
         }
     }
 
+    public void drawCheatMenu() {
+        String season = JOptionPane.showInputDialog(gp, "Enter the season (Summer, Fall, Winter, Spring):", JOptionPane.PLAIN_MESSAGE);
+        if (season != null && !season.isEmpty()) {
+            switch (season.toLowerCase()) {
+                case "summer":
+                    gp.farm.cheatSetSeason("Summer");
+                    break;
+                case "fall":
+                    gp.farm.cheatSetSeason("Fall");
+                    break;
+                case "winter":
+                    gp.farm.cheatSetSeason("Winter");
+                    break;
+                case "spring":
+                    gp.farm.cheatSetSeason("Spring");
+                    break;
+                default:
+                    return;
+            }
+        }
+        String weather = JOptionPane.showInputDialog(gp, "Enter the weather (Rainy, Sunny):", JOptionPane.PLAIN_MESSAGE);
+        if (weather != null && !weather.isEmpty()) {
+            switch (weather.toLowerCase()) {
+                case "rainy":
+                    gp.farm.cheatSetWeather("Rainy");
+                    break;
+                case "sunny":
+                    gp.farm.cheatSetWeather("Sunny");
+                    break;
+                default:
+                    return;
+            }
+        }
+        gp.gameState = gp.playState;
+    }
+
     public int getItemIndexSlot() {
         int itemIndex = slotCol + (slotRow * 5);
         return itemIndex;
     }
 
     public void drawMessage() {
-        int messageX = gp.tileSize * 10;
-        int messageY = gp.tileSize * 4 + gp.tileSize / 2 + gp.tileSize / 4;
+        int messageX = gp.tileSize * 9;
+        int messageY = gp.tileSize * 4 + gp.tileSize / 2 + gp.tileSize + gp.tileSize / 8;
         g2.setFont(g2.getFont().deriveFont(Font.BOLD,24F));
 
         for(int i = 0; i < message.size(); i++)

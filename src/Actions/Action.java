@@ -1,14 +1,17 @@
-package Actions;
+package actions;
 
+import main.GamePanel;;
 public abstract class Action {
     protected String name;
     protected int energyRequired;
     protected int timeRequired;
+    GamePanel gp;
 
-    public Action(String name, int energyRequired, int timeRequired) {
+    public Action(String name, int energyRequired, int timeRequired, GamePanel gp) {
         this.name = name;
         this.energyRequired = energyRequired;
         this.timeRequired = timeRequired;
+        this.gp = gp;
     }
 
     public String getName() {
@@ -43,5 +46,5 @@ public abstract class Action {
         }
     }
 
-    public abstract void executeAction();
+    public abstract boolean executeAction();
 }

@@ -1,8 +1,8 @@
 package items.equipment;
 
+import main.GamePanel;
 // import Actions.TillingAction;
 import entity.player.Player;
-import main.GamePanel;
 
 public class Hoe extends Equipment {
 

@@ -3,7 +3,8 @@ package main;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import object.*;
+
+import entity.object.*;
 
 public class AssetSetter {
     GamePanel gp;
@@ -12,10 +13,10 @@ public class AssetSetter {
         this.gp = gp;
     }
 
-    public void setObject() {
+    public void setObject(int randomMapIndex) {
 
         if (gp.currentMap == 0) {
-            int[][] objectMap = loadObjectMap("/resource/maps/object_map.txt", gp.maxWorldCol, gp.maxWorldRow);
+            int[][] objectMap = loadObjectMap("/resource/maps/object_map" + randomMapIndex + ".txt", gp.maxWorldCol, gp.maxWorldRow);
             int objIndex = 0;
     
             for (int row = 0; row < gp.maxWorldRow; row++) {
@@ -50,8 +51,114 @@ public class AssetSetter {
                 }
             }
         }
-        else if (gp.currentMap == 1) {
-            // Set objek untuk peta lain jika diperlukan
+        
+        if (gp.currentMap == 1) {
+            int[][] objectMap = loadObjectMap("/resource/maps/object_house.txt", gp.maxWorldCol, gp.maxWorldRow);
+            int objIndex = 0;
+    
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                for (int col = 0; col < gp.maxWorldCol; col++) {
+                    int id = objectMap[col][row];
+                    if (id == 0) continue;
+
+                    switch (id) {
+                        case 1:
+                        OBJ_Bed_1 bed1 = new OBJ_Bed_1(gp);
+                        bed1.worldX = col;
+                        bed1.worldY = row;
+                        gp.objects[gp.currentMap][objIndex++] = bed1;
+                        break;
+
+                        case 2:
+                        OBJ_Bed_2 bed2 = new OBJ_Bed_2(gp);
+                        bed2.worldX = col;
+                        bed2.worldY = row;
+                        gp.objects[gp.currentMap][objIndex++] = bed2;
+                        break;
+
+                        case 3:
+                        OBJ_Bed_3 bed3 = new OBJ_Bed_3(gp);
+                        bed3.worldX = col;
+                        bed3.worldY = row;
+                        gp.objects[gp.currentMap][objIndex++] = bed3;
+                        break;
+
+                        case 4:
+                        OBJ_TV tv = new OBJ_TV(gp);
+                        tv.worldX = col;
+                        tv.worldY = row;
+                        gp.objects[gp.currentMap][objIndex++] = tv;
+                        break;
+
+                        case 5:
+                        OBJ_Stove stove = new OBJ_Stove(gp);
+                        stove.worldX = col;
+                        stove.worldY = row;
+                        gp.objects[gp.currentMap][objIndex++] = stove;
+                        break;
+                    }
+                }
+            }
+        }
+        if (gp.currentMap == 2) {
+            int[][] objectMap = loadObjectMap("/resource/maps/object_forest.txt", gp.maxWorldCol, gp.maxWorldRow);
+            int objIndex = 0;
+
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                for (int col = 0; col < gp.maxWorldCol; col++) {
+                    int id = objectMap[col][row];
+                    if (id == 0) continue;
+
+                    switch (id) {
+                        case 1:
+                        OBJ_Lake Lake = new OBJ_Lake(gp);
+                        Lake.worldX = col;
+                        Lake.worldY = row;
+                        gp.objects[gp.currentMap][objIndex++] = Lake;
+                        break;
+                    }
+                }
+            }
+        }
+        if (gp.currentMap == 3) {
+            int[][] objectMap = loadObjectMap("/resource/maps/object_mountain.txt", gp.maxWorldCol, gp.maxWorldRow);
+            int objIndex = 0;
+
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                for (int col = 0; col < gp.maxWorldCol; col++) {
+                    int id = objectMap[col][row];
+                    if (id == 0) continue;
+
+                    switch (id) {
+                        case 1:
+                        OBJ_Lake Lake = new OBJ_Lake(gp);
+                        Lake.worldX = col;
+                        Lake.worldY = row;
+                        gp.objects[gp.currentMap][objIndex++] = Lake;
+                        break;
+                    }
+                }
+            }
+        }
+        if (gp.currentMap == 4) {
+            int[][] objectMap = loadObjectMap("/resource/maps/object_ocean.txt", gp.maxWorldCol, gp.maxWorldRow);
+            int objIndex = 0;
+
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                for (int col = 0; col < gp.maxWorldCol; col++) {
+                    int id = objectMap[col][row];
+                    if (id == 0) continue;
+
+                    switch (id) {
+                        case 1:
+                        OBJ_Lake Lake = new OBJ_Lake(gp);
+                        Lake.worldX = col;
+                        Lake.worldY = row;
+                        gp.objects[gp.currentMap][objIndex++] = Lake;
+                        break;
+                    }
+                }
+            }
         }
     }
 

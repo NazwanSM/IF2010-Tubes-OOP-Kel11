@@ -7,10 +7,12 @@ public class EventHandler {
 
     int previousEventX, previousEventY;
     boolean canTouchEvent = true;
+    int randomMapIndex;
 
-    public EventHandler(GamePanel gp) {
+    public EventHandler(GamePanel gp, int randomMapIndex) {
         this.gp = gp;
         eventRect = new EventRect[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
+        this.randomMapIndex = randomMapIndex;
         
         int map = 0;
         int col = 0;
@@ -47,61 +49,314 @@ public class EventHandler {
 
         if (canTouchEvent) {
             // Keluar masuk rumah
-            if(hit(0,13,8,"any")) {
+            if(hit(0,13,8,"any") && randomMapIndex == 1) {
                 teleport(1, 15, 24);
             }
-            else if(hit(0,14,8,"any")) {
+            else if(hit(0,14,8,"any") && randomMapIndex == 1) {
                 teleport(1, 15, 24);
             }
-            else if(hit(0,15,8, "any")) {
+            else if(hit(0,15,8, "any") && randomMapIndex == 1) {
+                teleport(1, 15, 24);
+            }
+            else if(hit(0,12,9,"any") && randomMapIndex == 2) {
+                teleport(1, 15, 24);
+            }
+            else if(hit(0,13,9,"any") && randomMapIndex == 2) {
+                teleport(1, 15, 24);
+            }
+            else if(hit(0,14,9, "any") && randomMapIndex == 2) {
+                teleport(1, 15, 24);
+            }
+            else if(hit(0,13,16,"up") && randomMapIndex == 3) {
+                teleport(1, 15, 24);
+            }
+            else if(hit(0,14,16,"up") && randomMapIndex == 3) {
+                teleport(1, 15, 24);
+            }
+            else if(hit(0,15,16, "up") && randomMapIndex == 3) {
+                teleport(1, 15, 24);
+            }
+            else if(hit(0,13,15,"up") && randomMapIndex == 4) {
+                teleport(1, 15, 24);
+            }
+            else if(hit(0,14,15,"up") && randomMapIndex == 4) {
+                teleport(1, 15, 24);
+            }
+            else if(hit(0,15,15, "up") && randomMapIndex == 4) {
+                teleport(1, 15, 24);
+            }
+            else if(hit(0,12,12,"up") && randomMapIndex == 5) {
+                teleport(1, 15, 24);
+            }
+            else if(hit(0,13,12,"up") && randomMapIndex == 5) {
+                teleport(1, 15, 24);
+            }
+            else if(hit(0,14,12, "up") && randomMapIndex == 5) {
                 teleport(1, 15, 24);
             }
             else if(hit(1,14,27,"any")) {
-                teleport(0, 14, 8);
+                if (randomMapIndex == 1) {
+                    teleport(0, 14, 8);
+                }
+                else if (randomMapIndex == 2) {
+                    teleport(0, 13, 9);
+                }
+                else if (randomMapIndex == 3) {
+                    teleport(0,14,16);
+                }
+                else if (randomMapIndex == 4) {
+                    teleport(0,14,15);
+                }
+                else if (randomMapIndex == 5) {
+                    teleport(0,13,12);
+                }
             }
             else if(hit(1,15,27,"any")) {
-                teleport(0, 14, 8);
+                if (randomMapIndex == 1) {
+                    teleport(0, 14, 8);
+                }
+                else if (randomMapIndex == 2) {
+                    teleport(0, 13, 9);
+                }
+                else if (randomMapIndex == 3) {
+                    teleport(0,14,16);
+                }
+                else if (randomMapIndex == 4) {
+                    teleport(0,14,15);
+                }
+                else if (randomMapIndex == 5) {
+                    teleport(0,13,12);
+                }
             }
             else if(hit(1,16,27,"any")) {
-                teleport(0, 14, 8);
+                if (randomMapIndex == 1) {
+                    teleport(0, 14, 8);
+                }
+                else if (randomMapIndex == 2) {
+                    teleport(0, 13, 9);
+                }
+                else if (randomMapIndex == 3) {
+                    teleport(0,14,16);
+                }
+                else if (randomMapIndex == 4) {
+                    teleport(0,14,15);
+                }
+                else if (randomMapIndex == 5) {
+                    teleport(0,13,12);
+                }
             }
             else if(hit(1,17,27,"any")) {
-                teleport(0, 14, 8);
+                if (randomMapIndex == 1) {
+                    teleport(0, 14, 8);
+                }
+                else if (randomMapIndex == 2) {
+                    teleport(0, 13, 9);
+                }
+                else if (randomMapIndex == 3) {
+                    teleport(0,14,16);
+                }
+                else if (randomMapIndex == 4) {
+                    teleport(0,14,15);
+                }
+                else if (randomMapIndex == 5) {
+                    teleport(0,13,12);
+                }
             }
 
             // World Map
-            else if(hit(0,31,11,"right")) {
+            else if(hit(0,31,11,"right" ) && randomMapIndex == 1) {
+                gp.gameState = gp.worldMapState;
+            }
+            else if(hit(0,0,13,"left" ) && randomMapIndex == 2) {
+                gp.gameState = gp.worldMapState;
+            }
+            else if(hit(0,31,19,"right" ) && randomMapIndex == 3) {
+                gp.gameState = gp.worldMapState;
+            }
+            else if(hit(0,31,17,"right" ) && randomMapIndex == 4) {
+                gp.gameState = gp.worldMapState;
+            }
+            else if(hit(0,0,16,"left" ) && randomMapIndex == 5) {
                 gp.gameState = gp.worldMapState;
             }
             else if(hit(2, 18, 15,"any")) {
-                teleport(0, 31, 11);
+                if (randomMapIndex == 1){
+                    teleport(0, 31, 11);
+                }
+                else if (randomMapIndex == 2){
+                    teleport(0, 0, 13);
+                }
+                else if (randomMapIndex == 3){
+                    teleport(0,31,19);
+                }
+                else if (randomMapIndex == 4){
+                    teleport(0,31,17);
+                }
+                else if (randomMapIndex == 5){
+                    teleport(0,0,16);
+                }
             }
             else if(hit(3, 16, 12, "any")) {
-                teleport(0, 31, 11);
+                if (randomMapIndex == 1){
+                    teleport(0, 31, 11);
+                }
+                else if (randomMapIndex == 2){
+                    teleport(0, 0, 13);
+                }
+                else if (randomMapIndex == 3){
+                    teleport(0,31,19);
+                }
+                else if (randomMapIndex == 4){
+                    teleport(0,31,17);
+                }
+                else if (randomMapIndex == 5){
+                    teleport(0,0,16);
+                }
             }
             else if(hit(4, 16, 12, "any")) {
-                teleport(0, 31, 11);
+                if (randomMapIndex == 1){
+                    teleport(0, 31, 11);
+                }
+                else if (randomMapIndex == 2){
+                    teleport(0, 0, 13);
+                }
+                else if (randomMapIndex == 3){
+                    teleport(0,31,19);
+                }
+                else if (randomMapIndex == 4){
+                    teleport(0,31,17);
+                }
+                else if (randomMapIndex == 5){
+                    teleport(0,0,16);
+                }
             }
             else if(hit(5, 13, 12, "any")) {
-                teleport(0, 31, 11);
+                if (randomMapIndex == 1){
+                    teleport(0, 31, 11);
+                }
+                else if (randomMapIndex == 2){
+                    teleport(0, 0, 13);
+                }
+                else if (randomMapIndex == 3){
+                    teleport(0,31,19);
+                }
+                else if (randomMapIndex == 4){
+                    teleport(0,31,17);
+                }
+                else if (randomMapIndex == 5){
+                    teleport(0,0,16);
+                }
             }
             else if(hit(6, 16, 17, "any")) {
-                teleport(0, 31, 11);
+                if (randomMapIndex == 1){
+                    teleport(0, 31, 11);
+                }
+                else if (randomMapIndex == 2){
+                    teleport(0, 0, 13);
+                }
+                else if (randomMapIndex == 3){
+                    teleport(0,31,19);
+                }
+                else if (randomMapIndex == 4){
+                    teleport(0,31,17);
+                }
+                else if (randomMapIndex == 5){
+                    teleport(0,0,16);
+                }
             }
             else if(hit(7, 13, 16, "any")) {
-                teleport(0, 31, 11);
+                if (randomMapIndex == 1){
+                    teleport(0, 31, 11);
+                }
+                else if (randomMapIndex == 2){
+                    teleport(0, 0, 13);
+                }
+                else if (randomMapIndex == 3){
+                    teleport(0,31,19);
+                }
+                else if (randomMapIndex == 4){
+                    teleport(0,31,17);
+                }
+                else if (randomMapIndex == 5){
+                    teleport(0,0,16);
+                }
             }
             else if(hit(8, 18, 16, "any")) {
-                teleport(0, 31, 11);
+                if (randomMapIndex == 1){
+                    teleport(0, 31, 11);
+                }
+                else if (randomMapIndex == 2){
+                    teleport(0, 0, 13);
+                }
+                else if (randomMapIndex == 3){
+                    teleport(0,31,19);
+                }
+                else if (randomMapIndex == 4){
+                    teleport(0,31,17);
+                }
+                else if (randomMapIndex == 5){
+                    teleport(0,0,16);
+                }
             }
             else if(hit(9, 18, 14,"right")) {
-                teleport(0, 31, 11);
+                if (randomMapIndex == 1){
+                    teleport(0, 31, 11);
+                }
+                else if (randomMapIndex == 2){
+                    teleport(0, 0, 13);
+                }
+                else if (randomMapIndex == 3){
+                    teleport(0,31,19);
+                }
+                else if (randomMapIndex == 4){
+                    teleport(0,31,17);
+                }
+                else if (randomMapIndex == 5){
+                    teleport(0,0,16);
+                }
             }
             else if(hit(9, 18, 15,"any")) {
-                teleport(0, 31, 11);
+                if (randomMapIndex == 1){
+                    teleport(0, 31, 11);
+                }
+                else if (randomMapIndex == 2){
+                    teleport(0, 0, 13);
+                }
+                else if (randomMapIndex == 3){
+                    teleport(0,31,19);
+                }
+                else if (randomMapIndex == 4){
+                    teleport(0,31,17);
+                }
+                else if (randomMapIndex == 5){
+                    teleport(0,0,16);
+                }
             }
             else if(hit(10,16,17,"any")) {
-                teleport(0, 31, 11);
+                if (randomMapIndex == 1){
+                    teleport(0, 31, 11);
+                }
+                else if (randomMapIndex == 2){
+                    teleport(0, 0, 13);
+                }
+                else if (randomMapIndex == 3){
+                    teleport(0,31,19);
+                }
+                else if (randomMapIndex == 4){
+                    teleport(0,31,17);
+                }
+                else if (randomMapIndex == 5){
+                    teleport(0,0,16);
+                }
+            }
+
+            else if(hit(1, 12, 8 , "any")) {
+                if (gp.keyH.enterPressed) {
+                    gp.playerData.performAction("sleep", null);
+                }
+
+                gp.keyH.enterPressed = false;
+                canTouchEvent = false;
             }
         }
     }
@@ -138,6 +393,7 @@ public class EventHandler {
         previousEventX = gp.player.worldX;
         previousEventY = gp.player.worldY;
         canTouchEvent = false;
+        gp.aSetter.setObject(randomMapIndex);
         gp.playSE(1);
     }
 }

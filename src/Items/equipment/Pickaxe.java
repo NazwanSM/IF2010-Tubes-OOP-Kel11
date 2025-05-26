@@ -1,9 +1,9 @@
 // File: Items/tools/Pickaxe.java
 package items.equipment;
 
+import main.GamePanel;
 // import Actions.RecoverLandAction; // Impor kelas Action yang sesuai (atau MiningAction)
 import entity.player.Player;
-import main.GamePanel;
 
 public class Pickaxe extends Equipment {
 

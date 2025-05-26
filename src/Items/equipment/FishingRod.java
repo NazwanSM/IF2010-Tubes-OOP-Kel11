@@ -1,9 +1,9 @@
 // File: Items/tools/FishingRod.java
 package items.equipment;
 
+import main.GamePanel;
 // import Actions.FishingAction; // Impor kelas FishingAction yang sudah Anda buat
 import entity.player.Player;
-import main.GamePanel;
 
 public class FishingRod extends Equipment {
 

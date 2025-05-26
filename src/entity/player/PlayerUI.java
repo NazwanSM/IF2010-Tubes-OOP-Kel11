@@ -142,6 +142,10 @@ public class PlayerUI extends Entity {
         if (i != 999) {
             if (keyH.enterPressed == true) {
                 gp.objects[gp.currentMap][i].interact();
+                keyH.upPressed = false;
+                keyH.downPressed = false;
+                keyH.leftPressed = false;
+                keyH.rightPressed = false;
             }
         }
     }

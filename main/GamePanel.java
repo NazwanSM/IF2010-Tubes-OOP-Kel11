@@ -1,9 +1,15 @@
 package main;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import World.Farm;
+import World.Environment.Lighting;
+import data.NPCData;
 import entity.player.PlayerUI;
+import entity.object.SuperObject;
 import entity.player.Player;
+
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,10 +17,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Font;
 
-import object.SuperObject;
 import statistics.IStatisticProvider;
 import statistics.IStatisticTracker;
-// import statistics.StatisticsManager;
+import statistics.StatisticsManager;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -38,33 +43,31 @@ public class GamePanel extends JPanel implements Runnable {
 
     // FPS
     final int FPS = 60;
-
-    TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler(this);
+    
+    public TileManager tileM;
+    public KeyHandler keyH = new KeyHandler(this);
     MouseHandler mouseH = new MouseHandler(this);
     Sound music = new Sound();
     Sound se = new Sound();
     public AssetSetter aSetter = new AssetSetter(this);
     public CollisionChecker cChecker = new CollisionChecker(this);
     public UI ui = new UI(this);
-    public EventHandler eHandler = new EventHandler(this);
-    public EnvirontmentManager environtmentManager = new EnvirontmentManager();
+    public EventHandler eHandler;
     Thread gameThread;
-
+    public Lighting lightingSystem;
+    public int randomMapIndex;
+    
+    
     // Entity and object
-    public Player playerData = new Player("Nazwan", "Male", "Farm", 1000, this); // ini cuman contoh doang
-    public PlayerUI player = new PlayerUI(this, keyH, playerData);
+    public Player playerData;
+    public PlayerUI player;
     public SuperObject[][] objects = new SuperObject[maxMap][20];
     public IStatisticTracker statisticTracker;
     public IStatisticProvider statisticProvider;
-    // StatisticsManager manager = new StatisticsManager();
-
-    public void setupGame() {
-        aSetter.setObject();
-        // playMusic(0);
-        gameState = titleState;
-    }
-
+    public StatisticsManager manager = new StatisticsManager(NPCData.getAllNPCNames());
+    public Farm farm;
+    
+    
     // Game State
     public int gameState;
     public final int titleState = 0;
@@ -74,7 +77,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int statsDisplayState = 4;
     public final int inventoryState = 5;
     public final int worldMapState = 6;
-
+    public final int cheatState = 7;
+    public boolean alreadyProcessedCheatKey = false;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -86,6 +90,65 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         // this.statisticTracker = manager;
         // this.statisticProvider = manager;
+    }
+    
+    public void setupGame() {
+        // playMusic(0);
+        gameState = titleState;
+    }
+    
+    public void setupNewGame() {
+        playMusic(0);
+        this.currentMap = 0;
+        String playerName = JOptionPane.showInputDialog(this, "Enter Player Name:", "New Game", JOptionPane.PLAIN_MESSAGE);
+        if (playerName == null || playerName.trim().isEmpty()) {
+            gameState = titleState;
+            ui.titleScreenState = 0; 
+            ui.commandNum = 0;
+            return;
+        }
+        
+        String[] genders = {"Male", "Female"};
+        int genderChoice = JOptionPane.showOptionDialog(this, "Select Gender:", "New Game",
+        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, genders, genders[0]);
+        if (genderChoice == JOptionPane.CLOSED_OPTION) {
+            gameState = titleState;
+            ui.titleScreenState = 0;
+            ui.commandNum = 0;
+            return;
+        }
+        String playerGender = genders[genderChoice];
+        
+        String farmNameInput = JOptionPane.showInputDialog(this, "Enter Farm Name:", "New Game", JOptionPane.PLAIN_MESSAGE);
+        if (farmNameInput == null || farmNameInput.trim().isEmpty()) {
+            gameState = titleState;
+            ui.titleScreenState = 0;
+            ui.commandNum = 0;
+            return;
+        }
+        
+        this.playerData = new Player(playerName, playerGender, farmNameInput, 1000, this);
+        
+        this.player = new PlayerUI(this, keyH, this.playerData);
+        
+        this.farm = new Farm(farmNameInput, this.playerData, this);
+
+        int randomMapIndex = (int) (Math.random() * 5) + 1;
+        
+        tileM = new TileManager(this, randomMapIndex);
+        farm.getGameClock().startTime();
+        farm.getSeason().setSeason("Summer");
+        
+        farm.getWeather().nextWeather(farm.getSeason());
+
+        this.lightingSystem = new Lighting(this);
+        this.lightingSystem.resetDay();
+
+        aSetter.setObject(randomMapIndex);
+        eHandler = new EventHandler(this, randomMapIndex);
+
+        gameState = playState;
+        System.out.println("New game started. Player: " + playerName + ", Farm: " + farmNameInput);
     }
 
     public void startGameThread() {
@@ -124,14 +187,34 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         if (gameState == playState) {
             player.update();
+            if (keyH.iPressed){
+                gameState = inventoryState;
+            }
+            else if (keyH.cPressed && !alreadyProcessedCheatKey) {
+                alreadyProcessedCheatKey = true;
+                handleCheatActivation();
+            }
         }
         else if (gameState == pauseState) {
             // Pause logic
         }
+        
 
         // if (statisticProvider.isAnyMilestoneAchieved() && gameState != statsDisplayState) {
         //     gameState = statsDisplayState;
         // }
+
+        if (lightingSystem != null) {
+            lightingSystem.update();
+        }
+    }
+
+    private void handleCheatActivation() {
+        gameState = cheatState;
+        ui.processCheatInputs(); 
+        if (gameState == playState) { 
+            alreadyProcessedCheatKey = false; 
+        }
     }
 
     public void paintComponent(Graphics g){
@@ -156,6 +239,11 @@ public class GamePanel extends JPanel implements Runnable {
     
             // PLAYER
             player.draw(g2);
+
+            // LIGHTING
+            if (lightingSystem != null) {
+            lightingSystem.draw(g2);
+            }
     
             // UI
             ui.draw(g2);

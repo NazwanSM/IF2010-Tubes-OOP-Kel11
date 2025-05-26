@@ -1,13 +1,14 @@
 package entity.player;
 
-import World.NPC;
+import entity.NPC.NPC;
 import World.Environment.GameClock;
-import items.Edible;
+import actions.EatingAction;
+import actions.SleepingAction;
 import items.Items;
 import items.ProposalRing;
 import statistics.IStatisticTracker;
-import World.Point;
 import main.GamePanel;
+import actions.FishingAction;
 public class Player {
     private String name;
     private String gender;
@@ -16,7 +17,6 @@ public class Player {
     private NPC partner;
     private int gold;
     private Inventory inventory;
-    private Point location; 
     private GameClock gameClock;
     public static final int MAX_ENERGY = 100;
     public static final int MIN_ENERGY = -20;
@@ -31,8 +31,6 @@ public class Player {
         this.partner = null;
         this.gold = gold;
         this.inventory = new Inventory();
-        this.location = new Point(0, 0);
-        this.gameClock = GameClock.getInstance();
         this.statisticTracker = gp.statisticTracker;
         this.gp = gp;
 
@@ -68,14 +66,9 @@ public class Player {
         return inventory;
     }
 
-    public Point getLocation() {
-        return location;
+    public int getMaxEnergy() {
+        return MAX_ENERGY;
     }
-
-    public GameClock getGameClock() {
-        return gameClock;
-    }
-
 
     public void setName(String name) {
         this.name = name;
@@ -114,10 +107,6 @@ public class Player {
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }
-
-    public void setLocation(Point location) {
-        this.location = location;
-    }
     
     public void increaseEnergy(int amount) {
         setEnergy(this.energy + amount);
@@ -151,22 +140,27 @@ public class Player {
         inventory.removeItem(item, amount); 
     }
 
-    public void eating (Items item) {
-        if (item instanceof Edible) { 
-            Edible edibleItem = (Edible) item; // casting item ke edible
-            if (hasItem(item)) {
-                edibleItem.eat(this); 
-                gameClock.advance(5);
-                removeItemFromInventory(item, 1);
-                increaseEnergy(edibleItem.getEnergy()); 
-            } else {
-                gp.ui.addMessage("You don't have this item in your inventory."); // implementasi ini blom tentu dipake
+    public void performAction(String actionName, String item) {
+        switch (actionName.toLowerCase()) { 
+            case "tidur":
+            case "sleep":
+                SleepingAction tidur = new SleepingAction(this, this.gp);
+                tidur.executeAction();
+                break;
+            case "makan":
+            case "eat":
+                Items itemToEat = inventory.getItemByName(item);
+                EatingAction makan = new EatingAction(this, this.gp, itemToEat);
+                makan.executeAction();
+                break;
+            case "mancing":
+            case "fishing":
+                FishingAction mancing = new FishingAction(this, this.gp);
+                mancing.executeAction();
+                break;
             }
-        } 
-        else {
-            gp.ui.addMessage("This item is not edible."); // ini juga
-        }   
     }
+
 
 
     public void chatting(NPC npc) {
@@ -198,39 +192,6 @@ public class Player {
         } else {
             System.out.println("You don't have this item in your inventory."); // implementasi ini blom tentu dipake
         }
-    }
-
-    public void moving(Point newLocation) {
-        this.location = newLocation; 
-        System.out.println("Moved to new location: " + newLocation); // implementasi ini blom tentu dipake
-    }
-
-
-    public void sleeping() {
-        if (energy <= 0){
-            setEnergy(10);
-        }
-        else if (energy < MAX_ENERGY/10) {
-            setEnergy(MAX_ENERGY/2);
-        }
-        else {
-            setEnergy(MAX_ENERGY);
-        }
-        System.out.println("Player is sleeping. Energy restored to: " + energy); // implementasi ini blom tentu dipake;
-        gameClock.skipToMorning(); // ini harusnya ada di farm yang bkin nambah hari
-    }
-
-    // public void openInventory() {
-    //     System.out.println("Opening inventory: " + inventory); // implementasi ini blom tentu dipake
-    //     inventory.displayItems(); // harus diimplementasi di class inventory
-    // }
-
-    public void showTime() {
-        System.out.println("Current time: " + gameClock.getTime()); 
-    }
-
-    public void showLocation() {
-        System.out.println("Current location: " + location); 
     }
 
     public boolean isProposeable(NPC npc) {

@@ -8,6 +8,7 @@ public class GameClock extends Thread {
     private int minutes;
     private boolean isRunning = true;
     private boolean isPaused = false;
+    private boolean threadStart = false;
 
     public GameClock() {
         this.hours = 6;
@@ -19,11 +20,20 @@ public class GameClock extends Thread {
             synchronized (GameClock.class) {
                 if (instance == null) {
                     instance = new GameClock();
-                    instance.start();  // Mulai thread saat instance pertama dibuat
                 }
             }
         }
         return instance;
+    }
+
+    public synchronized void startTime() {
+        if (!threadStart) {
+            this.start(); // Memulai thread (instance GameClock itu sendiri)
+            threadStart = true;
+            System.out.println("GameClock thread dimulai.");
+        }
+        this.isRunning = true;  // Pastikan loop run() bisa berjalan
+        this.isPaused = false; // Pastikan jam tidak dalam kondisi pause saat dimulai
     }
 
     public void run() {

@@ -1,8 +1,8 @@
 package items.equipment; 
 
+import main.GamePanel;
 import entity.player.Player;
-import items.Items;
-import main.GamePanel;       
+import items.Items;       
 
 public abstract class Equipment extends Items {
 

@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shiftPressed, spacePressed, escPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shiftPressed, spacePressed, escPressed, cPressed, iPressed;
     boolean showDebugText = false;
     int lastNum = 0;
     int lastNum2 = 7;
@@ -27,7 +27,13 @@ public class KeyHandler implements KeyListener {
         }
 
         else if (gp.gameState == gp.playState) {
-            playState(keyCode);
+            if (keyCode == KeyEvent.VK_I) {
+                iPressed = true;
+            } else if (keyCode == KeyEvent.VK_C) {
+                cPressed = true;
+            } else {
+                playState(keyCode);
+            }
         }
         else if (gp.gameState == gp.pauseState) {
             switch (keyCode) {
@@ -154,8 +160,7 @@ public class KeyHandler implements KeyListener {
                     break;
                 case KeyEvent.VK_ENTER:
                     if (gp.ui.commandNum == 0) {
-                        gp.gameState = gp.playState; // ini nanti buat start game beda lagi
-                        gp.playMusic(0);
+                        gp.setupNewGame(); // ini nanti buat start game beda lagi
                     }
                     else if (gp.ui.commandNum == 1) {
                         // load game
@@ -238,9 +243,6 @@ public class KeyHandler implements KeyListener {
                     if (gp.gameState == gp.playState) {
                         showDebugText = !showDebugText;
                     }
-                    break;
-                case KeyEvent.VK_I:
-                    gp.gameState = gp.inventoryState;
                     break;
                 case KeyEvent.VK_ENTER:
                     enterPressed = true;
@@ -443,6 +445,12 @@ public class KeyHandler implements KeyListener {
                 break;
             case KeyEvent.VK_RIGHT:
                 rightPressed = false;
+                break;
+            case KeyEvent.VK_I:
+                iPressed = false;
+                break;
+            case KeyEvent.VK_C:
+                cPressed = false;
                 break;
             case KeyEvent.VK_ENTER:
                 enterPressed = false;
