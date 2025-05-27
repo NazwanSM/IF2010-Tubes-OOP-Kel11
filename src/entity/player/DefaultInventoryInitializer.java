@@ -5,6 +5,7 @@ import items.Items;
 import data.SeedData;
 import data.CropsData;
 import data.EquipmentData;
+import data.MiscData;
 
 public class DefaultInventoryInitializer {
 
@@ -26,8 +27,14 @@ public class DefaultInventoryInitializer {
         playerInventory.addItem(pickaxePrototype, 1);
         Items fishingRodPrototype = EquipmentData.getEquipmentByName("FishingRod");
         playerInventory.addItem(fishingRodPrototype, 1);
+
+        //debugging purpose
         Items tomato = CropsData.getCropByName("Tomato");
         playerInventory.addItem(tomato, 5);
+        Items wheat = CropsData.getCropByName("Wheat");
+        playerInventory.addItem(wheat, 5);
+        Items firewood = MiscData.getMiscByName("Firewood");
+        playerInventory.addItem(firewood, 5);
 
         System.out.println("Inventaris default berhasil diinisialisasi.");
     }

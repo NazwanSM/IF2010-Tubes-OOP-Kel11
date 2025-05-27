@@ -2,13 +2,11 @@ package entity.player;
 
 import entity.NPC.NPC;
 import World.Environment.GameClock;
-import actions.EatingAction;
-import actions.SleepingAction;
+import actions.*;
+import data.RecipeData;
 import items.Items;
-import items.ProposalRing;
 import statistics.IStatisticTracker;
 import main.GamePanel;
-import actions.FishingAction;
 public class Player {
     private String name;
     private String gender;
@@ -78,11 +76,11 @@ public class Player {
         this.gender = gender;
     }
 
-    public void setEnergy(int energy) { // ini masih bisa diganti nyesuain sama sleeping dll
+    public void setEnergy(int energy) { 
         if (energy > MAX_ENERGY) {
             this.energy = MAX_ENERGY;
-        } else if (energy < MIN_ENERGY) {
-            this.energy = MIN_ENERGY;
+        } else if (energy <= MIN_ENERGY) {
+            performAction("Sleep", null);
         } else {
             this.energy = energy;
         }
@@ -140,7 +138,7 @@ public class Player {
         inventory.removeItem(item, amount); 
     }
 
-    public void performAction(String actionName, String item) {
+    public void performAction(String actionName, String parameter) {
         switch (actionName.toLowerCase()) { 
             case "tidur":
             case "sleep":
@@ -149,7 +147,7 @@ public class Player {
                 break;
             case "makan":
             case "eat":
-                Items itemToEat = inventory.getItemByName(item);
+                Items itemToEat = inventory.getItemByName(parameter);
                 EatingAction makan = new EatingAction(this, this.gp, itemToEat);
                 makan.executeAction();
                 break;
@@ -158,7 +156,17 @@ public class Player {
                 FishingAction mancing = new FishingAction(this, this.gp);
                 mancing.executeAction();
                 break;
-            }
+            case "mengunjungi":
+            case "visit":
+                VisitingAction kunjungi = new VisitingAction(parameter, this.gp);
+                kunjungi.executeAction();
+                break;
+            case "memasak":
+            case "cook":
+                CookingAction memasak = new CookingAction(this, RecipeData.getRecipeById(parameter), RecipeData.getRecipeById(parameter).getResult() ,this.gp);
+                memasak.executeAction();
+                break;
+        }
     }
 
 
@@ -195,7 +203,10 @@ public class Player {
     }
 
     public boolean isProposeable(NPC npc) {
-
+        if (inventory.getItemByName("Proposal Ring") == null) {
+            System.out.println("You need a Proposal Ring to propose.");
+            return false;
+        }
         int heartPoint = npc.getHeartPoints();
         String relationshipStatus = npc.getRelationshipStatus();
 
@@ -218,7 +229,8 @@ public class Player {
         if (isProposeable(npc)) {
             partner = npc;
             npc.setRelationshipStatus("Fiance");
-            gifting(npc, new ProposalRing("Wedding Ring", "ring"));
+            Items proposalRing = inventory.getItemByName("Proposal Ring");
+            gifting(npc, proposalRing);
             decreaseEnergy(10);
             System.out.println("You proposed to " + npc.getNPCName() + ".");
         } else {

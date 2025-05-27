@@ -7,7 +7,7 @@ public class Misc extends Items implements Sellable {
         super(name, "Misc");
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
-
+        loadImage("/resource/items/misc/" + name + ".png");
     }
 
     // Getter and Setter for the new attributes

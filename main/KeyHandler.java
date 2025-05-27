@@ -59,6 +59,9 @@ public class KeyHandler implements KeyListener {
         else if (gp.gameState == gp.worldMapState) {
             worldMapState(keyCode);
         }
+        else if (gp.gameState == gp.cookingState) {
+            cookingState(keyCode);
+        }
     }
 
     public void titleState(int keyCode){
@@ -160,7 +163,7 @@ public class KeyHandler implements KeyListener {
                     break;
                 case KeyEvent.VK_ENTER:
                     if (gp.ui.commandNum == 0) {
-                        gp.setupNewGame(); // ini nanti buat start game beda lagi
+                        gp.setupNewGame();
                     }
                     else if (gp.ui.commandNum == 1) {
                         // load game
@@ -385,31 +388,31 @@ public class KeyHandler implements KeyListener {
                     break;
                 case KeyEvent.VK_ENTER:
                     if (gp.ui.worldMapNum == 0) {
-                        gp.eHandler.teleport(2, 18, 14);
+                        gp.playerData.performAction("visit", "Forest River");
                     }
                     else if (gp.ui.worldMapNum == 1) {
-                        gp.eHandler.teleport(3, 16, 11);
+                        gp.playerData.performAction("visit", "Mountain Lake" );
                     }
                     else if (gp.ui.worldMapNum == 2) {
-                        gp.eHandler.teleport(4, 16, 11);
+                        gp.playerData.performAction("visit", "Ocean");
                     }
                     else if (gp.ui.worldMapNum == 3) {
-                        gp.eHandler.teleport(5, 13, 11);
+                        gp.playerData.performAction("visit", "Store");
                     }
                     else if (gp.ui.worldMapNum == 4) {
-                        gp.eHandler.teleport(6, 16, 16);
+                        gp.playerData.performAction("visit", "Mayor Tadi House");
                     }
                     else if (gp.ui.worldMapNum == 5) {
-                        gp.eHandler.teleport(7, 13, 15);
+                        gp.playerData.performAction("visit", "Caroline House");
                     }
                     else if (gp.ui.worldMapNum == 6) {
-                        gp.eHandler.teleport(8, 18, 15);
+                        gp.playerData.performAction("visit", "Perry House");
                     }
                     else if (gp.ui.worldMapNum == 7) {
-                        gp.eHandler.teleport(9, 18, 14);
+                        gp.playerData.performAction("visit", "Dasco House");
                     }
                     else if (gp.ui.worldMapNum == 8) {
-                        gp.eHandler.teleport(10, 16, 16);
+                        gp.playerData.performAction("visit", "Abigail House");
                     }
                     gp.gameState = gp.playState;
                     gp.playSE(3);
@@ -418,6 +421,44 @@ public class KeyHandler implements KeyListener {
                     break;
             }
     }
+    
+    public void cookingState(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.VK_W:
+                if (gp.ui.cookRow > 0) {
+                    gp.ui.cookRow--;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_S:
+                if (gp.ui.cookRow < 3) {
+                    gp.ui.cookRow++;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_A:
+                if (gp.ui.cookCol > 0) {
+                    gp.ui.cookCol--;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_D:
+                if (gp.ui.cookCol < 4) {
+                    gp.ui.cookCol++;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_ENTER:
+                enterPressed = true;
+                break;
+            case KeyEvent.VK_ESCAPE:
+                gp.gameState = gp.playState;
+                break;
+            default:
+                break;
+        }
+    }
+
     @Override
     public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();

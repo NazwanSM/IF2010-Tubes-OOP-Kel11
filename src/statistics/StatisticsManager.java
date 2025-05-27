@@ -64,17 +64,17 @@ public class StatisticsManager implements IStatisticTracker, IStatisticProvider 
 
     @Override
     public void trackNPCChat(String npcName) {
-        this.npcChatFrequencies.compute(npcName, (key, val) -> (val == null) ? 1 : val + 1);
+        this.npcChatFrequencies.compute(npcName, (_, val) -> (val == null) ? 1 : val + 1);
     }
 
     @Override
     public void trackNPCGift(String npcName) {
-        this.npcGiftFrequencies.compute(npcName, (key, val) -> (val == null) ? 1 : val + 1);
+        this.npcGiftFrequencies.compute(npcName, (_, val) -> (val == null) ? 1 : val + 1);
     }
 
     @Override
     public void trackNPCVisit(String npcName) {
-        this.npcVisitFrequencies.compute(npcName, (key, val) -> (val == null) ? 1 : val + 1);
+        this.npcVisitFrequencies.compute(npcName, (_, val) -> (val == null) ? 1 : val + 1);
     }
 
     @Override

@@ -56,6 +56,20 @@ public class Farm {
 
         gp.ui.addMessage("Day " + day + " starts!");
         gp.ui.addMessage("Season: " + season.getCurrentSeason() + ", Weather: " + weather.getCurrentWeather());
+
+        if (season.getCurrentSeason().equals("Winter")) {
+            gp.stopMusic();
+            gp.playMusic(10); 
+        } else if (season.getCurrentSeason().equals("Spring")) {
+            gp.stopMusic();
+            gp.playMusic(8); 
+        } else if (season.getCurrentSeason().equals("Summer")) {
+            gp.stopMusic();
+            gp.playMusic(0); 
+        } else if (season.getCurrentSeason().equals("Fall")) {
+            gp.stopMusic();
+            gp.playMusic(9);
+        }
     }
 
     // --- Cheat Tools (manual override) ---

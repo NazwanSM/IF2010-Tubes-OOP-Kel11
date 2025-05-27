@@ -105,8 +105,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
         switch (currentCommand) {
             case 0: // New Game
-                gp.gameState = gp.playState;
-                gp.playMusic(0);
+                gp.setupNewGame();
                 break;
             case 1: // Load Game
                 // Implementasi load game

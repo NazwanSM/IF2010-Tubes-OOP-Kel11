@@ -78,6 +78,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int inventoryState = 5;
     public final int worldMapState = 6;
     public final int cheatState = 7;
+    public final int cookingState = 8;
     public boolean alreadyProcessedCheatKey = false;
 
     public GamePanel() {
@@ -98,7 +99,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
     
     public void setupNewGame() {
-        playMusic(0);
         this.currentMap = 0;
         String playerName = JOptionPane.showInputDialog(this, "Enter Player Name:", "New Game", JOptionPane.PLAIN_MESSAGE);
         if (playerName == null || playerName.trim().isEmpty()) {
@@ -127,6 +127,7 @@ public class GamePanel extends JPanel implements Runnable {
             return;
         }
         
+        playMusic(0);
         this.playerData = new Player(playerName, playerGender, farmNameInput, 1000, this);
         
         this.player = new PlayerUI(this, keyH, this.playerData);
@@ -193,6 +194,10 @@ public class GamePanel extends JPanel implements Runnable {
             else if (keyH.cPressed && !alreadyProcessedCheatKey) {
                 alreadyProcessedCheatKey = true;
                 handleCheatActivation();
+            }
+
+            if (farm.getGameClock().getHours() == 2) {
+                playerData.performAction("Sleep", null);
             }
         }
         else if (gameState == pauseState) {

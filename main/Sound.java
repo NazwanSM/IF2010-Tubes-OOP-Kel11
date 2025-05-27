@@ -21,6 +21,11 @@ public class Sound {
         soundURL[3] = this.getClass().getResource("/resource/sound/select.wav");
         soundURL[4] = this.getClass().getResource("/resource/sound/eat.wav");
         soundURL[5] = this.getClass().getResource("/resource/sound/dialogue.wav");
+        soundURL[6] = this.getClass().getResource("/resource/sound/crafting.wav");
+        soundURL[7] = this.getClass().getResource("/resource/sound/newRecord.wav");
+        soundURL[8] = this.getClass().getResource("/resource/sound/spring_day.wav");
+        soundURL[9] = this.getClass().getResource("/resource/sound/fall_day.wav");
+        soundURL[10] = this.getClass().getResource("/resource/sound/winter_day.wav");
     }
 
     public void setFile(int i) {

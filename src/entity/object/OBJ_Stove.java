@@ -24,7 +24,7 @@ public class OBJ_Stove extends SuperObject {
     @Override
     public void interact() {
         if (gp.keyH.enterPressed){
-            gp.playerData.performAction("cook", null);
+            gp.gameState = gp.cookingState;
             gp.keyH.enterPressed = false;
         }
     }

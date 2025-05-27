@@ -14,8 +14,10 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
+import data.RecipeData;
 import items.Edible;
 import items.Items;
+import items.Recipe;
 
 public class UI {
     
@@ -80,10 +82,13 @@ public class UI {
     private BufferedImage staminaBar3;
     private BufferedImage staminaBar4;
     private BufferedImage staminaBar5;
+    private BufferedImage cookingPanel;
     public int commandNum = 0;
     public int titleScreenState = 0;
     public int slotCol = 0;
     public int slotRow = 0;
+    public int cookCol = 0;
+    public int cookRow = 0;
     public int worldMapNum = 0;
 
     
@@ -199,6 +204,8 @@ public class UI {
             staminaBar4 = ImageIO.read(bgIs);
             bgIs = getClass().getResourceAsStream("/resource/ui/StaminaBar5.png");
             staminaBar5 = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/CookingPanel.png");
+            cookingPanel = ImageIO.read(bgIs);
         }
         catch (FontFormatException e) {
             e.printStackTrace();
@@ -235,8 +242,8 @@ public class UI {
                 drawStatsScreen();
             }
             else if(gp.gameState == gp.inventoryState) {
-                drawMessage();
                 drawInventory();
+                drawMessage();
             }
             else if(gp.gameState == gp.worldMapState) {
                 drawWorldMap();
@@ -248,6 +255,10 @@ public class UI {
                 int x = getXforCenteredText(cheatText);
                 int y = gp.screenHeight / 2;
                 g2.drawString(cheatText, x, y);
+            }
+            else if(gp.gameState == gp.cookingState) {
+                drawCookingScreen();
+                drawMessage();
             }
         }
     }
@@ -590,7 +601,7 @@ public class UI {
             if (gp.keyH.enterPressed) {
                 if (selectedItem instanceof Edible){
                     gp.playerData.performAction("eat", selectedItem.getName());;
-                    addMessage(selectedItem.getName() + " berhasil dimakan!");
+                    addMessage(selectedItem.getName() + " eaten, restoring " + ((Edible) selectedItem).getEnergy() + " energy.");
                     gp.playSE(4);
                 }
                 gp.keyH.enterPressed = false;
@@ -676,21 +687,96 @@ public class UI {
         gp.gameState = gp.playState;
     }
 
+    public void drawCookingScreen() {
+        int x = gp.tileSize / 2 - gp.tileSize - gp.tileSize / 8;
+        int y = gp.tileSize / 2 - gp.tileSize;
+        int width = gp.tileSize * 7;
+        int height = gp.tileSize * 8;
+
+        g2.drawImage(cookingPanel, x + gp.tileSize, y + gp.tileSize, width, height, null);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
+        g2.setColor(new Color(88,43,42,255));
+        x += gp.tileSize + gp.tileSize / 4;
+        y += gp.tileSize + gp.tileSize / 4;
+        g2.drawString("Cooking Time!", x, y);
+
+        final int slotXstart = x + gp.tileSize - gp.tileSize / 4;
+        final int slotYstart = y + gp.tileSize - gp.tileSize / 4;
+        int slotX = slotXstart;
+        int slotY = slotYstart;
+        int slotSize = gp.tileSize;
+
+        List<Recipe> recipeList = RecipeData.getAllRecipes();
+
+        for (int i = 0; i < recipeList.size(); i++){
+            Recipe item = recipeList.get(i);
+            BufferedImage itemImage = item.getResult().getItemImage();
+            BufferedImage bnwItemImage = item.getResult().getBnwItemImage();
+            if (item.isUnlocked()) {
+                g2.drawImage(itemImage, slotX, slotY, gp.tileSize, gp.tileSize, null);
+            }
+            else {
+                g2.drawImage(bnwItemImage, slotX, slotY, gp.tileSize, gp.tileSize, null);
+            }
+            slotX += slotSize;
+            if (i == 4 || i == 9 || i == 14) {
+                slotX = slotXstart;
+                slotY += slotSize;
+            }
+        }
+
+        int cursorX = slotXstart + (slotSize * cookCol);
+        int cursorY = slotYstart + (slotSize * cookRow);
+        int cursorWidth = gp.tileSize;
+        int cursorHeight = gp.tileSize;
+
+        g2.drawImage(inventorySelected, cursorX, cursorY, cursorWidth, cursorHeight, null);
+        
+        // Derkripsi item yang dipilih
+        int textX = x + gp.tileSize - gp.tileSize / 4 - gp.tileSize / 8;
+        int textY = y - gp.tileSize / 10;
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20F));
+        g2.setColor(new Color(88,43,42,255));
+        int itemIndex = cookCol + (cookRow * 5);
+        
+        if (itemIndex < recipeList.size()) {
+            Recipe selectedItem = recipeList.get(itemIndex);
+            String recipeName = selectedItem.getItemID();
+            String foodName = selectedItem.getResult().getName();
+            String isUnlocked;
+            if (selectedItem.isUnlocked()) {
+                isUnlocked = "(Unlocked)";
+            } 
+            else {
+                isUnlocked = "(Locked) - " + selectedItem.getUnlockInfo();
+            }
+            g2.drawString(recipeName + " - " + foodName, textX, textY + gp.tileSize * 6);
+            g2.drawString(isUnlocked, textX, textY + gp.tileSize * 6 + 30);
+            if (gp.keyH.enterPressed) {
+                gp.playerData.performAction("cook", selectedItem.getItemID());
+                gp.keyH.enterPressed = false;
+            }
+        } else {
+            g2.drawString("No recipe selected", textX, textY + gp.tileSize * 6);
+        }
+    }
+
     public int getItemIndexSlot() {
         int itemIndex = slotCol + (slotRow * 5);
         return itemIndex;
     }
 
     public void drawMessage() {
-        int messageX = gp.tileSize * 9;
-        int messageY = gp.tileSize * 4 + gp.tileSize / 2 + gp.tileSize + gp.tileSize / 8;
+        int messageY = gp.tileSize * 4 + gp.tileSize / 2 + gp.tileSize * 2 + gp.tileSize / 2;
         g2.setFont(g2.getFont().deriveFont(Font.BOLD,24F));
-
+        
         for(int i = 0; i < message.size(); i++)
         {
             if(message.get(i) != null)
             {
                 //Shadow
+                int messageX = getXforCenteredText(message.get(i));
                 g2.setColor(Color.black);
                 g2.drawString(message.get(i), messageX+2,messageY+2);
                 //Text

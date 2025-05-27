@@ -24,8 +24,6 @@ public class SleepingAction extends Action {
         gp.farm.nextDay();
         
         if (gp.ui != null) gp.ui.addMessage("You feel rested. Energy: " + playerData.getEnergy());
-        gp.ui.addMessage(playerData.getName() + " is sleeping. Energy restored to: " + playerData.getEnergy());
-
         gp.eHandler.teleport(1, 13, 8);
 
         return true;

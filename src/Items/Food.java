@@ -12,7 +12,8 @@ public class Food extends Items implements Sellable, Edible {
         this.energy = energy;
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
-        loadImage("/resource/items/food/" + name.toLowerCase() + ".png");
+        loadImage("/resource/items/food/" + name + ".png");
+        loadBnwImage("/resource/items/food/bnw/" + name + ".png");
     }
 
     public int getBuyPrice() {

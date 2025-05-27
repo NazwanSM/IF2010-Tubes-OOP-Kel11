@@ -7,11 +7,13 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import Enum.FishRarity;
 import main.GamePanel;
 import entity.player.Player;
 import items.Fish;
 import World.Environment.Weather;
 import data.FishData;
+import data.RecipeData;
 import World.Environment.Season;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -46,7 +48,7 @@ public class FishingAction extends Action
 
     public void startFishing() 
     {
-        if (player.getEnergy() < 5) {
+        if (player.getEnergy() < -15) {
             gp.ui.addMessage("You don't have enough energy to fish!");
             return;
         }
@@ -149,7 +151,17 @@ public class FishingAction extends Action
             Fish caughtFish = fish;
             player.getInventory().addItem(caughtFish, 1);
             gp.manager.trackFishCaught(caughtFish, caughtFish.getRarity());
+            gp.playSE(7);
             JOptionPane.showMessageDialog(gp, "Congratulations! You caught a " + caughtFish.getName() + "!", "Fishing Success", JOptionPane.INFORMATION_MESSAGE, fishIcon);
+            if (gp.manager.getTotalFishCaught() >= 10) {
+                RecipeData.getRecipeById("recipe_3").setUnlocked(true);
+            }
+            if (fish.getRarity() == FishRarity.LEGENDARY) {
+                RecipeData.getRecipeById("recipe_11").setUnlocked(true);
+            }
+            if (fish.getName().equalsIgnoreCase("Pufferfish")) {
+                RecipeData.getRecipeById("recipe_4").setUnlocked(true);
+            }
         }
         else 
         {
