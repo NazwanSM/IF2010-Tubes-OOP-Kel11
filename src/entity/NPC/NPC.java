@@ -1,26 +1,36 @@
 package entity.NPC;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
+import main.GamePanel;
+import java.awt.Rectangle;
+import java.awt.Graphics2D;
 
-import entity.player.Player;
-import main.UI;
+public abstract class NPC {
+    protected String npcName;
+    protected int heartPoints;
+    protected List<String> lovedItems;
+    protected List<String> likedItems;
+    protected List<String> hatedItems;
+    protected String relationshipStatus;
+    protected BufferedImage npcImage;
+    protected GamePanel gp;
+    public boolean collision = false;
+    public int worldX, worldY;
+    public int width = 1, height = 1;
+    public Rectangle solidArea = new Rectangle(0, 0, 1, 1);
+    public int solidAreaDefaultX = 0;
+    public int solidAreaDefaultY = 0;
+    protected static final int MAX_HEART_POINTS = 150;
 
-public class NPC {
-    private String npcName;
-    private int heartPoints;
-    private List<String> lovedItems;
-    private List<String> likedItems;
-    private List<String> hatedItems;
-    private String relationshipStatus;
-    private static final int MAX_HEART_POINTS = 150;
-
-    public NPC(String npcName, List<String> lovedItems, List<String> likedItems, List<String> hatedItems) {
+    public  NPC(String npcName, List<String> lovedItems, List<String> likedItems, List<String> hatedItems, GamePanel gp) {
         this.npcName = npcName;
         this.lovedItems = lovedItems != null ? lovedItems : List.of();
         this.likedItems = likedItems != null ? likedItems : List.of();
         this.hatedItems = hatedItems;
         this.relationshipStatus = "Single";
         this.heartPoints = 0;
+        this.gp = gp;
     }
 
     public String getNPCName() {
@@ -65,7 +75,7 @@ public class NPC {
             return npcName + " looks at you with admiration: \"I feel like I can trust you with anything...\"";
         }
         else if (heartPoints >= 100) {
-            return npcName + " smiles warmly: \"You're someone I really care about.\"";
+            return npcName + " smiles warmly: \"You're someone I really \ncare about.\"";
         }
         else if (heartPoints >= 60) {
             return npcName + " says: \"It's nice spending time with you.\"";
@@ -74,7 +84,7 @@ public class NPC {
             return npcName + " nods: \"Oh, hey. Need something?\"";
         }
         else {
-            return npcName + " avoids eye contact: \"...Yes? Do I know you?\"";
+            return npcName + " avoids eye contact: \n" + "...Yes? Do I know you?\n";
         }
     }
 
@@ -116,28 +126,19 @@ public class NPC {
         }
     }
 
-    /**
-     * Untuk sekarang, kita akan biarkan ini sebagai placeholder,
-     * karena interaksi akan lebih banyak di-drive oleh Player dan UI.
-     */
-    public void startInteractionSequence(Player playerLogic, UI gameUI) { // Menggunakan Player data logic dan UI
-        // Daripada Scanner, saatnya menggunakan sistem dialog GUI Anda.
-        // 1. PlayerUI mendeteksi pemain dekat NPCUI dan menekan tombol aksi.
-        // 2. GamePanel/PlayerUI mendapatkan referensi ke AbstractNPCLogic ini.
-        // 3. Panggil metode yang sesuai di Player.java, misalnya player.chatting(this),
-        //    yang kemudian akan mengambil dialog dari this.getDialogue().
-        // 4. Dialog tersebut ditampilkan melalui gameUI.curretDialog dan gp.gameState = gp.dialogueState [cite: 5]
+    public void draw(Graphics2D g2, GamePanel gp) {
+        int screenX = worldX * gp.tileSize - gp.player.worldX + gp.player.screenX;
+        int screenY = worldY * gp.tileSize - gp.player.worldY + gp.player.screenY;
 
-        // Contoh: Jika aksi 'chat' dipilih (melalui GUI nantinya):
-        // String dialogue = getDialogue();
-        // gameUI.curretDialog = dialogue;
-        // gameUI.gp.gameState = gameUI.gp.dialogueState; // Mengatur game state untuk menampilkan dialog
-
-        System.out.println("Interaksi dengan " + npcName + " dimulai (Versi Logika). UI akan menangani tampilan.");
-        // Logika untuk menampilkan pilihan (Chat, Gift, etc.) akan ada di UI / Game State Manager Anda
+        g2.drawImage(
+            npcImage,
+            screenX,
+            screenY,
+            gp.tileSize * width,    // width dalam pixel
+            gp.tileSize * height,   // height dalam pixel
+            null
+        );
     }
 
-    // Anda bisa menambahkan metode abstrak di sini jika ada perilaku yang *harus*
-    // diimplementasikan secara unik oleh setiap NPC turunan.
-    // public abstract void performUniqueDailyRoutine();
+    abstract public void interact();
 }

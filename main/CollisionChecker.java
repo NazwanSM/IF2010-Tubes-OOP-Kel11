@@ -144,4 +144,59 @@ public class CollisionChecker {
         
         return index;
     }
+
+    public int checkNPC(Entity entity, boolean player) {
+        int index = 999;
+
+        for (int i = 0; i < gp.npcs[gp.currentMap].length; i++) {
+            if (gp.npcs[gp.currentMap][i] != null) {
+
+                int entitySolidAreaWorldX = entity.worldX + entity.solidArea.x;
+                int entitySolidAreaWorldY = entity.worldY + entity.solidArea.y;
+                
+                int npcSolidAreaWorldX = (gp.npcs[gp.currentMap][i].worldX * gp.tileSize) + gp.npcs[gp.currentMap][i].solidArea.x;
+                int npcSolidAreaWorldY = (gp.npcs[gp.currentMap][i].worldY * gp.tileSize) + gp.npcs[gp.currentMap][i].solidArea.y;
+                
+                java.awt.Rectangle entityRect = new java.awt.Rectangle(
+                    entitySolidAreaWorldX, 
+                    entitySolidAreaWorldY,
+                    entity.solidArea.width, 
+                    entity.solidArea.height
+                );
+                
+                java.awt.Rectangle npcRect = new java.awt.Rectangle(
+                    npcSolidAreaWorldX, 
+                    npcSolidAreaWorldY,
+                    gp.npcs[gp.currentMap][i].solidArea.width, 
+                    gp.npcs[gp.currentMap][i].solidArea.height
+                );
+
+                switch (entity.direction) {
+                    case "up":
+                        entityRect.y -= entity.speed;
+                        break;
+                    case "down":
+                        entityRect.y += entity.speed;
+                        break;
+                    case "left":
+                        entityRect.x -= entity.speed;
+                        break;
+                    case "right":
+                        entityRect.x += entity.speed;
+                        break;
+                }
+
+                if (entityRect.intersects(npcRect)) {
+                    if (gp.npcs[gp.currentMap][i].collision == true) {
+                        entity.collisionOn = true;
+                    }
+                    if (player == true) {
+                        index = i;
+                    }
+                }
+            }
+        }
+        
+        return index;
+    }
 }

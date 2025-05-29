@@ -7,6 +7,7 @@ import World.Farm;
 import World.Environment.Lighting;
 import data.NPCData;
 import entity.player.PlayerUI;
+import entity.NPC.NPC;
 import entity.object.SuperObject;
 import entity.player.Player;
 
@@ -62,9 +63,10 @@ public class GamePanel extends JPanel implements Runnable {
     public Player playerData;
     public PlayerUI player;
     public SuperObject[][] objects = new SuperObject[maxMap][20];
+    public NPC[][] npcs = new NPC[maxMap][6];
     public IStatisticTracker statisticTracker;
     public IStatisticProvider statisticProvider;
-    public StatisticsManager manager = new StatisticsManager(NPCData.getAllNPCNames());
+    public StatisticsManager manager = new StatisticsManager();
     public Farm farm;
     
     
@@ -79,6 +81,10 @@ public class GamePanel extends JPanel implements Runnable {
     public final int worldMapState = 6;
     public final int cheatState = 7;
     public final int cookingState = 8;
+    public final int watchState = 9;
+    public final int npcState = 10;
+    public final int giftingState = 11;
+    public final int sellingState = 12;
     public boolean alreadyProcessedCheatKey = false;
 
     public GamePanel() {
@@ -89,8 +95,8 @@ public class GamePanel extends JPanel implements Runnable {
         this.addMouseListener(mouseH);
         this.addMouseMotionListener(mouseH);
         this.setFocusable(true);
-        // this.statisticTracker = manager;
-        // this.statisticProvider = manager;
+        this.statisticTracker = manager;
+        this.statisticProvider = manager;
     }
     
     public void setupGame() {
@@ -134,6 +140,8 @@ public class GamePanel extends JPanel implements Runnable {
         
         this.farm = new Farm(farmNameInput, this.playerData, this);
 
+        NPCData.initialize(this);
+        
         int randomMapIndex = (int) (Math.random() * 5) + 1;
         
         tileM = new TileManager(this, randomMapIndex);
@@ -146,6 +154,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.lightingSystem.resetDay();
 
         aSetter.setObject(randomMapIndex);
+        aSetter.setNPC();
         eHandler = new EventHandler(this, randomMapIndex);
 
         gameState = playState;
@@ -197,7 +206,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (farm.getGameClock().getHours() == 2) {
-                playerData.performAction("Sleep", null);
+                playerData.performAction("Sleep", null, null);
             }
         }
         else if (gameState == pauseState) {
@@ -239,6 +248,13 @@ public class GamePanel extends JPanel implements Runnable {
             for (int i = 0; i < objects[currentMap].length; i++) {
                 if (objects[currentMap][i] != null) {
                     objects[currentMap][i].draw(g2, this);
+                }
+            }
+            
+            // NPC
+            for (int i = 0; i < npcs[currentMap].length; i++) {
+                if (npcs[currentMap][i] != null) {
+                    npcs[currentMap][i].draw(g2, this);
                 }
             }
     

@@ -43,22 +43,27 @@ public class VisitingAction extends Action {
         } else if (location.equals("Mayor Tadi House")) {
             gp.eHandler.teleport(6, 16, 16);
             gp.ui.addMessage("You are visiting Mayor Tadi's House.");
+            gp.manager.trackNPCVisit("Mayor Tadi");
             return true;
         } else if (location.equals("Caroline House")) {
             gp.eHandler.teleport(7, 13, 15);
             gp.ui.addMessage("You are visiting Caroline's House.");
+            gp.manager.trackNPCVisit("Caroline");
             return true;
         } else if (location.equals("Perry House")) {
             gp.eHandler.teleport(8, 18, 15);
             gp.ui.addMessage("You are visiting Perry's House.");
+            gp.manager.trackNPCVisit("Perry");
             return true;
         } else if (location.equals("Dasco House")) {
             gp.eHandler.teleport(9, 18, 14);
             gp.ui.addMessage("You are visiting Dasco's House.");
+            gp.manager.trackNPCVisit("Dasco");
             return true;
         } else if (location.equals("Abigail House")) {
             gp.eHandler.teleport(10, 16, 16);
             gp.ui.addMessage("You are visiting Abigail's House.");
+            gp.manager.trackNPCVisit("Abigail");
             return true;
         } else {
             gp.ui.addMessage("Unknown location: " + location);

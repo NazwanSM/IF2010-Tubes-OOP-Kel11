@@ -23,7 +23,7 @@ public class OBJ_Bed_3 extends SuperObject{
     @Override
     public void interact() {
         if (gp.keyH.enterPressed) {
-            gp.playerData.performAction("sleep", null);
+            gp.playerData.performAction("sleep", null, null);
             gp.keyH.enterPressed = false;
         }
     }

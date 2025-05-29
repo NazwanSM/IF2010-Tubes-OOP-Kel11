@@ -25,7 +25,7 @@ public class OBJ_TV extends SuperObject {
     @Override
     public void interact() {
         if (gp.keyH.enterPressed) {
-            gp.playerData.performAction("Watch", null);
+            gp.playerData.performAction("watch", null, null);
             gp.keyH.enterPressed = false;
         }
     }

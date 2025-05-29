@@ -36,13 +36,7 @@ public class KeyHandler implements KeyListener {
             }
         }
         else if (gp.gameState == gp.pauseState) {
-            switch (keyCode) {
-                case KeyEvent.VK_ESCAPE:
-                    gp.gameState = gp.playState;
-                    break;
-                default:
-                    break;
-            }
+            pauseState(keyCode);
         }
         else if (gp.gameState == gp.dialogueState) {
             switch (keyCode) {
@@ -62,9 +56,93 @@ public class KeyHandler implements KeyListener {
         else if (gp.gameState == gp.cookingState) {
             cookingState(keyCode);
         }
+        else if (gp.gameState == gp.watchState) {
+            switch (keyCode) {
+                case KeyEvent.VK_ENTER:
+                    gp.gameState = gp.playState;
+                    break;
+                case KeyEvent.VK_ESCAPE:
+                    gp.gameState = gp.playState;
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (gp.gameState == gp.npcState){
+            npcState(keyCode);
+        }
+        else if (gp.gameState == gp.giftingState){
+            inventoryState(keyCode);
+        }
+        else if (gp.gameState == gp.sellingState){
+            inventoryState(keyCode);
+        }
     }
 
     public void titleState(int keyCode){
+        gp.playSE(3);
+        switch (keyCode) {
+                case KeyEvent.VK_A:
+                    if (gp.ui.commandNum == 0) {
+                        lastNum = 0;
+                        gp.ui.commandNum = 4;
+                    }
+                    else {
+                        gp.ui.commandNum--;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_D:
+                    if (gp.ui.commandNum == 4) {
+                        gp.ui.commandNum = 0;
+                    }
+                    else {
+                        gp.ui.commandNum++;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_W:
+                    if (gp.ui.commandNum == 4) {
+                        gp.ui.commandNum = 0;
+                    }
+                    else {
+                        gp.ui.commandNum++;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_S:
+                    if (gp.ui.commandNum == 4) {
+                        gp.ui.commandNum = 0;
+                    }
+                    else {
+                        gp.ui.commandNum++;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_ENTER:
+                    if (gp.ui.commandNum == 0) {
+                        gp.setupNewGame();
+                    }
+                    else if (gp.ui.commandNum == 1) {
+                        // load game
+                    }
+                    else if (gp.ui.commandNum == 2) {
+                        // Help
+                    }
+                    else if (gp.ui.commandNum == 3) {
+                        // Exit
+                        System.exit(0);
+                    }
+                    else if (gp.ui.commandNum == 4) {
+                        // Credits
+                    }
+                    break;
+                default:
+                    break;
+            }
+    }
+
+    public void pauseState(int keyCode){
         gp.playSE(3);
         switch (keyCode) {
                 case KeyEvent.VK_A:
@@ -191,8 +269,7 @@ public class KeyHandler implements KeyListener {
                         // Credits
                     }
                     else if (gp.ui.commandNum == 9) {
-                        // Back to title
-                        gp.gameState = gp.titleState;
+                        gp.gameState = gp.playState;
                     }
                     break;
                 default:
@@ -388,31 +465,31 @@ public class KeyHandler implements KeyListener {
                     break;
                 case KeyEvent.VK_ENTER:
                     if (gp.ui.worldMapNum == 0) {
-                        gp.playerData.performAction("visit", "Forest River");
+                        gp.playerData.performAction("visit", "Forest River", null);
                     }
                     else if (gp.ui.worldMapNum == 1) {
-                        gp.playerData.performAction("visit", "Mountain Lake" );
+                        gp.playerData.performAction("visit", "Mountain Lake", null);
                     }
                     else if (gp.ui.worldMapNum == 2) {
-                        gp.playerData.performAction("visit", "Ocean");
+                        gp.playerData.performAction("visit", "Ocean", null);
                     }
                     else if (gp.ui.worldMapNum == 3) {
-                        gp.playerData.performAction("visit", "Store");
+                        gp.playerData.performAction("visit", "Store", null);
                     }
                     else if (gp.ui.worldMapNum == 4) {
-                        gp.playerData.performAction("visit", "Mayor Tadi House");
+                        gp.playerData.performAction("visit", "Mayor Tadi House", null);
                     }
                     else if (gp.ui.worldMapNum == 5) {
-                        gp.playerData.performAction("visit", "Caroline House");
+                        gp.playerData.performAction("visit", "Caroline House", null);
                     }
                     else if (gp.ui.worldMapNum == 6) {
-                        gp.playerData.performAction("visit", "Perry House");
+                        gp.playerData.performAction("visit", "Perry House", null);
                     }
                     else if (gp.ui.worldMapNum == 7) {
-                        gp.playerData.performAction("visit", "Dasco House");
+                        gp.playerData.performAction("visit", "Dasco House", null);
                     }
                     else if (gp.ui.worldMapNum == 8) {
-                        gp.playerData.performAction("visit", "Abigail House");
+                        gp.playerData.performAction("visit", "Abigail House", null);
                     }
                     gp.gameState = gp.playState;
                     gp.playSE(3);
@@ -450,6 +527,83 @@ public class KeyHandler implements KeyListener {
                 break;
             case KeyEvent.VK_ENTER:
                 enterPressed = true;
+                break;
+            case KeyEvent.VK_ESCAPE:
+                gp.gameState = gp.playState;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void npcState(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.VK_W:
+                if (gp.ui.npcNum == 0) {
+                    gp.ui.npcNum = 3;
+                }
+                else {
+                    gp.ui.npcNum--;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_S:
+                if (gp.ui.npcNum == 3) {
+                    gp.ui.npcNum = 0;
+                }
+                else {
+                    gp.ui.npcNum++;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_A:
+                if (gp.ui.npcNum == 0) {
+                    gp.ui.npcNum = 3;
+                }
+                else {
+                    gp.ui.npcNum--;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_D:
+                if (gp.ui.npcNum == 3) {
+                    gp.ui.npcNum = 0;
+                }
+                else {
+                    gp.ui.npcNum++;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_ENTER:
+                if (gp.ui.npcNum == 0) {
+                    if (gp.currentMap == 5){
+                        gp.playerData.performAction("chat", "Emily", null);
+                    }
+                    else if (gp.currentMap == 6){
+                        gp.playerData.performAction("chat", "Mayor Tadi", null);
+                    }
+                    else if (gp.currentMap == 7){
+                        gp.playerData.performAction("chat", "Caroline", null);
+                    }
+                    else if (gp.currentMap == 8){
+                        gp.playerData.performAction("chat", "Perry", null);
+                    }
+                    else if (gp.currentMap == 9){
+                        gp.playerData.performAction("chat", "Dasco", null);
+                    }
+                    else if (gp.currentMap == 10){
+                        gp.playerData.performAction("chat", "Abigail", null);
+                    }
+                }
+                else if (gp.ui.npcNum == 1) {
+                    gp.gameState = gp.giftingState;
+                }
+                else if (gp.ui.npcNum == 2) {
+                    gp.playerData.performAction("propose", null, null);
+                }
+                else if (gp.ui.npcNum == 3) {
+                    gp.playerData.performAction("marry", null, null);
+                }
                 break;
             case KeyEvent.VK_ESCAPE:
                 gp.gameState = gp.playState;

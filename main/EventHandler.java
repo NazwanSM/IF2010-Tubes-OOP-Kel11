@@ -352,7 +352,7 @@ public class EventHandler {
 
             else if(hit(1, 12, 8 , "any")) {
                 if (gp.keyH.enterPressed) {
-                    gp.playerData.performAction("sleep", null);
+                    gp.playerData.performAction("sleep", null, null);
                 }
 
                 gp.keyH.enterPressed = false;
@@ -394,6 +394,7 @@ public class EventHandler {
         previousEventY = gp.player.worldY;
         canTouchEvent = false;
         gp.aSetter.setObject(randomMapIndex);
+        gp.aSetter.setNPC();
         gp.playSE(1);
     }
 }

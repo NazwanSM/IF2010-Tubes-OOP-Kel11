@@ -1,7 +1,6 @@
 package entity.player;
 
 import entity.NPC.NPC;
-import World.Environment.GameClock;
 import actions.*;
 import data.RecipeData;
 import items.Items;
@@ -15,11 +14,11 @@ public class Player {
     private NPC partner;
     private int gold;
     private Inventory inventory;
-    private GameClock gameClock;
     public static final int MAX_ENERGY = 100;
     public static final int MIN_ENERGY = -20;
     private IStatisticTracker statisticTracker;
     private GamePanel gp;
+    private static int proposingDay;
 
     public Player(String name, String gender, String famName, int gold, GamePanel gp) {
         this.name = name;
@@ -68,6 +67,14 @@ public class Player {
         return MAX_ENERGY;
     }
 
+    public static int getProposingDay() {
+        return proposingDay;
+    }
+
+    public static void setProposingDay(int proposingDay) {
+        Player.proposingDay = proposingDay;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -80,7 +87,7 @@ public class Player {
         if (energy > MAX_ENERGY) {
             this.energy = MAX_ENERGY;
         } else if (energy <= MIN_ENERGY) {
-            performAction("Sleep", null);
+            performAction("Sleep", null, null);
         } else {
             this.energy = energy;
         }
@@ -138,7 +145,7 @@ public class Player {
         inventory.removeItem(item, amount); 
     }
 
-    public void performAction(String actionName, String parameter) {
+    public void performAction(String actionName, String parameter, Items item) {
         switch (actionName.toLowerCase()) { 
             case "tidur":
             case "sleep":
@@ -166,113 +173,64 @@ public class Player {
                 CookingAction memasak = new CookingAction(this, RecipeData.getRecipeById(parameter), RecipeData.getRecipeById(parameter).getResult() ,this.gp);
                 memasak.executeAction();
                 break;
-        }
-    }
-
-
-
-    public void chatting(NPC npc) {
-        System.out.println("Chatting with " + npc.getNPCName() + ": " + npc.getDialogue());
-        npc.increaseHeartPoints(10);
-        decreaseEnergy(10);
-        gameClock.advance(10);
-        
-        this.statisticTracker.trackNPCChat(npc.getNPCName());
-    }
-
-    public void gifting(NPC npc, Items gift) {
-        if (inventory.hasItem(gift)) {
-            if (npc.getLovedItems().contains(gift.getName())) {
-                npc.increaseHeartPoints(25); 
-            }
-            else if (npc.getLikedItems().contains(gift.getName())) {
-                npc.increaseHeartPoints(20); 
-            }
-            else if (npc.getHatedItems().contains(gift.getName())) {
-                npc.decreaseHeartPoints(25); 
-            }
-
-            System.out.println("Giving " + gift.getName() + " to " + npc.getNPCName() + ".");
-            removeItemFromInventory(gift, 1); // asumsi amount of gift selalu 1, nanti diganti kalo ada perubahan
-
-            gameClock.advance(10);
-            decreaseEnergy(5);
-        } else {
-            System.out.println("You don't have this item in your inventory."); // implementasi ini blom tentu dipake
+            case "menonton":
+            case "watch":
+                WatchingAction menonton = new WatchingAction(this, this.gp);
+                menonton.executeAction();
+                break;
+            case "berbincang":
+            case "chat":
+                NPC npcToChat = gp.npcs[gp.currentMap][0];
+                ChattingAction chatting = new ChattingAction(this, npcToChat, this.gp);
+                chatting.executeAction();
+                break;
+            case "memberi hadiah":
+            case "gifting":
+                NPC npcToGift = gp.npcs[gp.currentMap][0];
+                Items giftItem = inventory.getItemByName(parameter);
+                GiftingAction gifting = new GiftingAction(this, npcToGift, this.gp, giftItem);
+                gifting.executeAction();
+                break;
+            case "melamar":
+            case "propose":
+                NPC npcToPropose = gp.npcs[gp.currentMap][0];
+                ProposingAction proposing = new ProposingAction(this, npcToPropose, this.gp);
+                proposing.executeAction();
+                break;
+            case "menikah":
+            case "marry":
+                NPC npcToMarry = gp.npcs[gp.currentMap][0];
+                MarryingAction marrying = new MarryingAction(this, npcToMarry, this.gp);
+                marrying.executeAction();
+                gp.gameState = gp.playState;
+                break;
+            case "menjual":
+            case "sell":
+                SellingAction menjual = new SellingAction(this, item, this.gp);
+                menjual.executeAction();
+                break;
         }
     }
 
     public boolean isProposeable(NPC npc) {
         if (inventory.getItemByName("Proposal Ring") == null) {
-            System.out.println("You need a Proposal Ring to propose.");
             return false;
         }
         int heartPoint = npc.getHeartPoints();
         String relationshipStatus = npc.getRelationshipStatus();
 
-        if (partner == null && heartPoint == 150 && relationshipStatus.equalsIgnoreCase("single")) {
+        if (partner == null && heartPoint == 150 && relationshipStatus.equalsIgnoreCase("single") && inventory.getItemByName("Proposal Ring") != null) {
             return true;
         } else {
-            if (partner != null) {
-                System.out.println("You are already in a relationship with " + partner.getNPCName() + ".");
-            } else if (!relationshipStatus.equalsIgnoreCase("single")) {
-                System.out.println(npc.getNPCName() + " is not single.");
-            } else {
-                System.out.println(npc.getNPCName() + "'s heart points are not enough.");
-            }
             return false;
-        }
-    }
-
-    public void propose(NPC npc) {
-        gameClock.advance(60);
-        if (isProposeable(npc)) {
-            partner = npc;
-            npc.setRelationshipStatus("Fiance");
-            Items proposalRing = inventory.getItemByName("Proposal Ring");
-            gifting(npc, proposalRing);
-            decreaseEnergy(10);
-            System.out.println("You proposed to " + npc.getNPCName() + ".");
-        } else {
-            decreaseEnergy(20);
-            System.out.println("You are rejected");
         }
     }
 
     public boolean isMarriable(NPC npc) {
-        if (partner != null && partner.equals(npc) && partner.getRelationshipStatus().equalsIgnoreCase("fiance")) {
+        if (partner != null && partner.equals(npc) && partner.getRelationshipStatus().equalsIgnoreCase("fiance") && proposingDay < gp.farm.getDay()) {
             return true;
         } else {
-            System.out.println("You are not engaged to " + npc.getNPCName() + ".");
-
             return false;
-        }
-    }
-
-    public void marry(NPC npc) {
-        if (isMarriable(npc)) {
-            partner.setRelationshipStatus("Married");
-            decreaseEnergy(80);
-
-            int currentHour = gameClock.getHours();
-            int currentMinute = gameClock.getMinutes();
-            int targetHour = 22;
-            int targetMinute = 0;
-
-            int currentTotalMinutes = currentHour * 60 + currentMinute;
-            int targetTotalMinutes = targetHour * 60 + targetMinute;
-            int minutesToAdvance = targetTotalMinutes - currentTotalMinutes;
-
-            if (minutesToAdvance < 0) {
-                minutesToAdvance += 24 * 60; // skip ke 22:00 hari berikutnya (opsional)
-            }
-
-            gameClock.advance(minutesToAdvance);
-
-            System.out.println("You are now married to " + partner.getNPCName() + ".");
-            System.out.println("Time has skipped to 22:00. You are back home.");
-        } else {
-            System.out.println("You are not engaged to " + npc.getNPCName() + ".");
         }
     }
 }

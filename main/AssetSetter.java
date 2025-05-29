@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import data.NPCData;
+import entity.NPC.*;
 import entity.object.*;
 
 public class AssetSetter {
@@ -162,7 +164,151 @@ public class AssetSetter {
         }
     }
 
+    public void setNPC() {
+        if (gp.currentMap == 5) {
+            int[][] npcMap = loadNPCMap("/resource/maps/npc_map" + gp.currentMap + ".txt", gp.maxWorldCol, gp.maxWorldRow);
+            int npcIndex = 0;
+
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                for (int col = 0; col < gp.maxWorldCol; col++) {
+                    int id = npcMap[col][row];
+                    if (id == 0) continue;
+
+                    switch (id) {
+                        case 1: 
+                            Emily emily = (Emily) NPCData.getNPCByName("Emily");
+                            emily.worldX = col;
+                            emily.worldY = row;
+                            gp.npcs[gp.currentMap][npcIndex++] = emily;
+                            break;
+                    }
+                }
+            }
+        }
+        else if (gp.currentMap == 6) {
+            int[][] npcMap = loadNPCMap("/resource/maps/npc_map" + gp.currentMap + ".txt", gp.maxWorldCol, gp.maxWorldRow);
+            int npcIndex = 0;
+
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                for (int col = 0; col < gp.maxWorldCol; col++) {
+                    int id = npcMap[col][row];
+                    if (id == 0) continue;
+
+                    switch (id) {
+                        case 1: 
+                            MayorTadi mayorTadi = (MayorTadi) NPCData.getNPCByName("Mayor Tadi");
+                            mayorTadi.worldX = col;
+                            mayorTadi.worldY = row;
+                            gp.npcs[gp.currentMap][npcIndex++] = mayorTadi;
+                            break;
+                    }
+                }
+            }
+        }
+        else if (gp.currentMap == 7) {
+            int[][] npcMap = loadNPCMap("/resource/maps/npc_map" + gp.currentMap + ".txt", gp.maxWorldCol, gp.maxWorldRow);
+            int npcIndex = 0;
+
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                for (int col = 0; col < gp.maxWorldCol; col++) {
+                    int id = npcMap[col][row];
+                    if (id == 0) continue;
+
+                    switch (id) {
+                        case 1: 
+                            Caroline caroline = (Caroline) NPCData.getNPCByName("Caroline");
+                            caroline.worldX = col;
+                            caroline.worldY = row;
+                            gp.npcs[gp.currentMap][npcIndex++] = caroline;
+                            break;
+                    }
+                }
+            }
+        }
+        else if (gp.currentMap == 8) {
+            int[][] npcMap = loadNPCMap("/resource/maps/npc_map" + gp.currentMap + ".txt", gp.maxWorldCol, gp.maxWorldRow);
+            int npcIndex = 0;
+
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                for (int col = 0; col < gp.maxWorldCol; col++) {
+                    int id = npcMap[col][row];
+                    if (id == 0) continue;
+
+                    switch (id) {
+                        case 1: 
+                            Perry perry = (Perry) NPCData.getNPCByName("Perry");
+                            perry.worldX = col;
+                            perry.worldY = row;
+                            gp.npcs[gp.currentMap][npcIndex++] = perry;
+                            break;
+                    }
+                }
+            }
+        }
+        else if (gp.currentMap == 9) {
+            int[][] npcMap = loadNPCMap("/resource/maps/npc_map" + gp.currentMap + ".txt", gp.maxWorldCol, gp.maxWorldRow);
+            int npcIndex = 0;
+
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                for (int col = 0; col < gp.maxWorldCol; col++) {
+                    int id = npcMap[col][row];
+                    if (id == 0) continue;
+
+                    switch (id) {
+                        case 1: 
+                            Dasco dasco = (Dasco) NPCData.getNPCByName("Dasco");
+                            dasco.worldX = col;
+                            dasco.worldY = row;
+                            gp.npcs[gp.currentMap][npcIndex++] = dasco;
+                            break;
+                    }
+                }
+            }
+        }
+        else if (gp.currentMap == 10) {
+            int[][] npcMap = loadNPCMap("/resource/maps/npc_map" + gp.currentMap + ".txt", gp.maxWorldCol, gp.maxWorldRow);
+            int npcIndex = 0;
+
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                for (int col = 0; col < gp.maxWorldCol; col++) {
+                    int id = npcMap[col][row];
+                    if (id == 0) continue;
+
+                    switch (id) {
+                        case 1: 
+                            Abigail abigail = (Abigail) NPCData.getNPCByName("Abigail");
+                            abigail.worldX = col;
+                            abigail.worldY = row;
+                            gp.npcs[gp.currentMap][npcIndex++] = abigail;
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
     public int[][] loadObjectMap(String filePath, int maxCols, int maxRows) {
+        int[][] map = new int[maxCols][maxRows];
+        try {
+            InputStream is = getClass().getResourceAsStream(filePath);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line;
+            int row = 0;
+            while ((line = br.readLine()) != null && row < maxRows) {
+                String[] numbers = line.trim().split("\\s+");
+                for (int col = 0; col < numbers.length && col < maxCols; col++) {
+                    map[col][row] = Integer.parseInt(numbers[col]);
+                }
+                row++;
+            }
+            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+            return map;
+    }
+
+    public int[][] loadNPCMap(String filePath, int maxCols, int maxRows) {
         int[][] map = new int[maxCols][maxRows];
         try {
             InputStream is = getClass().getResourceAsStream(filePath);

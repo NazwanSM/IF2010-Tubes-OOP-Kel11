@@ -7,7 +7,6 @@ import Enum.FishRarity;
 import items.Fish;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Collections;
 
 public class StatisticsManager implements IStatisticTracker, IStatisticProvider {
@@ -32,13 +31,16 @@ public class StatisticsManager implements IStatisticTracker, IStatisticProvider 
     private boolean goldMilestoneAchieved = false;
     private boolean marriageMilestoneAchieved = false;
     private final int GOLD_MILESTONE_TARGET = 17209; 
-    private final int DAYS_PER_SEASON = 10; 
+    private final int DAYS_PER_SEASON = 10;
+    private List<String> allNPCNames = List.of(
+            "Mayor Tadi", "Caroline", "Perry", "Dasco" , "Emily" , "Abigail"
+        );
 
-    public StatisticsManager(List<String> allNpcNames) {
+    public StatisticsManager() {
         this.npcChatFrequencies = new HashMap<>();
         this.npcGiftFrequencies = new HashMap<>();
         this.npcVisitFrequencies = new HashMap<>();
-        this.internalNpcNameList = new ArrayList<>(allNpcNames);
+        this.internalNpcNameList = allNPCNames;
 
         for (String npcName : this.internalNpcNameList) {
             this.npcChatFrequencies.put(npcName, 0);

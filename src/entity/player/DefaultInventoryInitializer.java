@@ -34,7 +34,9 @@ public class DefaultInventoryInitializer {
         Items wheat = CropsData.getCropByName("Wheat");
         playerInventory.addItem(wheat, 5);
         Items firewood = MiscData.getMiscByName("Firewood");
-        playerInventory.addItem(firewood, 5);
+        playerInventory.addItem(firewood, 100);
+        Items proposalRing = MiscData.getMiscByName("Proposal Ring");
+        playerInventory.addItem(proposalRing, 1);
 
         System.out.println("Inventaris default berhasil diinisialisasi.");
     }

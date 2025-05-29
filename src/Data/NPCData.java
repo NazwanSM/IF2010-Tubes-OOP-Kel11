@@ -1,71 +1,45 @@
-package data;
+package data; 
 
-import java.util.ArrayList;
 import java.util.List;
-import entity.NPC.NPC;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map;
+import java.util.HashMap;
+import entity.NPC.*;
+import main.GamePanel;
 
 public class NPCData {
-    private static List<NPC> allNPCs;
 
-    static {
-        allNPCs = new ArrayList<>();
+    private static final List<NPC> allNPC = new ArrayList<>();
+    private static final Map<String, NPC> npcByName = new HashMap<>();
+    private static boolean initialized = false;
 
-        allNPCs.add(new NPC("Mayor Tadi",
-            List.of("Legend"),
-            List.of("Angler", "Crimsonfish", "Glacierfish"),
-            null // semua item lain dianggap hate
-        ));
-
-        allNPCs.add(new NPC("Caroline",
-            List.of("Firewood", "Coal"),
-            List.of("Potato", "Wheat"),
-            List.of("Hot Pepper")
-        ));
-
-        allNPCs.add(new NPC("Perry",
-            List.of("Cranberry", "Blueberry"),
-            List.of("Wine"),
-            List.of("Bullhead", "Carp", "Chub", "Largemouth Bass", "Rainbow Trout", "Sturgeon",
-                    "Midnight Carp", "Flounder", "Halibut", "Octopus", "Pufferfish", "Sardine",
-                    "Super Cucumber", "Catfish", "Salmon", "Angler", "Crimsonfish", "Glacierfish", "Legend")
-        ));
-
-        allNPCs.add(new NPC("Dasco",
-            List.of("The Legends of Spakbor", "Cooked Pig's Head", "Wine", "Fugu", "Spakbor Salad"),
-            List.of("Fish Sandwich", "Fish Stew", "Baguette", "Fish n' Chips"),
-            List.of("Legend", "Grape", "Cauliflower", "Wheat", "Pufferfish", "Salmon")
-        ));
-
-        allNPCs.add(new NPC("Emily",
-            List.of("Parsnip Seeds", "Cauliflower Seeds", "Potato Seeds", "Wheat Seeds", "Blueberry Seeds",
-                    "Tomato Seeds", "Hot Pepper Seeds", "Melon Seeds", "Cranberry Seeds", "Pumpkin Seeds", "Grape Seeds"),
-            List.of("Catfish", "Salmon", "Sardine"),
-            List.of("Coal", "Wood")
-        ));
-
-        allNPCs.add(new NPC("Abigail",
-            List.of("Blueberry", "Melon", "Pumpkin", "Grape", "Cranberry"),
-            List.of("Baguette", "Pumpkin Pie", "Wine"),
-            List.of("Hot Pepper", "Cauliflower", "Parsnip", "Wheat")
-        ));
+    public static void initialize(GamePanel gp) {
+        if (initialized) return;
+        
+        addNPC(new MayorTadi(gp));
+        addNPC(new Caroline(gp));
+        addNPC(new Perry(gp));
+        addNPC(new Dasco(gp));
+        addNPC(new Emily(gp));
+        addNPC(new Abigail(gp));
+        
+        initialized = true;
     }
 
-    public static List<NPC> getAllNPCs() {
-        return allNPCs;
+    private static void addNPC(NPC npc) {
+        allNPC.add(npc);
+        npcByName.put(npc.getNPCName().toLowerCase(), npc);
+    }
+
+    public static List<NPC> getAllNPC() {
+        return Collections.unmodifiableList(allNPC);
     }
 
     public static NPC getNPCByName(String name) {
-        return allNPCs.stream()
-                .filter(n -> n.getNPCName().equalsIgnoreCase(name))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public static List<String> getAllNPCNames() {
-        List<String> npcNames = new ArrayList<>();
-        for (NPC npc : allNPCs) {
-            npcNames.add(npc.getNPCName());
+        if (name == null) {
+            return null;
         }
-        return npcNames;
+        return npcByName.get(name.toLowerCase());
     }
 }

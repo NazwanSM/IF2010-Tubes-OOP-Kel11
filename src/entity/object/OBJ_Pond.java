@@ -23,7 +23,7 @@ public class OBJ_Pond extends SuperObject {
     @Override
     public void interact() {
         if (gp.keyH.enterPressed) {
-            gp.playerData.performAction("fishing", null);
+            gp.playerData.performAction("fishing", null, null);
             gp.keyH.enterPressed = false;
         }
     }

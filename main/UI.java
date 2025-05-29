@@ -18,6 +18,9 @@ import data.RecipeData;
 import items.Edible;
 import items.Items;
 import items.Recipe;
+import items.equipment.Equipment;
+import items.Sellable;
+import java.util.HashMap;
 
 public class UI {
     
@@ -29,6 +32,8 @@ public class UI {
     ArrayList<Integer> messageCounter = new ArrayList<>();
     public boolean gameFinished = false; // ini buat nanti kalau udah ending
     public String currentDialog = "";
+    Map<Items, Integer> soldItemsMap = new HashMap<>();
+    public List<Items> soldItems;
     private BufferedImage titleScreenBackground;
     private BufferedImage newGame;
     private BufferedImage loadGame;
@@ -83,6 +88,14 @@ public class UI {
     private BufferedImage staminaBar4;
     private BufferedImage staminaBar5;
     private BufferedImage cookingPanel;
+    private BufferedImage cloud;
+    private BufferedImage sunnyTV;
+    private BufferedImage rainyTV;
+    private BufferedImage chatSelected;
+    private BufferedImage giftSelected;
+    private BufferedImage proposeSelected;
+    private BufferedImage marrySelected;
+    private BufferedImage shippingBinUI;
     public int commandNum = 0;
     public int titleScreenState = 0;
     public int slotCol = 0;
@@ -90,6 +103,7 @@ public class UI {
     public int cookCol = 0;
     public int cookRow = 0;
     public int worldMapNum = 0;
+    public int npcNum = 0;
 
     
 
@@ -206,6 +220,22 @@ public class UI {
             staminaBar5 = ImageIO.read(bgIs);
             bgIs = getClass().getResourceAsStream("/resource/ui/CookingPanel.png");
             cookingPanel = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/Cloud.png");
+            cloud = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/SunnyTV.png");
+            sunnyTV = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/RainyTV.png");
+            rainyTV = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/ChatSelected.png");
+            chatSelected = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/GiftSelected.png");
+            giftSelected = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/ProposeSelected.png");
+            proposeSelected = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/MarrySelected.png");
+            marrySelected = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/shippingbinUI.png");
+            shippingBinUI = ImageIO.read(bgIs);
         }
         catch (FontFormatException e) {
             e.printStackTrace();
@@ -227,8 +257,12 @@ public class UI {
             drawTitleScreen();
         }
         else {
+            if (gp.farm.isRainy()){
+                drawCloudHUD();
+            }
             drawClockHUD();
             drawStaminaBar();
+            
             if(gp.gameState == gp.playState) {
                 drawMessage();
             }
@@ -258,6 +292,20 @@ public class UI {
             }
             else if(gp.gameState == gp.cookingState) {
                 drawCookingScreen();
+                drawMessage();
+            }
+            else if(gp.gameState == gp.watchState){
+                drawWatchScreen();
+            }
+            else if(gp.gameState == gp.npcState){
+                drawNPCScreen();
+            }
+            else if(gp.gameState == gp.giftingState){
+                drawGiftingScreen();
+            }
+            else if(gp.gameState == gp.sellingState){
+                drawSellingScreen();
+                drawShippingBin();
                 drawMessage();
             }
         }
@@ -369,10 +417,63 @@ public class UI {
         }
     }
 
+    public void drawCloudHUD() {
+        g2.drawImage(cloud, gp.tileSize - gp.tileSize / 2 - gp.tileSize / 2, gp.tileSize - gp.tileSize / 2 - gp.tileSize / 2, gp.tileSize * 16, gp.tileSize * 3, null);
+    }
+
     public void drawTitleScreen() {
 
         if (titleScreenState == 0) {
 
+            g2.drawImage(titleScreenBackground, 0, 0, gp.screenWidth, gp.screenHeight, null);
+            
+            int x = gp.screenWidth / 2 - gp.tileSize / 2;
+            int y = gp.tileSize * 6;
+            g2.drawImage(playerDown, x, y, gp.tileSize, gp.tileSize*2, null);
+    
+            x = gp.screenWidth / 2 - gp.tileSize * 5 + gp.tileSize / 4;
+            y = gp.tileSize * 8 + gp.tileSize / 4;
+            g2.drawImage(newGame, x, y, gp.tileSize * 4 / 2, gp.tileSize * 3 / 2, null);
+            if (commandNum == 0) {
+                g2.drawImage(newGameSelected, x, y, gp.tileSize * 4 / 2, gp.tileSize * 3 / 2, null);
+            }
+
+            x = gp.screenWidth / 2 + gp.tileSize / 4;
+            y = gp.tileSize * 8 + gp.tileSize / 4;
+            g2.drawImage(help, x, y, gp.tileSize * 4 / 2, gp.tileSize * 3 / 2, null);
+            if (commandNum == 2) {
+                g2.drawImage(helpSelected, x, y, gp.tileSize * 4 / 2, gp.tileSize * 3 / 2, null);
+            }
+    
+            x = gp.screenWidth / 2 - gp.tileSize * 2 - gp.tileSize / 4;
+            y = gp.tileSize * 8 + gp.tileSize / 4;
+            g2.drawImage(loadGame, x, y, gp.tileSize * 4 / 2, gp.tileSize * 3 / 2, null);
+            if (commandNum == 1) {
+                g2.drawImage(loadGameSelected, x, y, gp.tileSize * 4 / 2, gp.tileSize * 3 / 2, null);
+            }
+    
+            x = gp.screenWidth / 2 + gp.tileSize * 3 - gp.tileSize / 4;
+            y = gp.tileSize * 8 + gp.tileSize / 4;
+            g2.drawImage(exitGame, x, y, gp.tileSize * 4 / 2, gp.tileSize * 3 / 2, null);
+            if (commandNum == 3) {
+                g2.drawImage(exitGameSelected, x, y, gp.tileSize * 4 / 2, gp.tileSize * 3 / 2, null);
+            }
+    
+            x = gp.screenWidth / 2 - gp.tileSize - gp.tileSize / 4;
+            y = gp.tileSize * 10 + gp.tileSize / 4;
+            g2.drawImage(credits, x, y, gp.tileSize * 7 / 3, gp.tileSize * 3 / 3, null);
+            if (commandNum == 4) { 
+                g2.drawImage(creditsSelected, x, y, gp.tileSize * 7 / 3, gp.tileSize * 3 / 3, null);
+            }
+    
+        }
+
+        else if (titleScreenState == 1){
+
+        }
+    }
+
+    public void drawPauseScreen() {
             g2.drawImage(titleScreenBackground, 0, 0, gp.screenWidth, gp.screenHeight, null);
             
             int x = gp.screenWidth / 2 - gp.tileSize / 2;
@@ -447,22 +548,7 @@ public class UI {
             g2.drawImage(back, x, y, gp.tileSize * 7 / 3, gp.tileSize * 3 / 3, null);
             if (commandNum == 9) { 
                 g2.drawImage(backSelected, x, y, gp.tileSize * 7 / 3, gp.tileSize * 3 / 3, null);
-            }
-        }
-
-        else if (titleScreenState == 1){
-
-        }
-    }
-
-    public void drawPauseScreen() {
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
-        String text = "PAUSED";
-        int x = getXforCenteredText(text);
-        int y = gp.screenHeight / 2;
-
-        g2.drawString(text, x, y);
-        
+            }        
     }
     
     public void drawDialogueScreen() {
@@ -600,7 +686,7 @@ public class UI {
             g2.drawString(itemNum + " - " + itemName, textX, textY + gp.tileSize * 6);
             if (gp.keyH.enterPressed) {
                 if (selectedItem instanceof Edible){
-                    gp.playerData.performAction("eat", selectedItem.getName());;
+                    gp.playerData.performAction("eat", selectedItem.getName(), null);;
                     addMessage(selectedItem.getName() + " eaten, restoring " + ((Edible) selectedItem).getEnergy() + " energy.");
                     gp.playSE(4);
                 }
@@ -754,12 +840,233 @@ public class UI {
             g2.drawString(recipeName + " - " + foodName, textX, textY + gp.tileSize * 6);
             g2.drawString(isUnlocked, textX, textY + gp.tileSize * 6 + 30);
             if (gp.keyH.enterPressed) {
-                gp.playerData.performAction("cook", selectedItem.getItemID());
+                gp.playerData.performAction("cook", selectedItem.getItemID(), null);
                 gp.keyH.enterPressed = false;
             }
         } else {
             g2.drawString("No recipe selected", textX, textY + gp.tileSize * 6);
         }
+    }
+
+    public void drawWatchScreen() {
+        int drawX = gp.tileSize * 5;
+        int drawY = gp.tileSize * 3;
+        int width = gp.tileSize * 6;
+        int height = gp.tileSize * 6;
+        
+        if (!gp.farm.isRainy()){
+            g2.drawImage(sunnyTV, drawX, drawY, width, height, null);
+        }
+        else {
+            g2.drawImage(rainyTV, drawX, drawY, width, height, null);
+        }
+
+    }
+
+    public void drawNPCScreen() {
+        int imageX = gp.tileSize * 4;
+        int imageY = gp.tileSize * 4;
+        int width = gp.tileSize * 6 / 2;
+        int height = gp.tileSize * 6 / 2;
+
+        if (npcNum == 0){
+            g2.drawImage(chatSelected, imageX, imageY, width, height, null);
+        }
+        else if (npcNum == 1){
+            g2.drawImage(giftSelected, imageX, imageY, width, height, null);
+        }
+        else if (npcNum == 2){
+            g2.drawImage(proposeSelected, imageX, imageY, width, height, null);
+        }
+        else if (npcNum == 3){
+            g2.drawImage(marrySelected, imageX, imageY, width, height, null);
+        }
+    }
+
+    public void drawGiftingScreen() {
+        int x = gp.tileSize / 2 - gp.tileSize - gp.tileSize / 8;
+        int y = gp.tileSize / 2 - gp.tileSize;
+        int width = gp.tileSize * 7;
+        int height = gp.tileSize * 7;
+
+        g2.drawImage(inventoryPanel, x + gp.tileSize, y + gp.tileSize, width, height, null);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
+        g2.setColor(new Color(88,43,42,255));
+        x += gp.tileSize + gp.tileSize / 4;
+        y += gp.tileSize + gp.tileSize / 4;
+        g2.drawString("Gifting", x, y);
+
+        final int slotXstart = x + gp.tileSize - gp.tileSize / 4;
+        final int slotYstart = y + gp.tileSize - gp.tileSize / 4;
+        int slotX = slotXstart;
+        int slotY = slotYstart;
+        int slotSize = gp.tileSize;
+
+        Map<Items, Integer> playerItemsMap = gp.playerData.getInventory().checkInventory();
+        List<Items> itemsList = new ArrayList<>(playerItemsMap.keySet());
+
+        for (int i = 0; i < itemsList.size(); i++){
+            Items item = itemsList.get(i);
+            BufferedImage itemImage = item.getItemImage();
+            if (itemImage != null) {
+                g2.drawImage(itemImage, slotX, slotY, gp.tileSize, gp.tileSize, null);
+            }
+            slotX += slotSize;
+            if (i == 4 || i == 9 || i == 14) {
+                slotX = slotXstart;
+                slotY += slotSize;
+            }
+        }
+
+        int cursorX = slotXstart + (slotSize * slotCol);
+        int cursorY = slotYstart + (slotSize * slotRow);
+        int cursorWidth = gp.tileSize;
+        int cursorHeight = gp.tileSize;
+
+        g2.drawImage(inventorySelected, cursorX, cursorY, cursorWidth, cursorHeight, null);
+
+        // Derkripsi item yang dipilih
+        int textX = x + gp.tileSize - gp.tileSize / 4;
+        int textY = y - gp.tileSize / 10;
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24F));
+        g2.setColor(new Color(88,43,42,255));
+        int itemIndex = getItemIndexSlot();
+        
+        if (itemIndex < itemsList.size()) {
+            Items selectedItem = itemsList.get(itemIndex);
+            String itemName = selectedItem.getName();
+            String itemNum = String.valueOf(playerItemsMap.get(selectedItem));
+            g2.drawString(itemNum + " - " + itemName, textX, textY + gp.tileSize * 6);
+            if (gp.keyH.enterPressed) {
+                if (selectedItem instanceof Equipment){
+                }
+                else {
+                    gp.playerData.performAction("gifting", selectedItem.getName(), null);
+                    gp.playSE(4);
+                    gp.gameState = gp.playState;
+                }
+                gp.keyH.enterPressed = false;
+            }
+        } else {
+            g2.drawString("No item selected", textX, textY + gp.tileSize * 6);
+        }
+    }
+
+    public void drawSellingScreen() {
+        int x = gp.tileSize / 2 - gp.tileSize - gp.tileSize / 8;
+        int y = gp.tileSize / 2 - gp.tileSize;
+        int width = gp.tileSize * 7;
+        int height = gp.tileSize * 7;
+
+        g2.drawImage(inventoryPanel, x + gp.tileSize, y + gp.tileSize, width, height, null);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
+        g2.setColor(new Color(88,43,42,255));
+        x += gp.tileSize + gp.tileSize / 4;
+        y += gp.tileSize + gp.tileSize / 4;
+        g2.drawString("Selling", x, y);
+
+        final int slotXstart = x + gp.tileSize - gp.tileSize / 4;
+        final int slotYstart = y + gp.tileSize - gp.tileSize / 4;
+        int slotX = slotXstart;
+        int slotY = slotYstart;
+        int slotSize = gp.tileSize;
+
+        Map<Items, Integer> playerItemsMap = gp.playerData.getInventory().checkInventory();
+        List<Items> itemsList = new ArrayList<>(playerItemsMap.keySet());
+
+        for (int i = 0; i < itemsList.size(); i++){
+            Items item = itemsList.get(i);
+            BufferedImage itemImage = item.getItemImage();
+            if (itemImage != null) {
+                g2.drawImage(itemImage, slotX, slotY, gp.tileSize, gp.tileSize, null);
+            }
+            slotX += slotSize;
+            if (i == 4 || i == 9 || i == 14) {
+                slotX = slotXstart;
+                slotY += slotSize;
+            }
+        }
+
+        int cursorX = slotXstart + (slotSize * slotCol);
+        int cursorY = slotYstart + (slotSize * slotRow);
+        int cursorWidth = gp.tileSize;
+        int cursorHeight = gp.tileSize;
+
+        g2.drawImage(inventorySelected, cursorX, cursorY, cursorWidth, cursorHeight, null);
+
+        // Derkripsi item yang dipilih
+        int textX = x + gp.tileSize - gp.tileSize / 4;
+        int textY = y - gp.tileSize / 10;
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24F));
+        g2.setColor(new Color(88,43,42,255));
+        int itemIndex = getItemIndexSlot();
+        
+        if (itemIndex < itemsList.size()) {
+            Items selectedItem = itemsList.get(itemIndex);
+            String itemName = selectedItem.getName();
+            String itemNum = String.valueOf(playerItemsMap.get(selectedItem));
+            g2.drawString(itemNum + " - " + itemName, textX, textY + gp.tileSize * 6);
+            if (gp.keyH.enterPressed) {
+                if (selectedItem instanceof Sellable && !selectedItem.getName().equals("Proposal Ring")) {
+                    gp.playerData.removeItemFromInventory(selectedItem, 1);
+                    if (soldItemsMap.containsKey(selectedItem)) {
+                        soldItemsMap.put(selectedItem, soldItemsMap.get(selectedItem) + 1);
+                    } else {
+                        soldItemsMap.put(selectedItem, 1);
+                    }
+                    gp.ui.addMessage(selectedItem.getName() + " added to shipping bin ");
+                }
+                else {
+                    gp.ui.addMessage("This item cannot be sold.");
+                }
+                gp.keyH.enterPressed = false;
+            }
+        } else {
+            g2.drawString("No item selected", textX, textY + gp.tileSize * 6);
+        }
+    }
+    
+    public void drawShippingBin(){
+        int a = gp.tileSize / 2 - gp.tileSize - gp.tileSize / 8 + gp.tileSize * 7;
+        int b = gp.tileSize / 2 - gp.tileSize;
+
+        g2.drawImage(shippingBinUI, a + gp.tileSize, b + gp.tileSize, gp.tileSize * 6, gp.tileSize * 7, null);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
+        g2.setColor(new Color(88,43,42,255));
+        a += gp.tileSize + gp.tileSize / 4;
+        b += gp.tileSize + gp.tileSize / 4;
+        g2.drawString("Shipping Bin", a, b);
+
+        int totalPrice = 0;
+
+        final int slotAstart = a + gp.tileSize - gp.tileSize / 4;
+        final int slotBstart = b + gp.tileSize - gp.tileSize / 4;
+        int slotA = slotAstart;
+        int slotB = slotBstart;
+        int slotSiZe = gp.tileSize;
+
+        soldItems = new ArrayList<>(soldItemsMap.keySet());
+
+        for (int i = 0; i < soldItems.size(); i++){
+            Items item = soldItems.get(i);
+            BufferedImage itemImage = item.getItemImage();
+            Sellable sel = (Sellable) item;
+            g2.drawImage(itemImage, slotA, slotB, gp.tileSize, gp.tileSize, null);
+            slotA += slotSiZe;
+            totalPrice += sel.getSellPrice() * soldItemsMap.get(item);
+            if (i == 3 || i == 7 || i == 11) {
+                slotA = slotAstart;
+                slotB += slotSiZe;
+            }
+        }
+
+        int textA = a + gp.tileSize * 3;
+        int textB = b + gp.tileSize*6;
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 26F));
+        g2.setColor(new Color(88,43,42,255));
+        g2.drawString("" + totalPrice, textA, textB);
     }
 
     public int getItemIndexSlot() {

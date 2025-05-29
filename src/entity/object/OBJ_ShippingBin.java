@@ -24,7 +24,9 @@ public class OBJ_ShippingBin extends SuperObject {
 
     @Override
     public void interact() {
-        gp.gameState = gp.dialogueState;
-        gp.ui.currentDialog = "You see a shipping bin here. You can use it to ship items.";
+        if (gp.keyH.enterPressed) {
+            gp.gameState = gp.sellingState;
+            gp.keyH.enterPressed = false;
+        }
     }
 }
