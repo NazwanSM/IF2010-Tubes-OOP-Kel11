@@ -26,6 +26,9 @@ public class Sound {
         soundURL[8] = this.getClass().getResource("/resource/sound/spring_day.wav");
         soundURL[9] = this.getClass().getResource("/resource/sound/fall_day.wav");
         soundURL[10] = this.getClass().getResource("/resource/sound/winter_day.wav");
+        soundURL[11] = this.getClass().getResource("/resource/sound/give_gift.wav");
+        soundURL[12] = this.getClass().getResource("/resource/sound/purchaseClick.wav");
+        soundURL[13] = this.getClass().getResource("/resource/sound/sell.wav");
     }
 
     public void setFile(int i) {

@@ -85,6 +85,11 @@ public class GamePanel extends JPanel implements Runnable {
     public final int npcState = 10;
     public final int giftingState = 11;
     public final int sellingState = 12;
+    public final int creditState = 13;
+    public final int helpState = 14;
+    public final int actionListState = 15;
+    public final int objectListState = 16;
+    public final int buyingState = 17;
     public boolean alreadyProcessedCheatKey = false;
 
     public GamePanel() {
@@ -134,7 +139,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
         
         playMusic(0);
-        this.playerData = new Player(playerName, playerGender, farmNameInput, 1000, this);
+        this.playerData = new Player(playerName, playerGender, farmNameInput, 10000000, this);
         
         this.player = new PlayerUI(this, keyH, this.playerData);
         
@@ -239,7 +244,6 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == titleState) {
             ui.draw(g2);
         }
-
         else {
             // TILE
             tileM.draw(g2);

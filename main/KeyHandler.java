@@ -10,6 +10,7 @@ public class KeyHandler implements KeyListener {
     boolean showDebugText = false;
     int lastNum = 0;
     int lastNum2 = 7;
+    String lastState = "";
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -22,8 +23,34 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
-        if (gp.gameState == gp.titleState) {
+        if (gp.gameState == gp.titleState && gp.ui.titleScreenState == 0) {
             titleState(keyCode);
+        }
+        else if (gp.gameState == gp.titleState && gp.ui.titleScreenState == 1) {
+            gp.playSE(3);
+            switch (keyCode) {
+                case KeyEvent.VK_ENTER:
+                    gp.ui.titleScreenState = 0;
+                    break;
+                case KeyEvent.VK_ESCAPE:
+                    gp.ui.titleScreenState = 0;
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (gp.gameState == gp.titleState && gp.ui.titleScreenState == 2) {
+            gp.playSE(3);
+            switch (keyCode) {
+                case KeyEvent.VK_ENTER:
+                    gp.ui.titleScreenState = 0;
+                    break;
+                case KeyEvent.VK_ESCAPE:
+                    gp.ui.titleScreenState = 0;
+                    break;
+                default:
+                    break;
+            }
         }
 
         else if (gp.gameState == gp.playState) {
@@ -47,7 +74,7 @@ public class KeyHandler implements KeyListener {
                     break;
             }
         }
-        else if (gp.gameState == gp.inventoryState) {
+        else if (gp.gameState == gp.inventoryState || gp.gameState == gp.giftingState || gp.gameState == gp.sellingState) {
             inventoryState(keyCode);
         }
         else if (gp.gameState == gp.worldMapState) {
@@ -71,11 +98,20 @@ public class KeyHandler implements KeyListener {
         else if (gp.gameState == gp.npcState){
             npcState(keyCode);
         }
-        else if (gp.gameState == gp.giftingState){
-            inventoryState(keyCode);
+        else if (gp.gameState == gp.creditState || gp.gameState == gp.helpState || gp.gameState == gp.actionListState || gp.gameState == gp.objectListState) {
+            gp.playSE(3);
+            switch (keyCode) {
+                case KeyEvent.VK_ENTER:
+                    gp.gameState = gp.pauseState;
+                case KeyEvent.VK_ESCAPE:
+                    gp.gameState = gp.pauseState;
+                    break;
+                default:
+                    break;
+            }
         }
-        else if (gp.gameState == gp.sellingState){
-            inventoryState(keyCode);
+        else if (gp.gameState == gp.buyingState){
+            buyingState(keyCode);
         }
     }
 
@@ -120,6 +156,7 @@ public class KeyHandler implements KeyListener {
                     gp.playSE(2);
                     break;
                 case KeyEvent.VK_ENTER:
+                    lastState = "title";
                     if (gp.ui.commandNum == 0) {
                         gp.setupNewGame();
                     }
@@ -127,14 +164,14 @@ public class KeyHandler implements KeyListener {
                         // load game
                     }
                     else if (gp.ui.commandNum == 2) {
-                        // Help
+                        gp.ui.titleScreenState = 2;
                     }
                     else if (gp.ui.commandNum == 3) {
                         // Exit
                         System.exit(0);
                     }
                     else if (gp.ui.commandNum == 4) {
-                        // Credits
+                        gp.ui.titleScreenState = 1;
                     }
                     break;
                 default:
@@ -240,6 +277,7 @@ public class KeyHandler implements KeyListener {
                     gp.playSE(2);
                     break;
                 case KeyEvent.VK_ENTER:
+                    lastState = "pause";
                     if (gp.ui.commandNum == 0) {
                         gp.setupNewGame();
                     }
@@ -247,26 +285,28 @@ public class KeyHandler implements KeyListener {
                         // load game
                     }
                     else if (gp.ui.commandNum == 2) {
-                        // Help
+                        gp.gameState = gp.helpState;
                     }
                     else if (gp.ui.commandNum == 3) {
-                        // Action
+                        gp.gameState = gp.actionListState;
                     }
                     else if (gp.ui.commandNum == 4) {
                         // Player Info
                     }
                     else if (gp.ui.commandNum == 5) {
-                        // List of objects
+                        gp.gameState = gp.objectListState;
                     }
                     else if (gp.ui.commandNum == 6) {
                         // Statistics
                     }
                     else if (gp.ui.commandNum == 7) {
                         // Exit
-                        System.exit(0);
+                        gp.gameState = gp.titleState;
+                        gp.ui.titleScreenState = 0;
+                        gp.ui.commandNum = 0;
                     }
                     else if (gp.ui.commandNum == 8) {
-                        // Credits
+                        gp.gameState = gp.creditState;
                     }
                     else if (gp.ui.commandNum == 9) {
                         gp.gameState = gp.playState;
@@ -604,6 +644,59 @@ public class KeyHandler implements KeyListener {
                 else if (gp.ui.npcNum == 3) {
                     gp.playerData.performAction("marry", null, null);
                 }
+                break;
+            case KeyEvent.VK_ESCAPE:
+                gp.gameState = gp.playState;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void buyingState(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.VK_W:
+                if (gp.ui.storeRow > 0) {
+                    gp.ui.storeRow--;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_S:
+                if (gp.ui.storeRow < 4) {
+                    gp.ui.storeRow++;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_A:
+                if (gp.ui.storeCol > 0) {
+                    gp.ui.storeCol--;
+                }
+                else if (gp.ui.storeCol == 0) {
+                    if (gp.ui.storeSection == 0){
+                        gp.ui.storeSection = 4;
+                    } else {
+                        gp.ui.storeSection--;
+                    }
+                    gp.ui.storeCol = 4;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_D:
+                if (gp.ui.storeCol < 4) {
+                    gp.ui.storeCol++;
+                }
+                else if (gp.ui.storeCol == 4) {
+                    if (gp.ui.storeSection == 4){
+                        gp.ui.storeSection = 0;
+                    } else {
+                        gp.ui.storeSection++;
+                    }
+                    gp.ui.storeCol = 0;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_ENTER:
+                enterPressed = true;
                 break;
             case KeyEvent.VK_ESCAPE:
                 gp.gameState = gp.playState;

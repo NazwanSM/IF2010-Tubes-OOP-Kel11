@@ -111,7 +111,13 @@ public class FishingAction extends Action
         {
             String input = JOptionPane.showInputDialog(gp, "HIT! Attempt " + i + "/" + maxTry + ", guess the number (1-" + randomingRange + "):", "Fishing " + fish.getName(), JOptionPane.QUESTION_MESSAGE);
 
-        if (input.isBlank() || input.contains(" ") || !input.matches("\\d+")) {
+        if (input == null) {
+            JOptionPane.showMessageDialog(gp, "Fishing cancelled.", "Fishing " + fish.getName(), JOptionPane.INFORMATION_MESSAGE, fishIcon);
+            gp.farm.getGameClock().resumeClock();
+            gp.gameState = gp.playState;
+            return;
+        }
+        if (input.contains(" ") || !input.matches("\\d+")) {
             JOptionPane.showMessageDialog(gp, "Invalid input! Please enter a number between 1 and " + randomingRange + ".", "Fishing " + fish.getName(), JOptionPane.ERROR_MESSAGE, fishIcon);
             i--;
             continue;

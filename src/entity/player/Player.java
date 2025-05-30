@@ -209,6 +209,11 @@ public class Player {
                 SellingAction menjual = new SellingAction(this, item, this.gp);
                 menjual.executeAction();
                 break;
+            case "membeli":
+            case "buy":
+                BuyingAction membeli = new BuyingAction(this, item, this.gp, Integer.parseInt(parameter));
+                membeli.executeAction();
+                break;
         }
     }
 

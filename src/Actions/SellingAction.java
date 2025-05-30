@@ -29,8 +29,6 @@ public  class SellingAction extends Action {
             return false;
         }
         player.addGold(price);
-        gp.ui.addMessage("You sold " + item.getName() + " for " + price + " gold.");
         return true;
     }
-    
 }

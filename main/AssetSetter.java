@@ -162,6 +162,26 @@ public class AssetSetter {
                 }
             }
         }
+        if (gp.currentMap == 5) {
+            int[][] objectMap = loadObjectMap("/resource/maps/object_store.txt", gp.maxWorldCol, gp.maxWorldRow);
+            int objIndex = 0;
+
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                for (int col = 0; col < gp.maxWorldCol; col++) {
+                    int id = objectMap[col][row];
+                    if (id == 0) continue;
+
+                    switch (id) {
+                        case 1: 
+                            OBJ_Cashier cashier = new OBJ_Cashier(gp);
+                            cashier.worldX = col;
+                            cashier.worldY = row;
+                            gp.objects[gp.currentMap][objIndex++] = cashier;
+                            break;
+                    }
+                }
+            }
+        }
     }
 
     public void setNPC() {

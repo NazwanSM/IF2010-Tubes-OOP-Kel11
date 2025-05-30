@@ -14,12 +14,10 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
-import data.RecipeData;
-import items.Edible;
-import items.Items;
-import items.Recipe;
+import data.*;
+import items.*;
 import items.equipment.Equipment;
-import items.Sellable;
+
 import java.util.HashMap;
 
 public class UI {
@@ -32,7 +30,7 @@ public class UI {
     ArrayList<Integer> messageCounter = new ArrayList<>();
     public boolean gameFinished = false; // ini buat nanti kalau udah ending
     public String currentDialog = "";
-    Map<Items, Integer> soldItemsMap = new HashMap<>();
+    public Map<Items, Integer> soldItemsMap = new HashMap<>();
     public List<Items> soldItems;
     private BufferedImage titleScreenBackground;
     private BufferedImage newGame;
@@ -96,6 +94,15 @@ public class UI {
     private BufferedImage proposeSelected;
     private BufferedImage marrySelected;
     private BufferedImage shippingBinUI;
+    private BufferedImage creditScene;
+    private BufferedImage helpScene;
+    private BufferedImage actionsScene;
+    private BufferedImage objectScene;
+    private BufferedImage seedsStore;
+    private BufferedImage cropsStore;
+    private BufferedImage foodStore;
+    private BufferedImage miscStore;
+    private BufferedImage recipeStore;
     public int commandNum = 0;
     public int titleScreenState = 0;
     public int slotCol = 0;
@@ -104,6 +111,9 @@ public class UI {
     public int cookRow = 0;
     public int worldMapNum = 0;
     public int npcNum = 0;
+    public int storeSection = 0;
+    public int storeCol = 0;
+    public int storeRow = 0;
 
     
 
@@ -236,6 +246,24 @@ public class UI {
             marrySelected = ImageIO.read(bgIs);
             bgIs = getClass().getResourceAsStream("/resource/ui/shippingbinUI.png");
             shippingBinUI = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/CreditScene.png");
+            creditScene = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/HelpScreen.png");
+            helpScene = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/ActionsScene.png");
+            actionsScene = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/ObjectScene.png");
+            objectScene = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/seedsStore.png");
+            seedsStore = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/cropsStore.png");
+            cropsStore = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/foodStore.png");
+            foodStore = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/miscStore.png");
+            miscStore = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/recipeStore.png");
+            recipeStore = ImageIO.read(bgIs);
         }
         catch (FontFormatException e) {
             e.printStackTrace();
@@ -253,8 +281,14 @@ public class UI {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(Color.white);
 
-        if (gp.gameState == gp.titleState){
+        if (gp.gameState == gp.titleState && titleScreenState == 0){
             drawTitleScreen();
+        }
+        else if (gp.gameState == gp.titleState && titleScreenState == 1) {
+            drawCreditScreen();
+        }
+        else if (gp.gameState == gp.titleState && titleScreenState == 2) {
+            drawHelpScreen();
         }
         else {
             if (gp.farm.isRainy()){
@@ -306,6 +340,22 @@ public class UI {
             else if(gp.gameState == gp.sellingState){
                 drawSellingScreen();
                 drawShippingBin();
+                drawMessage();
+            }
+            else if(gp.gameState == gp.creditState){
+                drawCreditScreen();
+            }
+            else if(gp.gameState == gp.helpState){
+                drawHelpScreen();
+            }
+            else if(gp.gameState == gp.actionListState){
+                drawActionListScreen();
+            }
+            else if(gp.gameState == gp.objectListState){
+                drawObjectListScreen();
+            }
+            else if(gp.gameState == gp.buyingState){
+                drawBuyingScreen();
                 drawMessage();
             }
         }
@@ -698,6 +748,273 @@ public class UI {
 
     }
 
+    public void drawBuyingScreen() {
+        int x = gp.tileSize / 2 - gp.tileSize - gp.tileSize / 8;
+        int y = gp.tileSize / 2 - gp.tileSize;
+        int width = gp.tileSize * 7;
+        int height = gp.tileSize * 10;
+
+        final int slotXstart = x + gp.tileSize * 2;
+        final int slotYstart = y + gp.tileSize * 3;
+        int slotX = slotXstart;
+        int slotY = slotYstart;
+        int slotSize = gp.tileSize;
+
+        int cursorX = slotXstart + (slotSize * storeCol);
+        int cursorY = slotYstart + (slotSize * storeRow);
+        int cursorWidth = gp.tileSize;
+        int cursorHeight = gp.tileSize;
+
+        int textX = x + gp.tileSize * 2;
+        int textY = y + gp.tileSize * 3 + gp.tileSize / 4;
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24F));
+        g2.setColor(new Color(88,43,42,255));
+        int itemIndex = storeCol + (storeRow * 5);
+
+        
+        if (storeSection == 0){
+            g2.drawImage(seedsStore, x + gp.tileSize, y + gp.tileSize, width, height, null);
+            List<Seed> allSeeds = SeedData.getAllSeeds();
+            List<Items> seedsList = new ArrayList<>();
+            for (Seed seed : allSeeds) {
+                if (seed.getBuyPrice() > 0) {
+                    seedsList.add(seed);
+                }
+            }
+            
+            for (int i = 0; i < seedsList.size(); i++){
+                Items item = seedsList.get(i);
+                BufferedImage itemImage = item.getItemImage();
+                if (itemImage != null) {
+                    g2.drawImage(itemImage, slotX, slotY, gp.tileSize, gp.tileSize, null);
+                }
+                slotX += slotSize;
+                if (i == 4 || i == 9 || i == 14 || i == 19) {
+                    slotX = slotXstart;
+                    slotY += slotSize;
+                }
+
+                if (itemIndex < seedsList.size()) {
+                    Items selectedItem = seedsList.get(itemIndex);
+                    String itemName = selectedItem.getName();
+                    Seed selectedSeed = (Seed) selectedItem;
+                    String itemPrice = String.valueOf(selectedSeed.getBuyPrice());
+                    g2.drawString(itemName, textX, textY + gp.tileSize * 6);
+                    g2.drawString("Price: " + itemPrice, textX, textY + gp.tileSize * 6 + gp.tileSize / 2);
+                    if (gp.keyH.enterPressed) {
+                        if (gp.playerData.getGold() >= selectedSeed.getBuyPrice()) {
+                            gp.playerData.performAction("buy", itemPrice, selectedItem);
+                            gp.playSE(12);
+                        } else {
+                            addMessage("Not enough gold to buy " + itemName + ".");
+                        }
+                        gp.keyH.enterPressed = false;
+                    }
+                } else {
+                    g2.drawString("No item selected", textX, textY + gp.tileSize * 6);
+                }
+            }
+        }
+        else if (storeSection == 1){
+            g2.drawImage(cropsStore, x + gp.tileSize, y + gp.tileSize, width, height, null);
+            List<Crops> allCrops = CropsData.getAllCrops();
+            List<Items> cropsList = new ArrayList<>();
+            for (Crops crop : allCrops) {
+                if (crop.getBuyPrice() > 0) {
+                    cropsList.add(crop);
+                }
+            }
+            
+            for (int i = 0; i < cropsList.size(); i++){
+                Items item = cropsList.get(i);
+                BufferedImage itemImage = item.getItemImage();
+                if (itemImage != null) {
+                    g2.drawImage(itemImage, slotX, slotY, gp.tileSize, gp.tileSize, null);
+                }
+                slotX += slotSize;
+                if (i == 4 || i == 9 || i == 14 || i == 19) {
+                    slotX = slotXstart;
+                    slotY += slotSize;
+                }
+
+                if (itemIndex < cropsList.size()) {
+                    Items selectedItem = cropsList.get(itemIndex);
+                    String itemName = selectedItem.getName();
+                    Crops selectedCrops = (Crops) selectedItem;
+                    String itemPrice = String.valueOf(selectedCrops.getBuyPrice());
+                    g2.drawString(itemName, textX, textY + gp.tileSize * 6);
+                    g2.drawString("Price: " + itemPrice, textX, textY + gp.tileSize * 6 + gp.tileSize / 2);
+                    if (gp.keyH.enterPressed) {
+                        if (gp.playerData.getGold() >= selectedCrops.getBuyPrice()) {
+                            gp.playerData.performAction("buy", itemPrice, selectedItem);
+                            gp.playSE(12);
+                        } else {
+                            addMessage("Not enough gold to buy " + itemName + ".");
+                        }
+                        gp.keyH.enterPressed = false;
+                    }
+                } else {
+                    g2.drawString("No item selected", textX, textY + gp.tileSize * 6);
+                }
+            }
+        }
+        else if (storeSection == 2){
+            g2.drawImage(foodStore, x + gp.tileSize, y + gp.tileSize, width, height, null);
+            List<Food> allFood = FoodData.getAllFoodItems();
+            List<Items> foodList = new ArrayList<>();
+            for (Food food : allFood) {
+                if (food.getBuyPrice() > 0) {
+                    foodList.add(food);
+                }
+            }
+            
+            for (int i = 0; i < foodList.size(); i++){
+                Items item = foodList.get(i);
+                BufferedImage itemImage = item.getItemImage();
+                if (itemImage != null) {
+                    g2.drawImage(itemImage, slotX, slotY, gp.tileSize, gp.tileSize, null);
+                }
+                slotX += slotSize;
+                if (i == 4 || i == 9 || i == 14 || i == 19) {
+                    slotX = slotXstart;
+                    slotY += slotSize;
+                }
+
+                if (itemIndex < foodList.size()) {
+                    Items selectedItem = foodList.get(itemIndex);
+                    String itemName = selectedItem.getName();
+                    Food selectedFood = (Food) selectedItem;
+                    String itemPrice = String.valueOf(selectedFood.getBuyPrice());
+                    g2.drawString(itemName, textX, textY + gp.tileSize * 6);
+                    g2.drawString("Price: " + itemPrice, textX, textY + gp.tileSize * 6 + gp.tileSize / 2);
+                    if (gp.keyH.enterPressed) {
+                        if (gp.playerData.getGold() >= selectedFood.getBuyPrice()) {
+                            gp.playerData.performAction("buy", itemPrice, selectedItem);
+                            gp.playSE(12);
+                        } else {
+                            addMessage("Not enough gold to buy " + itemName + ".");
+                        }
+                        gp.keyH.enterPressed = false;
+                    }
+                } else {
+                    g2.drawString("No item selected", textX, textY + gp.tileSize * 6);
+                }
+            }
+        }
+        else if (storeSection == 3){
+            g2.drawImage(miscStore, x + gp.tileSize, y + gp.tileSize, width, height, null);
+            List<Misc> allMisc = MiscData.getAllMiscItems();
+            List<Items> miscList = new ArrayList<>();
+            for (Misc misc : allMisc) {
+                if (misc.getBuyPrice() > 0) {
+                    miscList.add(misc);
+                }
+            }
+            
+            for (int i = 0; i < miscList.size(); i++){
+                Items item = miscList.get(i);
+                BufferedImage itemImage = item.getItemImage();
+                if (itemImage != null) {
+                    g2.drawImage(itemImage, slotX, slotY, gp.tileSize, gp.tileSize, null);
+                }
+                slotX += slotSize;
+                if (i == 4 || i == 9 || i == 14 || i == 19) {
+                    slotX = slotXstart;
+                    slotY += slotSize;
+                }
+
+                boolean isOwned = false;
+
+                
+                if (itemIndex < miscList.size()) {
+                    Items selectedItem = miscList.get(itemIndex);
+                    String itemName = selectedItem.getName();
+                    Misc selectedMisc = (Misc) selectedItem;
+                    String itemPrice = String.valueOf(selectedMisc.getBuyPrice());
+                    g2.drawString(itemName, textX, textY + gp.tileSize * 6);
+                    g2.drawString("Price: " + itemPrice, textX, textY + gp.tileSize * 6 + gp.tileSize / 2);
+                    if (itemName.equals("Proposal Ring")) {
+                        isOwned = gp.playerData.getInventory().checkInventory().containsKey(selectedItem);
+                    }
+                    if (gp.keyH.enterPressed) {
+                        if (gp.playerData.getGold() >= selectedMisc.getBuyPrice() && !isOwned) {
+                            gp.playerData.performAction("buy", itemPrice, selectedItem);
+                            gp.playSE(12);
+                        }
+                        else if (isOwned) {
+                            addMessage("You already own this item: " + itemName + ".");
+                        }
+                        else {
+                            addMessage("Not enough gold to buy " + itemName + ".");
+                        }
+                        gp.keyH.enterPressed = false;
+                    }
+                } else {
+                    g2.drawString("No item selected", textX, textY + gp.tileSize * 6);
+                }
+            }
+        }
+        else if (storeSection == 4){
+            g2.drawImage(recipeStore, x + gp.tileSize, y + gp.tileSize, width, height, null);
+            List<Recipe> allRecipe = RecipeData.getAllRecipes();
+            List<Recipe> recipeList = new ArrayList<>();
+            for (Recipe recipe : allRecipe) {
+                if (recipe.getItemID().equals("recipe_1") || recipe.getItemID().equals("recipe_10")){
+                    recipeList.add(recipe);
+                }
+            }
+            
+            for (int i = 0; i < recipeList.size(); i++){
+                Recipe item = recipeList.get(i);
+                BufferedImage itemImage = item.getIcon();
+                if (itemImage != null) {
+                    g2.drawImage(itemImage, slotX, slotY, gp.tileSize, gp.tileSize, null);
+                }
+                slotX += slotSize;
+                if (i == 4 || i == 9 || i == 14 || i == 19) {
+                    slotX = slotXstart;
+                    slotY += slotSize;
+                }
+
+                if (itemIndex < recipeList.size()) {
+                    Recipe selectedItem = recipeList.get(itemIndex);
+                    String itemName = selectedItem.getItemID();
+                    int price = 150;
+                    String itemPrice = String.valueOf(price);
+                    g2.drawString(itemName, textX, textY + gp.tileSize * 6);
+                    g2.drawString("Price: " + itemPrice, textX, textY + gp.tileSize * 6 + gp.tileSize / 2);
+                    if (gp.keyH.enterPressed) {
+                        if (gp.playerData.getGold() >= price && !RecipeData.getRecipeById(itemName).isUnlocked()) {
+                            RecipeData.getRecipeById(itemName).setUnlocked(true);
+                            gp.playerData.subtractGold(price);
+                            addMessage("Recipe " + itemName + " purchased successfully!");
+                            recipeList.remove(selectedItem);
+                            gp.playSE(12);
+                        }
+                        else if (RecipeData.getRecipeById(itemName).isUnlocked()) {
+                            addMessage("You already own this recipe: " + itemName + ".");
+                        }
+                        else {
+                            addMessage("Not enough gold to buy " + itemName + ".");
+                        }
+                        gp.keyH.enterPressed = false;
+                    }
+                } else {
+                    g2.drawString("No item selected", textX, textY + gp.tileSize * 6);
+                }
+            }
+        }
+        
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
+        g2.setColor(new Color(88,43,42,255));
+        x += gp.tileSize + gp.tileSize / 4;
+        y += gp.tileSize + gp.tileSize / 4;
+        g2.drawString("Store", x, y);
+
+        g2.drawImage(inventorySelected, cursorX, cursorY, cursorWidth, cursorHeight, null);
+        
+    }
+
     public void drawWorldMap() {
         int x = gp.tileSize * 2 + gp.tileSize / 2;
         int y = gp.tileSize * 2 + gp.tileSize / 2;
@@ -943,7 +1260,7 @@ public class UI {
                 }
                 else {
                     gp.playerData.performAction("gifting", selectedItem.getName(), null);
-                    gp.playSE(4);
+                    gp.playSE(11);
                     gp.gameState = gp.playState;
                 }
                 gp.keyH.enterPressed = false;
@@ -1017,6 +1334,7 @@ public class UI {
                         soldItemsMap.put(selectedItem, 1);
                     }
                     gp.ui.addMessage(selectedItem.getName() + " added to shipping bin ");
+                    gp.playSE(13);
                 }
                 else {
                     gp.ui.addMessage("This item cannot be sold.");
@@ -1067,6 +1385,22 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 26F));
         g2.setColor(new Color(88,43,42,255));
         g2.drawString("" + totalPrice, textA, textB);
+    }
+
+    public void drawCreditScreen() {
+        g2.drawImage(creditScene, 0, 0, gp.screenWidth, gp.screenHeight, null);
+    }
+
+    public void drawHelpScreen() {
+        g2.drawImage(helpScene, 0, 0, gp.screenWidth, gp.screenHeight, null);
+    }
+
+    public void drawActionListScreen() {
+        g2.drawImage(actionsScene, 0, 0, gp.screenWidth, gp.screenHeight, null); 
+    }
+
+    public void drawObjectListScreen() {
+        g2.drawImage(objectScene, 0, 0, gp.screenWidth, gp.screenHeight, null); 
     }
 
     public int getItemIndexSlot() {

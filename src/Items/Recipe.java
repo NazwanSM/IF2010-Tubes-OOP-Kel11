@@ -1,5 +1,10 @@
 package items;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 public class Recipe {
     private String itemID;
@@ -7,6 +12,7 @@ public class Recipe {
     private Map<Items, Integer> ingredient;
     private boolean unlocked;
     private String unlockInfo;
+    private BufferedImage icon;
 
     public Recipe(String itemID, Food result, Map<Items, Integer> ingredient, boolean unlocked, String unlockInfo) {
         this.itemID = itemID;
@@ -14,6 +20,7 @@ public class Recipe {
         this.ingredient = ingredient;
         this.unlocked = unlocked;
         this.unlockInfo = unlockInfo;
+        loadImage("/resource/items/recipes/" + itemID + ".png");
     }
 
     public String getItemID() {
@@ -54,5 +61,20 @@ public class Recipe {
 
     public void setIngredient(Map<Items, Integer> ingredient) {
         this.ingredient = ingredient;
+    }
+
+    public BufferedImage getIcon() {
+        return icon;
+    }
+
+    protected void loadImage(String imagePath) {
+        try {
+            InputStream is = getClass().getResourceAsStream(imagePath);
+            this.icon = ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 }
