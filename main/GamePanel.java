@@ -3,8 +3,10 @@ package main;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import World.CropsPlanted;
 import World.Farm;
 import World.Environment.Lighting;
+import actions.CookingAction;
 import data.NPCData;
 import entity.player.PlayerUI;
 import entity.NPC.NPC;
@@ -16,7 +18,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.Font;
+import java.awt.image.BufferedImage;
 
 import statistics.IStatisticProvider;
 import statistics.IStatisticTracker;
@@ -57,6 +62,8 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     public Lighting lightingSystem;
     public int randomMapIndex;
+    private List<CookingAction> activeCookingActions = new ArrayList<>();
+    public boolean showingSleepScreen = false;
     
     
     // Entity and object
@@ -213,6 +220,12 @@ public class GamePanel extends JPanel implements Runnable {
             if (farm.getGameClock().getHours() == 2) {
                 playerData.performAction("Sleep", null, null);
             }
+
+            if (playerData.isSleeping) {
+                if (!playerData.isSleeping()) {
+                    playerData.startSleeping();
+                }
+}
         }
         else if (gameState == pauseState) {
             // Pause logic
@@ -245,8 +258,35 @@ public class GamePanel extends JPanel implements Runnable {
             ui.draw(g2);
         }
         else {
+            if (playerData.isSleeping()) {
+                ui.drawSleeping();
+                return;
+            }
             // TILE
             tileM.draw(g2);
+
+            if (currentMap == 0 && farm != null && farm.getFieldManager() != null) {
+                for (CropsPlanted crop : farm.getFieldManager().getAllPlantedCrops()) {
+                    if (crop != null) {
+                        BufferedImage imageToDraw = crop.getCurrentImage();
+                        if (imageToDraw != null) {
+                            long worldX = (long)crop.getX() * tileSize;
+                            long worldY = (long)crop.getY() * tileSize - (imageToDraw.getHeight() - tileSize);
+
+                            long screenX = worldX - player.worldX + player.screenX;
+                            long screenY = worldY - player.worldY + player.screenY;
+
+                            if (worldX + imageToDraw.getWidth() > player.worldX - player.screenX &&
+                                worldX < player.worldX + player.screenX &&
+                                worldY + imageToDraw.getHeight() > player.worldY - player.screenY &&
+                                worldY < player.worldY + player.screenY) {
+
+                                g2.drawImage(imageToDraw, (int)screenX, (int)screenY, imageToDraw.getWidth(), imageToDraw.getHeight(), null);
+                            }
+                        }
+                    }
+                }
+            }
     
             // Object
             for (int i = 0; i < objects[currentMap].length; i++) {
@@ -261,7 +301,13 @@ public class GamePanel extends JPanel implements Runnable {
                     npcs[currentMap][i].draw(g2, this);
                 }
             }
-    
+
+            // COOKING ACTIONS
+            for (int i = activeCookingActions.size() - 1; i >= 0; i--) {
+                activeCookingActions.get(i).update();
+            }
+
+            
             // PLAYER
             player.draw(g2);
 
@@ -291,6 +337,14 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         g2.dispose();
+    }
+
+    public void addActiveCookingAction(CookingAction action) {
+        activeCookingActions.add(action);
+    }
+
+    public void removeActiveCookingAction(CookingAction action) {
+        activeCookingActions.remove(action);
     }
 
     public void playMusic(int i) {

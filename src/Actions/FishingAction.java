@@ -47,7 +47,12 @@ public class FishingAction extends Action
     }
 
     public void startFishing() 
-    {
+    {   
+
+        if (player.getEquppedItem() == null || !player.getEquppedItem().getName().equalsIgnoreCase("Fishing Rod")) {
+            gp.ui.addMessage("You need to equip a fishing rod to fish!");
+            return;
+        }
         if (player.getEnergy() < -15) {
             gp.ui.addMessage("You don't have enough energy to fish!");
             return;

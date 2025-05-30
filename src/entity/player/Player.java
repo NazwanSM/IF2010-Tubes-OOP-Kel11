@@ -2,10 +2,13 @@ package entity.player;
 
 import entity.NPC.NPC;
 import actions.*;
+import actions.farmingActions.*;
 import data.RecipeData;
 import items.Items;
 import statistics.IStatisticTracker;
 import main.GamePanel;
+import java.awt.Point;
+import items.*;
 public class Player {
     private String name;
     private String gender;
@@ -13,12 +16,17 @@ public class Player {
     private String famName;
     private NPC partner;
     private int gold;
+    private Items equppedItem;
     private Inventory inventory;
     public static final int MAX_ENERGY = 100;
     public static final int MIN_ENERGY = -20;
     private IStatisticTracker statisticTracker;
     private GamePanel gp;
     private static int proposingDay;
+    private int location;
+    public boolean isSleeping = false;
+    private long sleepStartTime = 0;
+    private final long SLEEP_DURATION = 1300;
 
     public Player(String name, String gender, String famName, int gold, GamePanel gp) {
         this.name = name;
@@ -30,6 +38,8 @@ public class Player {
         this.inventory = new Inventory();
         this.statisticTracker = gp.statisticTracker;
         this.gp = gp;
+        this.location = gp.currentMap;
+        this.equppedItem = null;
 
         DefaultInventoryInitializer inventoryInitializer = new DefaultInventoryInitializer();
         inventoryInitializer.setDefaultItems(this.inventory);
@@ -69,6 +79,18 @@ public class Player {
 
     public static int getProposingDay() {
         return proposingDay;
+    }
+
+    public int getLocation() {
+        return location;
+    }
+
+    public Items getEquppedItem() {
+        return equppedItem;
+    }
+
+    public void setEquppedItem(Items equppedItem) {
+        this.equppedItem = equppedItem;
     }
 
     public static void setProposingDay(int proposingDay) {
@@ -111,6 +133,10 @@ public class Player {
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+    }
+
+    public void setLocation(int location) {
+        this.location = location;
     }
     
     public void increaseEnergy(int amount) {
@@ -196,6 +222,7 @@ public class Player {
                 NPC npcToPropose = gp.npcs[gp.currentMap][0];
                 ProposingAction proposing = new ProposingAction(this, npcToPropose, this.gp);
                 proposing.executeAction();
+                gp.gameState = gp.playState;   
                 break;
             case "menikah":
             case "marry":
@@ -213,6 +240,37 @@ public class Player {
             case "buy":
                 BuyingAction membeli = new BuyingAction(this, item, this.gp, Integer.parseInt(parameter));
                 membeli.executeAction();
+                break;
+            case "mengolah tanah":
+            case "tilling":
+                Point tilePos = FarmingAction.getTilePlayerIsOn(gp);
+                TillingAction mengolahTanah = new TillingAction(this, this.gp, tilePos);
+                mengolahTanah.executeAction();
+                break;
+            case "mengembalikan tanah":
+            case "recovering land":
+                Point recoverTilePos = FarmingAction.getTilePlayerIsOn(gp);
+                RecoverLandAction mengembalikanTanah = new RecoverLandAction(this, this.gp, recoverTilePos);
+                mengembalikanTanah.executeAction();
+                break;
+            case "menyiram tanaman":
+            case "watering":
+                Point waterTilePos = FarmingAction.getTilePlayerIsOn(gp);
+                WateringAction menyiramTanaman = new WateringAction(this, this.gp, waterTilePos);
+                menyiramTanaman.executeAction();
+                break;
+            case "panen":
+            case "harvest":
+                Point harvestTilePos = FarmingAction.getTilePlayerIsOn(gp);
+                HarvestingAction panen = new HarvestingAction(this, this.gp, harvestTilePos);
+                panen.executeAction();
+                break;
+            case "menanam":
+            case "planting":
+                Seed seedToPlant = (Seed) item;
+                Point plantTilePos = FarmingAction.getTilePlayerIsOn(gp);
+                PlantingAction menanam = new PlantingAction(this, this.gp, plantTilePos, seedToPlant);
+                menanam.executeAction();
                 break;
         }
     }
@@ -237,5 +295,20 @@ public class Player {
         } else {
             return false;
         }
+    }
+
+    public void startSleeping() {
+    gp.showingSleepScreen = true;
+    sleepStartTime = System.currentTimeMillis();
+    }
+
+    public boolean isSleeping() {
+        if (!gp.showingSleepScreen) return false;
+        
+        if (System.currentTimeMillis() - sleepStartTime >= SLEEP_DURATION) {
+            gp.showingSleepScreen = false;
+            return false;
+        }
+        return true;
     }
 }

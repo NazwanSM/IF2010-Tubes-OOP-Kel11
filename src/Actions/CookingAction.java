@@ -18,6 +18,10 @@ public class CookingAction extends Action {
     private Player player;
     private Recipe recipe;
     private Food food;
+    private int foodCount = 1;
+    private boolean isCooking = false;
+    private long cookingStartTime = 0;
+    private final long cookingDuration = 12000;
 
     public CookingAction(Player player, Recipe recipe, Food food, GamePanel gp) {
         super("Cooking", 10, 60, gp);
@@ -95,7 +99,6 @@ public class CookingAction extends Action {
 
         Map<Items, Integer> inventoryMap = player.getInventory().checkInventory();
         Items fuelUsed = null;
-        int foodCount = 1;
 
         for (Items item : inventoryMap.keySet()) {
             String name = item.getName();
@@ -149,10 +152,11 @@ public class CookingAction extends Action {
 
         player.removeItemFromInventory(fuelUsed, 1);
 
+        isCooking = true;
+        cookingStartTime = System.currentTimeMillis();
         gp.ui.addMessage("Cooking " + food.getName() + "...");
-        player.addItemToInventory(food, foodCount);
-        gp.playSE(6);
-        gp.ui.addMessage("Cooking successful! " + food.getName() + " is ready.");
+            
+        gp.addActiveCookingAction(this);
     }
 
     private void consumeAnyFishFromInventory(Player player, int amountToConsume) {
@@ -196,6 +200,31 @@ public class CookingAction extends Action {
             player.removeItemFromInventory(fishItem, canConsumeFromStack);
             consumedCount += canConsumeFromStack;
         }
+    }
+
+    public void update() {
+        if (isCooking) {
+            long currentTime = System.currentTimeMillis();
+            long elapsedTime = currentTime - cookingStartTime;
+            
+            if (elapsedTime % 3000 == 0) {
+                int progressPercent = (int)((elapsedTime * 100) / cookingDuration);
+                gp.ui.addMessage("Cooking progress: " + Math.min(progressPercent, 100) + "%");
+            }
+            
+            if (elapsedTime >= cookingDuration) {
+                completeCooking();
+            }
+        }
+    }
+
+    private void completeCooking() {
+        isCooking = false;
+        player.addItemToInventory(food, foodCount);
+        gp.playSE(6);
+        gp.ui.addMessage("Cooking successful! " + food.getName() + " is ready.");
+        
+        gp.removeActiveCookingAction(this);
     }
 
     public Recipe getRecipe() {

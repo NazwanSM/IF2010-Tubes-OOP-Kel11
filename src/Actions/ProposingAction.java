@@ -26,13 +26,7 @@ public class ProposingAction extends Action {
             targetNPC.setRelationshipStatus("Fiance");
             player.decreaseEnergy(energyCost);
             gp.gameState = gp.dialogueState;
-            gp.ui.currentDialog = "You proposed to " + targetNPC.getNPCName() + ".";
-            gp.gameState = gp.playState;
-            gp.gameState = gp.dialogueState;
-            gp.ui.currentDialog = targetNPC.getNPCName() + " accepted your proposal!";
-            gp.gameState = gp.playState;
-            gp.gameState = gp.dialogueState;
-            gp.ui.currentDialog = "You are now engaged to " + targetNPC.getNPCName() + ".";
+            gp.ui.currentDialog = "You proposed to " + targetNPC.getNPCName() + ".\n" + targetNPC.getNPCName() + " accepted your proposal!\n" + "You are now engaged to " + targetNPC.getNPCName() + ".";
             Player.setProposingDay(gp.farm.getDay());
             return true;
         } else {

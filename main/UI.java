@@ -103,6 +103,7 @@ public class UI {
     private BufferedImage foodStore;
     private BufferedImage miscStore;
     private BufferedImage recipeStore;
+    private BufferedImage equipedItem;
     public int commandNum = 0;
     public int titleScreenState = 0;
     public int slotCol = 0;
@@ -264,6 +265,8 @@ public class UI {
             miscStore = ImageIO.read(bgIs);
             bgIs = getClass().getResourceAsStream("/resource/ui/recipeStore.png");
             recipeStore = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/equipedItem.png");
+            equipedItem = ImageIO.read(bgIs);
         }
         catch (FontFormatException e) {
             e.printStackTrace();
@@ -333,6 +336,7 @@ public class UI {
             }
             else if(gp.gameState == gp.npcState){
                 drawNPCScreen();
+                drawMessage();
             }
             else if(gp.gameState == gp.giftingState){
                 drawGiftingScreen();
@@ -395,6 +399,14 @@ public class UI {
         if(gp instanceof GamePanel) ((GamePanel)gp).alreadyProcessedCheatKey = false; 
     }
     
+    public void drawSleeping(){
+        if (!gp.showingSleepScreen) return;
+        
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    }
+
     public void drawClockHUD() {
         int x = gp.tileSize / 2 - gp.tileSize / 4 + gp.tileSize * 10 + gp.tileSize / 2 + gp.tileSize / 8;
         int y = gp.tileSize / 2 - gp.tileSize / 4;
@@ -709,6 +721,9 @@ public class UI {
             BufferedImage itemImage = item.getItemImage();
             if (itemImage != null) {
                 g2.drawImage(itemImage, slotX, slotY, gp.tileSize, gp.tileSize, null);
+                if (item == gp.playerData.getEquppedItem()) {
+                    g2.drawImage(equipedItem, slotX, slotY, gp.tileSize, gp.tileSize, null);
+                }
             }
             slotX += slotSize;
             if (i == 4 || i == 9 || i == 14) {
@@ -742,6 +757,11 @@ public class UI {
                     gp.playerData.performAction("eat", selectedItem.getName(), null);;
                     addMessage(selectedItem.getName() + " eaten, restoring " + ((Edible) selectedItem).getEnergy() + " energy.");
                     gp.playSE(4);
+                }
+                else if (selectedItem instanceof Seed || selectedItem instanceof Equipment){
+                    gp.playerData.setEquppedItem(selectedItem);
+                    addMessage("Equipped " + selectedItem.getName() + ".");
+                    gp.playSE(16);
                 }
                 gp.keyH.enterPressed = false;
             }

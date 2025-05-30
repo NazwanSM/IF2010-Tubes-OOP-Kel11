@@ -2,11 +2,12 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import items.Seed;
 
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shiftPressed, spacePressed, escPressed, cPressed, iPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shiftPressed, spacePressed, escPressed, cPressed, iPressed, ePressed, hPressed;
     boolean showDebugText = false;
     int lastNum = 0;
     int lastNum2 = 7;
@@ -56,6 +57,7 @@ public class KeyHandler implements KeyListener {
         else if (gp.gameState == gp.playState) {
             if (keyCode == KeyEvent.VK_I) {
                 iPressed = true;
+                gp.playSE(19);
             } else if (keyCode == KeyEvent.VK_C) {
                 cPressed = true;
             } else {
@@ -312,6 +314,9 @@ public class KeyHandler implements KeyListener {
                         gp.gameState = gp.playState;
                     }
                     break;
+                case KeyEvent.VK_ESCAPE:
+                    gp.gameState = gp.playState;
+                    break;
                 default:
                     break;
             }
@@ -350,7 +355,7 @@ public class KeyHandler implements KeyListener {
                 case KeyEvent.VK_R:
                     switch (gp.currentMap) {
                         case 0:
-                            gp.tileM.loadMap("map1.txt", 0);
+                            gp.tileM.loadMap("map" + gp.eHandler.randomMapIndex +".txt", 0);
                             break;
                         case 1:
                             gp.tileM.loadMap("house.txt", 1);
@@ -359,10 +364,24 @@ public class KeyHandler implements KeyListener {
                             break;
                     }
                     break;
-                case KeyEvent.VK_T:
-                    if (gp.gameState == gp.playState) {
-                        showDebugText = !showDebugText;
+                case KeyEvent.VK_E:
+                    if(gp.playerData.getEquppedItem() == null) {
+                        gp.ui.addMessage("You have no equipped item.");
+                    } else if (gp.playerData.getEquppedItem().getName().equals("Fishing Rod")) {
+                        gp.playerData.performAction("fish", null, null);
+                    } else if (gp.playerData.getEquppedItem().getName().equals("Pickaxe")) {
+                        gp.playerData.performAction("recovering land", null, null);
+                    } else if (gp.playerData.getEquppedItem().getName().equals("Hoe")) {
+                        gp.playerData.performAction("tilling", null, null);
+                    } else if (gp.playerData.getEquppedItem().getName().equals("Watering Can")) {
+                        gp.playerData.performAction("watering", null, null);
+                    } else if (gp.playerData.getEquppedItem() instanceof Seed) {
+                        gp.playerData.performAction("planting", lastState, gp.playerData.getEquppedItem());
                     }
+                    break;
+                case KeyEvent.VK_H:
+                    hPressed = true;
+                    gp.playerData.performAction("harvest", null, null);
                     break;
                 case KeyEvent.VK_ENTER:
                     enterPressed = true;
@@ -739,6 +758,9 @@ public class KeyHandler implements KeyListener {
                 break;
             case KeyEvent.VK_C:
                 cPressed = false;
+                break;
+            case KeyEvent.VK_E:
+                ePressed = false;
                 break;
             case KeyEvent.VK_ENTER:
                 enterPressed = false;

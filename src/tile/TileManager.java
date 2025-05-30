@@ -65,7 +65,7 @@ public class TileManager {
         setup (24, "/house/House_Tiles_15", false);
         setup (25, "/house/House_Tiles_16", false);
         setup (26, "/house/Black", true);
-        setup (27, "/summer/Soil", true);
+        setup (27, "/summer/Soil", false);
         setup (28, "/summer/Grass_Road_Corner_UR", false);
         setup (29, "/summer/Grass_Road_Corner_BR", false);
         setup (30, "/summer/Grass_Road_Corner_BL", false);
@@ -1012,6 +1012,9 @@ public class TileManager {
         setup (971, "/fall/BottomRight", false);
         setup (972, "/fall/BottomLeft", false);
         setup (973, "/fall/UpperLeft", false);
+        setup (974, "/fall/Soil", false);
+        setup (975, "/spring/Soil", false);
+        setup (976, "/winter/Soil", false);
     }
 
     public void setup(int index, String imagePath, boolean collision) {
@@ -1114,6 +1117,11 @@ public class TileManager {
                 else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 955;
                 else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 969;
                 return 9;
+            case 27:
+                if ("Winter".equalsIgnoreCase(currentSeasonName)) return 976;
+                else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 975;
+                else if ("Fall".equalsIgnoreCase(currentSeasonName)) return 974;
+                return 27;
             case 28:
                 if ("Winter".equalsIgnoreCase(currentSeasonName)) return 940;
                 else if ("Spring".equalsIgnoreCase(currentSeasonName)) return 956;

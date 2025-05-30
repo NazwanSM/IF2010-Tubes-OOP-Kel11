@@ -5,7 +5,7 @@ public abstract class Action {
     protected String name;
     protected int energyRequired;
     protected int timeRequired;
-    GamePanel gp;
+    protected GamePanel gp;
 
     public Action(String name, int energyRequired, int timeRequired, GamePanel gp) {
         this.name = name;

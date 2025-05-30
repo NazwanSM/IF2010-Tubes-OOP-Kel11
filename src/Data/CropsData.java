@@ -41,4 +41,27 @@ public class CropsData {
         }
         return cropsByName.get(name.toLowerCase());
     }
+
+    public static Crops getCropBySeed(String seedName) {
+        if (seedName == null || seedName.isEmpty()) {
+            return null;
+        }
+
+        String cropNameFromSeed = "";
+        String suffixToRemove = " Seeds";
+
+        if (seedName.endsWith(suffixToRemove)) {
+            cropNameFromSeed = seedName.substring(0, seedName.length() - suffixToRemove.length());
+        } else {
+            cropNameFromSeed = seedName;
+        }
+
+        cropNameFromSeed = cropNameFromSeed.trim();
+
+        if (cropNameFromSeed.isEmpty()) {
+            return null; 
+        }
+
+        return getCropByName(cropNameFromSeed);
+    }
 }
