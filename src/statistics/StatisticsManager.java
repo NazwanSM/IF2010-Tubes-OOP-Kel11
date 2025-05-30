@@ -3,7 +3,7 @@ package statistics;
 import java.util.HashMap;
 import java.util.Map;
 
-import Enum.FishRarity;
+import data.FishRarity;
 import items.Fish;
 
 import java.util.List;

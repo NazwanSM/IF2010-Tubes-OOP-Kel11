@@ -1,17 +1,13 @@
 package data; 
 
 import items.Seed;
+import main.SimpleDataManager;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Set;
 
 public class SeedData {
 
-    private static final List<Seed> allSeeds = new ArrayList<>();
-    private static final Map<String, Seed> seedsByName = new HashMap<>();
+    private static final SimpleDataManager<Seed> manager = new SimpleDataManager<>();
 
     static {
 
@@ -30,18 +26,14 @@ public class SeedData {
     }
 
     private static void addSeed(Seed seed) {
-        allSeeds.add(seed);
-        seedsByName.put(seed.getName().toLowerCase(), seed);
+        manager.addItem(seed);
     }
 
     public static List<Seed> getAllSeeds() {
-        return Collections.unmodifiableList(allSeeds);
+        return manager.getAllItems();
     }
 
     public static Seed getSeedByName(String name) {
-        if (name == null) {
-            return null;
-        }
-        return seedsByName.get(name.toLowerCase());
+        return manager.getItemByName(name);
     }
 }

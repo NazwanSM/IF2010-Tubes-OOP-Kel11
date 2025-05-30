@@ -1,16 +1,12 @@
 package data;
 
 import items.Crops;
+import main.SimpleDataManager;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
-import java.util.HashMap;
 
 public class CropsData {
 
-    private static final List<Crops> allCrops = new ArrayList<>();
-    private static final Map<String, Crops> cropsByName = new HashMap<>();
+    private static final SimpleDataManager<Crops> manager = new SimpleDataManager<>();
 
     static {
         addCrop(new Crops("Parsnip", 50, 35, 1));      
@@ -27,19 +23,15 @@ public class CropsData {
     }
 
     private static void addCrop(Crops crop) {
-        allCrops.add(crop);
-        cropsByName.put(crop.getName().toLowerCase(), crop);
+        manager.addItem(crop);
     }
 
     public static List<Crops> getAllCrops() {
-        return Collections.unmodifiableList(allCrops);
+        return manager.getAllItems();
     }
 
     public static Crops getCropByName(String name) {
-        if (name == null) {
-            return null;
-        }
-        return cropsByName.get(name.toLowerCase());
+        return manager.getItemByName(name);
     }
 
     public static Crops getCropBySeed(String seedName) {

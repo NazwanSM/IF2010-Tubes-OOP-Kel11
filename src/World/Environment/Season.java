@@ -1,6 +1,6 @@
 package World.Environment;
 
-public class Season { // blom implementasi Cop yang mati waktu perubahan season
+public class Season {
     private static volatile Season instance;
 
     private String[] season = {"Summer", "Spring", "Fall", "Winter"};

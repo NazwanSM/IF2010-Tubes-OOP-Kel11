@@ -1,16 +1,12 @@
 package data; 
 
-import items.Misc; 
+import items.Misc;
+import main.SimpleDataManager;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
-import java.util.HashMap;
 
 public class MiscData {
 
-    private static final List<Misc> allMiscItems = new ArrayList<>();
-    private static final Map<String, Misc> miscByName = new HashMap<>();
+    private static final SimpleDataManager<Misc> manager = new SimpleDataManager<>();
 
     static {
         addMisc(new Misc("Coal", 200,100));
@@ -22,18 +18,14 @@ public class MiscData {
     }
 
     private static void addMisc(Misc MiscItem) {
-        allMiscItems.add(MiscItem);
-        miscByName.put(MiscItem.getName().toLowerCase(), MiscItem);
+        manager.addItem(MiscItem);
     }
 
     public static List<Misc> getAllMiscItems() {
-        return Collections.unmodifiableList(allMiscItems);
+        return manager.getAllItems();
     }
 
     public static Misc getMiscByName(String name) {
-        if (name == null) {
-            return null;
-        }
-        return miscByName.get(name.toLowerCase());
+        return manager.getItemByName(name);
     }
 }

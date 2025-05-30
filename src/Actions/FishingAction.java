@@ -7,7 +7,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import Enum.FishRarity;
+import data.FishRarity;
 import main.GamePanel;
 import entity.player.Player;
 import items.Fish;

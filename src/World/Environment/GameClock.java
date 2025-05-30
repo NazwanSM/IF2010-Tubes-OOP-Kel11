@@ -28,12 +28,11 @@ public class GameClock extends Thread {
 
     public synchronized void startTime() {
         if (!threadStart) {
-            this.start(); // Memulai thread (instance GameClock itu sendiri)
+            this.start(); 
             threadStart = true;
-            System.out.println("GameClock thread dimulai.");
         }
-        this.isRunning = true;  // Pastikan loop run() bisa berjalan
-        this.isPaused = false; // Pastikan jam tidak dalam kondisi pause saat dimulai
+        this.isRunning = true;  
+        this.isPaused = false; 
     }
 
     public void run() {

@@ -2,15 +2,11 @@ package data;
 
 import items.Food; 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
-import java.util.HashMap;
+import main.SimpleDataManager;
 
 public class FoodData {
 
-    private static final List<Food> allFoodItems = new ArrayList<>();
-    private static final Map<String, Food> foodByName = new HashMap<>();
+    private static final SimpleDataManager<Food> manager = new SimpleDataManager<>();
 
     static {
         addFood(new Food("Fish n' Chips", 50, 150, 135));
@@ -28,18 +24,14 @@ public class FoodData {
     }
 
     private static void addFood(Food foodItem) {
-        allFoodItems.add(foodItem);
-        foodByName.put(foodItem.getName().toLowerCase(), foodItem);
+        manager.addItem(foodItem);
     }
 
     public static List<Food> getAllFoodItems() {
-        return Collections.unmodifiableList(allFoodItems);
+        return manager.getAllItems();
     }
 
     public static Food getFoodByName(String name) {
-        if (name == null) {
-            return null;
-        }
-        return foodByName.get(name.toLowerCase());
+        return manager.getItemByName(name);
     }
 }

@@ -1,6 +1,6 @@
 package statistics;
 
-import Enum.FishRarity;
+import data.FishRarity;
 import items.Fish;
 
 public interface IStatisticTracker {

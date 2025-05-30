@@ -1,4 +1,4 @@
-package Enum;
+package data;
 
 public enum FishRarity {
     COMMON("Common"),

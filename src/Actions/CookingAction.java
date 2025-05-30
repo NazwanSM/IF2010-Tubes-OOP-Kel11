@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import Enum.FishRarity;
+import data.FishRarity;
 import main.GamePanel;
 
 public class CookingAction extends Action {

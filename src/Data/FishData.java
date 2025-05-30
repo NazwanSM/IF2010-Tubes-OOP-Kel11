@@ -2,17 +2,11 @@ package data;
 
 import java.util.List;
 import java.util.Set;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
-import java.util.HashMap;
-
-import Enum.FishRarity;
 import items.Fish;
+import main.SimpleDataManager;
 
 public class FishData {
-    private static final List<Fish> allFishList = new ArrayList<>();
-    private static final Map<String, Fish> fishByName = new HashMap<>();
+    private static final SimpleDataManager<Fish> manager = new SimpleDataManager<>();
 
     static {
         // === Common Fish ===
@@ -139,18 +133,14 @@ public class FishData {
     }
 
     private static void addFish(Fish fishItem) {
-        allFishList.add(fishItem);
-        fishByName.put(fishItem.getName().toLowerCase(), fishItem);
+        manager.addItem(fishItem);
     }
 
     public static List<Fish> getAllFish() {
-        return Collections.unmodifiableList(allFishList);
+        return manager.getAllItems();
     }
 
     public static Fish getFishByName(String name) {
-        if (name == null) {
-            return null;
-        }
-        return fishByName.get(name.toLowerCase());
+        return manager.getItemByName(name);
     }
 }

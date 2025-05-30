@@ -3,15 +3,11 @@ package data;
 
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
-import java.util.HashMap;
+import main.SimpleDataManager;
 import items.equipment.*;
 
 public class EquipmentData {
-    private static final List<Equipment> allEquipment = new ArrayList<>();
-    private static final Map<String, Equipment> equipmentByName = new HashMap<>();
+    private static final SimpleDataManager<Equipment> manager = new SimpleDataManager<>();
 
     static {
         addEquipment(new Hoe("Hoe", "Cangkul untuk menyiapkan lahan tanam."));
@@ -21,16 +17,14 @@ public class EquipmentData {
     }
 
     private static void addEquipment(Equipment equip) {
-        allEquipment.add(equip);
-        equipmentByName.put(equip.getName().toLowerCase().replace(" ", ""), equip);
+        manager.addItem(equip);
     }
 
     public static List<Equipment> getAllEquipment() {
-        return Collections.unmodifiableList(allEquipment);
+        return manager.getAllItems();
     }
 
     public static Equipment getEquipmentByName(String name) {
-        if (name == null) return null;
-        return equipmentByName.get(name.toLowerCase().replace(" ", ""));
+        return manager.getItemByName(name);
     }
 }

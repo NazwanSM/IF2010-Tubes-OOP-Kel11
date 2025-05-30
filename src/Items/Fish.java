@@ -1,7 +1,7 @@
 package items;
 
 import java.util.Set;
-import Enum.FishRarity;
+import data.FishRarity;
 import entity.player.Player;
 public class Fish extends Items implements Sellable, Edible {
     private FishRarity rarity;
