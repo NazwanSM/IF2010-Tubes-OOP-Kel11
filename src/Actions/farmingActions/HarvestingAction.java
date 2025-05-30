@@ -5,6 +5,8 @@ import main.GamePanel;
 import items.Crops;
 import java.awt.Point;
 
+import data.RecipeData;
+
 public class HarvestingAction extends FarmingAction {
 
     public HarvestingAction(Player player, GamePanel gp, Point tilePosition) {
@@ -37,6 +39,11 @@ public class HarvestingAction extends FarmingAction {
                 gp.playSE(18);
                 
                 gp.ui.addMessage("Harvested " + harvestedCrop.getName() + "!");
+                gp.manager.trackCropHarvested(harvestedCrop.getName(), harvestedCrop.getQuantityPerHarvest());
+                RecipeData.getRecipeById("recipe_7").setUnlocked(true);
+                if (harvestedCrop.getName().equalsIgnoreCase("Hot Pepper")) {
+                    RecipeData.getRecipeById("recipe_8").setUnlocked(true);
+                }
                 return true;
             } else {
                 gp.ui.addMessage("Couldn't harvest the crop.");

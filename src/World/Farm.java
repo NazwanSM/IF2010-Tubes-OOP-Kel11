@@ -87,24 +87,7 @@ public class Farm {
         weather.setWeather(weatherName);
     }
 
-    public void displayTimeInfo() {
-        System.out.println("Waktu: " + gameClock.getTime());
-        System.out.println("Musim: " + season.getCurrentSeason());
-        System.out.println("Hari ke-" + day);
-        System.out.println("Cuaca: " + weather.getCurrentWeather());
-    }
-
-    public void advanceTime(int inGameMinutes) {
-        gameClock.advance(inGameMinutes);
-    }
-
     public boolean isRainy() {
         return weather.isRainy();
     }
-
-    // public void endDayAndSell() {
-    //     System.out.println("Menjual barang dari shipping bin...");
-    //     player.getInventory().addGold(ShippingLogic.sell(farmMap)); // logika harga bisa dari file eksternal
-    //     nextDay();
-    // }
 }

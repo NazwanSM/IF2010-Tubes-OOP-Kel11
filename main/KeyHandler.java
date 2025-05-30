@@ -100,7 +100,8 @@ public class KeyHandler implements KeyListener {
         else if (gp.gameState == gp.npcState){
             npcState(keyCode);
         }
-        else if (gp.gameState == gp.creditState || gp.gameState == gp.helpState || gp.gameState == gp.actionListState || gp.gameState == gp.objectListState) {
+        else if (gp.gameState == gp.creditState || gp.gameState == gp.helpState || gp.gameState == gp.actionListState
+                || gp.gameState == gp.objectListState || gp.gameState == gp.playerInfoState || gp.gameState == gp.statisticState) {
             gp.playSE(3);
             switch (keyCode) {
                 case KeyEvent.VK_ENTER:
@@ -114,6 +115,15 @@ public class KeyHandler implements KeyListener {
         }
         else if (gp.gameState == gp.buyingState){
             buyingState(keyCode);
+        }
+        else if (gp.gameState == gp.statsDisplayState) { // Tambahkan blok ini
+            if (keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_ESCAPE) {
+                gp.gameState = gp.playState;
+                gp.playSE(3);
+                if (gp.statisticProvider.isAnyMilestoneAchieved()) {
+                    gp.manager.setMilestoneDays(1);
+                }
+            }
         }
     }
 
@@ -163,7 +173,7 @@ public class KeyHandler implements KeyListener {
                         gp.setupNewGame();
                     }
                     else if (gp.ui.commandNum == 1) {
-                        // load game
+                        gp.ui.drawLoadScene();
                     }
                     else if (gp.ui.commandNum == 2) {
                         gp.ui.titleScreenState = 2;
@@ -281,10 +291,11 @@ public class KeyHandler implements KeyListener {
                 case KeyEvent.VK_ENTER:
                     lastState = "pause";
                     if (gp.ui.commandNum == 0) {
+                        gp.farm.getGameClock().skipToMorning();
                         gp.setupNewGame();
                     }
                     else if (gp.ui.commandNum == 1) {
-                        // load game
+                        gp.ui.drawLoadScene();
                     }
                     else if (gp.ui.commandNum == 2) {
                         gp.gameState = gp.helpState;
@@ -293,13 +304,13 @@ public class KeyHandler implements KeyListener {
                         gp.gameState = gp.actionListState;
                     }
                     else if (gp.ui.commandNum == 4) {
-                        // Player Info
+                        gp.gameState = gp.playerInfoState;
                     }
                     else if (gp.ui.commandNum == 5) {
                         gp.gameState = gp.objectListState;
                     }
                     else if (gp.ui.commandNum == 6) {
-                        // Statistics
+                        gp.gameState = gp.statisticState;
                     }
                     else if (gp.ui.commandNum == 7) {
                         // Exit
@@ -316,6 +327,7 @@ public class KeyHandler implements KeyListener {
                     break;
                 case KeyEvent.VK_ESCAPE:
                     gp.gameState = gp.playState;
+                    gp.playSE(23);
                     break;
                 default:
                     break;
@@ -350,6 +362,7 @@ public class KeyHandler implements KeyListener {
                     break;
                 case KeyEvent.VK_ESCAPE:
                     gp.gameState = gp.pauseState;
+                    gp.playSE(23);
                     break;
     
                 case KeyEvent.VK_R:

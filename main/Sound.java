@@ -11,7 +11,7 @@ public class Sound {
     
     Clip clip;
     URL soundURL[] = new URL[30];
-    private final float DEFAULT_VOLUME_LEVEL = 0.7f;
+    private final float DEFAULT_VOLUME_LEVEL = 0.8f;
 
     public Sound(){
 
@@ -36,6 +36,9 @@ public class Sound {
         soundURL[18] = this.getClass().getResource("/resource/sound/harvest.wav");
         soundURL[19] = this.getClass().getResource("/resource/sound/drawer1.wav");
         soundURL[20] = this.getClass().getResource("/resource/sound/water_scoop1.wav");
+        soundURL[21] = this.getClass().getResource("/resource/sound/OST.wav");
+        soundURL[22] = this.getClass().getResource("/resource/sound/getNewSpecialItem.wav");
+        soundURL[23] = this.getClass().getResource("/resource/sound/bigSelect.wav");
     }
 
     public void setFile(int i) {

@@ -97,6 +97,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int actionListState = 15;
     public final int objectListState = 16;
     public final int buyingState = 17;
+    public final int playerInfoState = 18;
+    public final int statisticState = 19;
     public boolean alreadyProcessedCheatKey = false;
 
     public GamePanel() {
@@ -112,7 +114,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
     
     public void setupGame() {
-        // playMusic(0);
+        playMusic(21);
         gameState = titleState;
     }
     
@@ -146,7 +148,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
         
         playMusic(0);
-        this.playerData = new Player(playerName, playerGender, farmNameInput, 10000000, this);
+        this.playerData = new Player(playerName, playerGender, farmNameInput, 500, this);
         
         this.player = new PlayerUI(this, keyH, this.playerData);
         
@@ -225,16 +227,16 @@ public class GamePanel extends JPanel implements Runnable {
                 if (!playerData.isSleeping()) {
                     playerData.startSleeping();
                 }
-}
+            }
         }
         else if (gameState == pauseState) {
             // Pause logic
         }
         
 
-        // if (statisticProvider.isAnyMilestoneAchieved() && gameState != statsDisplayState) {
-        //     gameState = statsDisplayState;
-        // }
+        if (statisticProvider.isAnyMilestoneAchieved() && gameState != statsDisplayState && manager.getMilestoneDays() == 0) {
+            gameState = statsDisplayState;
+        }
 
         if (lightingSystem != null) {
             lightingSystem.update();

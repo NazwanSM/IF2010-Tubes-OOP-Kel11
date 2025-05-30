@@ -56,7 +56,7 @@ public class SleepingAction extends Action {
             gp.ui.addMessage("You sold " + sellNum + " items for a total of " + totalSellNum + " gold.");
         }
         gp.eHandler.teleport(1, 13, 8);
-
+        sellNum = 0;
         playerData.isSleeping = false;
 
         return true;

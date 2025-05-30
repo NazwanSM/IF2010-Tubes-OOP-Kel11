@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 import data.*;
+import entity.NPC.NPC;
 import items.*;
 import items.equipment.Equipment;
 
@@ -104,6 +105,7 @@ public class UI {
     private BufferedImage miscStore;
     private BufferedImage recipeStore;
     private BufferedImage equipedItem;
+    private BufferedImage emptyScreen;
     public int commandNum = 0;
     public int titleScreenState = 0;
     public int slotCol = 0;
@@ -267,6 +269,8 @@ public class UI {
             recipeStore = ImageIO.read(bgIs);
             bgIs = getClass().getResourceAsStream("/resource/ui/equipedItem.png");
             equipedItem = ImageIO.read(bgIs);
+            bgIs = getClass().getResourceAsStream("/resource/ui/emptyScreen.png");
+            emptyScreen = ImageIO.read(bgIs);
         }
         catch (FontFormatException e) {
             e.printStackTrace();
@@ -308,9 +312,6 @@ public class UI {
             }
             else if(gp.gameState == gp.dialogueState) {
                 drawDialogueScreen();
-            }
-            else if(gp.gameState == gp.statsDisplayState) {
-                drawStatsScreen();
             }
             else if(gp.gameState == gp.inventoryState) {
                 drawInventory();
@@ -362,41 +363,61 @@ public class UI {
                 drawBuyingScreen();
                 drawMessage();
             }
+            else if(gp.gameState == gp.playerInfoState){
+                drawPlayerInfoScreen();
+            }
+            else if(gp.gameState == gp.statisticState){
+                drawStatisticScreen();
+            }
+            else if(gp.gameState == gp.statsDisplayState){
+                drawMilestoneScreen();
+                gp.manager.setMilestoneDays(0);
+            }
         }
     }
 
     public void processCheatInputs() {
         if (gp.gameState != gp.cheatState) { 
-            if (gp.keyH.cPressed) gp.keyH.cPressed = false; 
+            if (gp.keyH.cPressed) {
+                gp.keyH.cPressed = false;
+            } 
             return;
         }
 
         String seasonInput = JOptionPane.showInputDialog(gp, "Enter the season (Summer, Fall, Winter, Spring):", "Cheat: Set Season", JOptionPane.PLAIN_MESSAGE);
         if (seasonInput != null && !seasonInput.trim().isEmpty()) {
-            if (gp.farm != null) gp.farm.cheatSetSeason(seasonInput.trim()); 
-            else System.err.println("Farm object is null in UI.processCheatInputs for season.");
+            if (gp.farm != null){
+                gp.farm.cheatSetSeason(seasonInput.trim());
+            }    
+            else {
+                System.err.println("Farm object is null in UI.processCheatInputs for season.");
+            }
         } else if (seasonInput == null) { 
             gp.gameState = gp.playState; 
             gp.keyH.cPressed = false;    
-            if(gp instanceof GamePanel) ((GamePanel)gp).alreadyProcessedCheatKey = false; 
+            gp.alreadyProcessedCheatKey = false;
             return;
         }
 
 
         String weatherInput = JOptionPane.showInputDialog(gp, "Enter the weather (Rainy, Sunny):", "Cheat: Set Weather", JOptionPane.PLAIN_MESSAGE);
         if (weatherInput != null && !weatherInput.trim().isEmpty()) {
-            if (gp.farm != null) gp.farm.cheatSetWeather(weatherInput.trim()); 
-            else System.err.println("Farm object is null in UI.processCheatInputs for weather.");
+            if (gp.farm != null){
+            gp.farm.cheatSetWeather(weatherInput.trim());
+            } 
+            else {
+                System.err.println("Farm object is null in UI.processCheatInputs for weather.");
+            }
         } else if (weatherInput == null) { 
             gp.gameState = gp.playState; 
             gp.keyH.cPressed = false;
-            if(gp instanceof GamePanel) ((GamePanel)gp).alreadyProcessedCheatKey = false;
+            gp.alreadyProcessedCheatKey = false;
             return;
         }
 
         gp.gameState = gp.playState; 
         gp.keyH.cPressed = false;    
-        if(gp instanceof GamePanel) ((GamePanel)gp).alreadyProcessedCheatKey = false; 
+        gp.alreadyProcessedCheatKey = false;
     }
     
     public void drawSleeping(){
@@ -642,55 +663,9 @@ public class UI {
     }
 
     public void drawStatsScreen() {
-        int x = gp.tileSize * 2;
-        int y = gp.tileSize / 2;
-        int width = gp.screenWidth - (gp.tileSize * 4);
-        int height = gp.screenHeight - (gp.tileSize * 4);
-        drawSubWindow(x, y, width, height);
-
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 28F));
-        x += gp.tileSize;
-        y += gp.tileSize;
-        g2.drawString("Statistics", x, y);
-
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20F));
-        y += gp.tileSize;
-        g2.drawString("Total Income: " + gp.statisticProvider.getTotalIncome(), x, y);
-        y += gp.tileSize;
-        g2.drawString("Total Expenditure: " + gp.statisticProvider.getTotalExpenditure(), x, y);
-        y += gp.tileSize;
-        g2.drawString("Total Days Played: " + gp.statisticProvider.getTotalDaysPlayed(), x, y);
-        y += gp.tileSize;
-        g2.drawString("Total Crops Harvested: " + gp.statisticProvider.getTotalCropsHarvested(), x, y);
-        y += gp.tileSize;
-        g2.drawString("Total Fish Caught: " + gp.statisticProvider.getTotalFishCaught(), x, y);
-
-        y += gp.tileSize;
-        g2.drawString("NPC Chat Frequency: ", x, y);
-        y += gp.tileSize;
-        for (String npcName : gp.statisticProvider.getTrackedNPCNames()) {
-            g2.drawString(npcName + ": " + gp.statisticProvider.getNPCChatFrequency(npcName), x, y);
-            y += gp.tileSize;
-        }
-        y += gp.tileSize;
-        g2.drawString("NPC Gift Frequency: ", x, y);
-        y += gp.tileSize;
-        for (String npcName : gp.statisticProvider.getTrackedNPCNames()) {
-            g2.drawString(npcName + ": " + gp.statisticProvider.getNPCGiftFrequency(npcName), x, y);
-            y += gp.tileSize;
-        }
-        y += gp.tileSize;
-        g2.drawString("NPC Visit Frequency: ", x, y);
-        y += gp.tileSize;
-        for (String npcName : gp.statisticProvider.getTrackedNPCNames()) {
-            g2.drawString(npcName + ": " + gp.statisticProvider.getNPCVisitFrequency(npcName), x, y);
-            y += gp.tileSize;
-        }
-        y += gp.tileSize;
-        g2.drawString("Average Seasonal Income: " + gp.statisticProvider.getAverageSeasonalIncome(), x, y);
-        y += gp.tileSize;
-        g2.drawString("Average Seasonal Expenditure: " + gp.statisticProvider.getAverageSeasonalExpenditure(), x, y);
-        y += gp.tileSize;
+        gp.gameState = gp.dialogueState;
+        currentDialog = "You have achieved a milestone! Check your statistics.";
+        gp.gameState = gp.statsDisplayState;
     }
     
     public void drawInventory() {
@@ -1424,6 +1399,124 @@ public class UI {
 
     public void drawObjectListScreen() {
         g2.drawImage(objectScene, 0, 0, gp.screenWidth, gp.screenHeight, null); 
+    }
+
+    public void drawPlayerInfoScreen() {
+        g2.drawImage(emptyScreen, 0, 0, gp.screenWidth, gp.screenHeight, null);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
+        g2.setColor(Color.WHITE);
+        String player = "Player Info";
+        int x = getXforCenteredText(player);
+        int y = gp.tileSize * 2 + gp.tileSize / 2;
+        g2.drawString(player, x, y);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 26F));
+        int textX = gp.tileSize * 2 + gp.tileSize / 2;
+        int textY = y + gp.tileSize;
+        g2.drawString("Name: " + gp.playerData.getName(), textX, textY);
+        textY += gp.tileSize;
+        g2.drawString("Gender: " + gp.playerData.getGender(), textX, textY);
+        textY += gp.tileSize;
+        g2.drawString("Energy: " + gp.playerData.getEnergy(), textX, textY);
+        textY += gp.tileSize;
+        if (gp.playerData.getPartner() != null) {
+            g2.drawString("Partner: " + gp.playerData.getPartner().getNPCName(), textX, textY);
+        } else {
+            g2.drawString("Partner: None", textX, textY);
+        }
+        textY += gp.tileSize;
+        g2.drawString("Favorite Item: The Legend of Spakbor", textX, textY);
+        textY += gp.tileSize;
+        g2.drawString("Gold: " + gp.playerData.getGold(), textX, textY);
+        textY += gp.tileSize;
+    }
+
+    public void drawStatisticScreen() {
+        g2.drawImage(emptyScreen, 0, 0, gp.screenWidth, gp.screenHeight, null);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
+        g2.setColor(Color.WHITE);
+        String player = "STATISTICS";
+        int x = getXforCenteredText(player);
+        int y = gp.tileSize * 2 + gp.tileSize / 2;
+        g2.drawString(player, x, y);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20F));
+        int textX = gp.tileSize * 2 + gp.tileSize / 2;
+        int textY = y + gp.tileSize;
+        g2.drawString("Total Income: " + gp.manager.getTotalIncome(), textX, textY);
+        textY += gp.tileSize / 2;
+        g2.drawString("Total Expenses: " + gp.manager.getTotalExpenditure(), textX, textY);
+        textY -= gp.tileSize / 2;
+        textX += gp.tileSize * 4;
+        g2.drawString("Average Season Income: " + gp.manager.getAverageSeasonalIncome(), textX, textY);
+        textY += gp.tileSize / 2;
+        g2.drawString("Average Season Expenses: " + gp.manager.getAverageSeasonalExpenditure(), textX, textY);
+        textX -= gp.tileSize * 4;
+        textY += gp.tileSize / 2;
+        g2.drawString("Total Days Played: " + gp.manager.getTotalDaysPlayed(), textX, textY);
+        textY += gp.tileSize / 2;
+        g2.drawString("NPC Status: (Relationship Status, Chatting x, Gifting x , Visiting x)", textX, textY);
+        textY += gp.tileSize / 2;
+        List<NPC> npcs = NPCData.getAllNPC();
+        for (NPC npc : npcs) {
+            g2.drawString(npc.getNPCName() + ": " + npc.getRelationshipStatus()+ ", " + gp.manager.getNPCChatFrequency(npc.getNPCName()) + ", " + gp.manager.getNPCGiftFrequency(npc.getNPCName()) + ", " + gp.manager.getNPCVisitFrequency(npc.getNPCName()),textX + gp.tileSize / 4, textY);
+            textY += gp.tileSize / 2;
+        }
+        g2.drawString("Total Crops Harvested: " + gp.manager.getTotalCropsHarvested(), textX, textY);
+        textY += gp.tileSize / 2;
+        g2.drawString("Total Fish Caught: " + gp.manager.getTotalFishCaught(), textX, textY);
+        textY += gp.tileSize / 2;
+        g2.drawString("Common: " + gp.manager.getTotalCommonFishCaught(), textX + gp.tileSize / 4, textY);
+        textY += gp.tileSize / 2;
+        g2.drawString("Regular: " + gp.manager.getTotalRegularFishCaught(), textX + gp.tileSize / 4, textY);
+        textY += gp.tileSize / 2;
+        g2.drawString("Legendary: " + gp.manager.getTotalLegendaryFishCaught(), textX + gp.tileSize / 4, textY);
+        textY += gp.tileSize;
+    }
+
+    public void drawMilestoneScreen() {
+        gp.playSE(22);
+        g2.drawImage(emptyScreen, 0, 0, gp.screenWidth, gp.screenHeight, null);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
+        g2.setColor(Color.WHITE);
+        String player = "CONGRATULATIONS! for reaching a milestone!";
+        int x = getXforCenteredText(player);
+        int y = gp.tileSize * 2 + gp.tileSize / 2;
+        g2.drawString(player, x, y);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20F));
+        int textX = gp.tileSize * 2 + gp.tileSize / 2;
+        int textY = y + gp.tileSize;
+        g2.drawString("Total Income: " + gp.manager.getTotalIncome(), textX, textY);
+        textY += gp.tileSize / 2;
+        g2.drawString("Total Expenses: " + gp.manager.getTotalExpenditure(), textX, textY);
+        textY -= gp.tileSize / 2;
+        textX += gp.tileSize * 4;
+        g2.drawString("Average Season Income: " + gp.manager.getAverageSeasonalIncome(), textX, textY);
+        textY += gp.tileSize / 2;
+        g2.drawString("Average Season Expenses: " + gp.manager.getAverageSeasonalExpenditure(), textX, textY);
+        textX -= gp.tileSize * 4;
+        textY += gp.tileSize / 2;
+        g2.drawString("Total Days Played: " + gp.manager.getTotalDaysPlayed(), textX, textY);
+        textY += gp.tileSize / 2;
+        g2.drawString("NPC Status: (Relationship Status, Chatting x, Gifting x , Visiting x)", textX, textY);
+        textY += gp.tileSize / 2;
+        List<NPC> npcs = NPCData.getAllNPC();
+        for (NPC npc : npcs) {
+            g2.drawString(npc.getNPCName() + ": " + npc.getRelationshipStatus()+ ", " + gp.manager.getNPCChatFrequency(npc.getNPCName()) + ", " + gp.manager.getNPCGiftFrequency(npc.getNPCName()) + ", " + gp.manager.getNPCVisitFrequency(npc.getNPCName()),textX + gp.tileSize / 4, textY);
+            textY += gp.tileSize / 2;
+        }
+        g2.drawString("Total Crops Harvested: " + gp.manager.getTotalCropsHarvested(), textX, textY);
+        textY += gp.tileSize / 2;
+        g2.drawString("Total Fish Caught: " + gp.manager.getTotalFishCaught(), textX, textY);
+        textY += gp.tileSize / 2;
+        g2.drawString("Common: " + gp.manager.getTotalCommonFishCaught(), textX + gp.tileSize / 4, textY);
+        textY += gp.tileSize / 2;
+        g2.drawString("Regular: " + gp.manager.getTotalRegularFishCaught(), textX + gp.tileSize / 4, textY);
+        textY += gp.tileSize / 2;
+        g2.drawString("Legendary: " + gp.manager.getTotalLegendaryFishCaught(), textX + gp.tileSize / 4, textY);
+        textY += gp.tileSize;
+    }
+
+    public void drawLoadScene(){
+        JOptionPane.showMessageDialog(gp, "This feature is still under development.", "Load Game", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public int getItemIndexSlot() {

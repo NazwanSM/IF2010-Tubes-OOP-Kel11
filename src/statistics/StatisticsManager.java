@@ -32,7 +32,8 @@ public class StatisticsManager implements IStatisticTracker, IStatisticProvider 
     private boolean marriageMilestoneAchieved = false;
     private final int GOLD_MILESTONE_TARGET = 17209; 
     private final int DAYS_PER_SEASON = 10;
-    private List<String> allNPCNames = List.of(
+    private int milestoneDays = 0;
+    public List<String> allNPCNames = List.of(
             "Mayor Tadi", "Caroline", "Perry", "Dasco" , "Emily" , "Abigail"
         );
 
@@ -47,6 +48,14 @@ public class StatisticsManager implements IStatisticTracker, IStatisticProvider 
             this.npcGiftFrequencies.put(npcName, 0);
             this.npcVisitFrequencies.put(npcName, 0);
         }
+    }
+
+    public int getMilestoneDays() {
+        return this.milestoneDays;
+    }
+
+    public void setMilestoneDays(int milestoneDays) {
+        this.milestoneDays = milestoneDays;
     }
 
     @Override

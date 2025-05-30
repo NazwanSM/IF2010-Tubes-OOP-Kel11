@@ -34,11 +34,13 @@ public class MarryingAction extends Action {
             if (minutesToAdvance < 0) {
                 minutesToAdvance += 24 * 60;
             }
+            gp.gameState = gp.dialogueState;
+            gp.ui.currentDialog = "You are now married to " + player.getPartner().getNPCName() + ".";
 
             gp.farm.getGameClock().advance(minutesToAdvance);
-
-            gp.ui.addMessage("You are now married to " + player.getPartner().getNPCName() + ".");
+            
             gp.ui.addMessage("Time has skipped to 22:00. You are back home.");
+            gp.manager.trackPlayerMarriageStatus(true);
             gp.eHandler.teleport(1, 13, 8);
             return true;
         } else{

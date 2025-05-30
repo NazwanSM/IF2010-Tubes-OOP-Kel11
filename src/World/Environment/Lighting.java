@@ -40,7 +40,6 @@ public class Lighting {
     public void resetDay() {
         dayState = DAY;
         filterAlpha = 0f;
-        System.out.println("Pencahayaan direset ke Siang.");
     }
 
     public void update() {

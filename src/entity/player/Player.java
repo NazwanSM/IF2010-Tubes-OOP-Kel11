@@ -129,6 +129,7 @@ public class Player {
         } else {
             this.gold = gold;
         }
+        statisticTracker.trackCurrentPlayerGold(gold);;
     }
 
     public void setInventory(Inventory inventory) {
