@@ -465,6 +465,9 @@ public class UI {
         } else {
             g2.drawImage(staminaBar5, x, y, gp.tileSize * 4, gp.tileSize, null);
         }
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 39F));
+        g2.setColor(new Color(23,8,31,255));
+        g2.drawString(String.valueOf(gp.playerData.getEnergy()), x + gp.tileSize * 2 - gp.tileSize + gp.tileSize / 4 + gp.tileSize / 16 - gp.tileSize / 3 - gp.tileSize / 32, y + gp.tileSize / 2 + gp.tileSize / 4 + gp.tileSize / 14);
     }
 
     public void drawCloudHUD() {
