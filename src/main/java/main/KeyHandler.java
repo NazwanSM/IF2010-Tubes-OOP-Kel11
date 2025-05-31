@@ -168,6 +168,43 @@ public class KeyHandler implements KeyListener {
                     }
                     gp.playSE(2);
                     break;
+                case KeyEvent.VK_LEFT:
+                    if (gp.ui.commandNum == 0) {
+                        lastNum = 0;
+                        gp.ui.commandNum = 4;
+                    }
+                    else {
+                        gp.ui.commandNum--;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    if (gp.ui.commandNum == 4) {
+                        gp.ui.commandNum = 0;
+                    }
+                    else {
+                        gp.ui.commandNum++;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_UP:
+                    if (gp.ui.commandNum == 4) {
+                        gp.ui.commandNum = 0;
+                    }
+                    else {
+                        gp.ui.commandNum++;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_DOWN:
+                    if (gp.ui.commandNum == 4) {
+                        gp.ui.commandNum = 0;
+                    }
+                    else {
+                        gp.ui.commandNum++;
+                    }
+                    gp.playSE(2);
+                    break;
                 case KeyEvent.VK_ENTER:
                     lastState = "title";
                     if (gp.ui.commandNum == 0) {
@@ -263,6 +300,100 @@ public class KeyHandler implements KeyListener {
                     gp.playSE(2);
                     break;
                 case KeyEvent.VK_S:
+                    if (gp.ui.commandNum == 0) {
+                        gp.ui.commandNum = 4;
+                    }
+                    else if (gp.ui.commandNum == 1) {
+                        gp.ui.commandNum = 5;
+                    }
+                    else if (gp.ui.commandNum == 2) {
+                        gp.ui.commandNum = 6;
+                    }
+                    else if (gp.ui.commandNum == 3) {
+                        gp.ui.commandNum = 7;
+                    }
+                    else if (gp.ui.commandNum == 4) {
+                        gp.ui.commandNum = 0;
+                    }
+                    else if (gp.ui.commandNum == 5) {
+                        gp.ui.commandNum = 1;
+                    }
+                    else if (gp.ui.commandNum == 6) {
+                        gp.ui.commandNum = 2;
+                    }
+                    else if (gp.ui.commandNum == 7) {
+                        gp.ui.commandNum = 3;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_LEFT:
+                    if (gp.ui.commandNum == 0) {
+                        lastNum = 0;
+                        gp.ui.commandNum = 8;
+                    }
+                    else if (gp.ui.commandNum == 8) {
+                        gp.ui.commandNum = 9;
+                    }
+                    else if (gp.ui.commandNum == 9) {
+                        gp.ui.commandNum = lastNum2;
+                    }
+                    else if (gp.ui.commandNum == 4) {
+                        lastNum = 4;
+                        gp.ui.commandNum = 8;
+                    }
+                    else {
+                        gp.ui.commandNum--;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    if (gp.ui.commandNum == 8) {
+                        gp.ui.commandNum = lastNum;
+                    }
+                    else if (gp.ui.commandNum == 9) {
+                        gp.ui.commandNum = 8;
+                    }
+                    else if (gp.ui.commandNum == 3) {
+                        lastNum2 = 3;
+                        gp.ui.commandNum = 9;
+                    }
+                    else if (gp.ui.commandNum == 7) {
+                        lastNum2 = 7;
+                        gp.ui.commandNum = 9;
+                    }
+                    else {
+                        gp.ui.commandNum++;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_UP:
+                    if (gp.ui.commandNum == 0) {
+                        gp.ui.commandNum = 4;
+                    }
+                    else if (gp.ui.commandNum == 1) {
+                        gp.ui.commandNum = 5;
+                    }
+                    else if (gp.ui.commandNum == 2) {
+                        gp.ui.commandNum = 6;
+                    }
+                    else if (gp.ui.commandNum == 3) {
+                        gp.ui.commandNum = 7;
+                    }
+                    else if (gp.ui.commandNum == 4) {
+                        gp.ui.commandNum = 0;
+                    }
+                    else if (gp.ui.commandNum == 5) {
+                        gp.ui.commandNum = 1;
+                    }
+                    else if (gp.ui.commandNum == 6) {
+                        gp.ui.commandNum = 2;
+                    }
+                    else if (gp.ui.commandNum == 7) {
+                        gp.ui.commandNum = 3;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_DOWN:
                     if (gp.ui.commandNum == 0) {
                         gp.ui.commandNum = 4;
                     }
@@ -430,6 +561,30 @@ public class KeyHandler implements KeyListener {
                 }
                 gp.playSE(3);
                 break;
+            case KeyEvent.VK_UP:
+                if (gp.ui.slotRow > 0) {
+                    gp.ui.slotRow--;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_DOWN:
+                if (gp.ui.slotRow < 3) {
+                    gp.ui.slotRow++;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_LEFT:
+                if (gp.ui.slotCol > 0) {
+                    gp.ui.slotCol--;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_RIGHT:
+                if (gp.ui.slotCol < 4) {
+                    gp.ui.slotCol++;
+                }
+                gp.playSE(3);
+                break;
             case KeyEvent.VK_ENTER:
                 enterPressed = true;
                 break;
@@ -536,6 +691,97 @@ public class KeyHandler implements KeyListener {
                     }
                     gp.playSE(2);
                     break;
+                case KeyEvent.VK_LEFT:
+                    if (gp.ui.worldMapNum == 0) {
+                        gp.ui.worldMapNum = 5;
+                    }
+                    else if (gp.ui.worldMapNum == 1) {
+                        gp.ui.worldMapNum = 6;
+                    }
+                    else if (gp.ui.worldMapNum == 2) {
+                        gp.ui.worldMapNum = 7;
+                    }
+                    else if (gp.ui.worldMapNum == 3) {
+                        gp.ui.worldMapNum = 8;
+                    }
+                    else if (gp.ui.worldMapNum == 4) {
+                        gp.ui.worldMapNum = 9;
+                    }
+                    else if (gp.ui.worldMapNum == 5) {
+                        gp.ui.worldMapNum = 0;
+                    }
+                    else if (gp.ui.worldMapNum == 6) {
+                        gp.ui.worldMapNum = 1;
+                    }
+                    else if (gp.ui.worldMapNum == 7) {
+                        gp.ui.worldMapNum = 2;
+                    }    
+                    else if (gp.ui.worldMapNum == 8) {
+                        gp.ui.worldMapNum = 3;
+                    }
+                    else if (gp.ui.worldMapNum == 9) {
+                        gp.ui.worldMapNum = 4;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    if (gp.ui.worldMapNum == 0) {
+                        gp.ui.worldMapNum = 5;
+                    }
+                    else if (gp.ui.worldMapNum == 1) {
+                        gp.ui.worldMapNum = 6;
+                    }
+                    else if (gp.ui.worldMapNum == 2) {
+                        gp.ui.worldMapNum = 7;
+                    }
+                    else if (gp.ui.worldMapNum == 3) {
+                        gp.ui.worldMapNum = 8;
+                    }
+                    else if (gp.ui.worldMapNum == 4) {
+                        gp.ui.worldMapNum = 9;
+                    }
+                    else if (gp.ui.worldMapNum == 5) {
+                        gp.ui.worldMapNum = 0;
+                    }
+                    else if (gp.ui.worldMapNum == 6) {
+                        gp.ui.worldMapNum = 1;
+                    }
+                    else if (gp.ui.worldMapNum == 7) {
+                        gp.ui.worldMapNum = 2;
+                    }    
+                    else if (gp.ui.worldMapNum == 8) {
+                        gp.ui.worldMapNum = 3;
+                    }
+                    else if (gp.ui.worldMapNum == 9) {
+                        gp.ui.worldMapNum = 4;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_UP:
+                    if (gp.ui.worldMapNum == 0) {
+                        gp.ui.worldMapNum = 4;
+                    }
+                    else if (gp.ui.worldMapNum == 5) {
+                        gp.ui.worldMapNum = 9;
+                    }
+                    else {
+                        gp.ui.worldMapNum--;
+                    }
+                    gp.playSE(2);
+                    break;
+                case KeyEvent.VK_DOWN:
+                    if (gp.ui.worldMapNum == 4) {
+                        gp.ui.worldMapNum = 0;
+                    }
+                    else if (gp.ui.worldMapNum == 9) {
+                        gp.ui.worldMapNum = 5;
+                    }
+                    else {
+                        gp.ui.worldMapNum++;
+                    }
+                    gp.playSE(2);
+                    break;
+                
                 case KeyEvent.VK_ENTER:
                     if (gp.ui.worldMapNum == 0) {
                         gp.playerData.performAction("visit", "Forest River", null);
@@ -598,6 +844,30 @@ public class KeyHandler implements KeyListener {
                 }
                 gp.playSE(3);
                 break;
+            case KeyEvent.VK_UP:
+                if (gp.ui.cookRow > 0) {
+                    gp.ui.cookRow--;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_DOWN:
+                if (gp.ui.cookRow < 3) {
+                    gp.ui.cookRow++;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_LEFT:
+                if (gp.ui.cookCol > 0) {
+                    gp.ui.cookCol--;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_RIGHT:
+                if (gp.ui.cookCol < 4) {
+                    gp.ui.cookCol++;
+                }
+                gp.playSE(3);
+                break;
             case KeyEvent.VK_ENTER:
                 enterPressed = true;
                 break;
@@ -639,6 +909,42 @@ public class KeyHandler implements KeyListener {
                 gp.playSE(3);
                 break;
             case KeyEvent.VK_D:
+                if (gp.ui.npcNum == 3) {
+                    gp.ui.npcNum = 0;
+                }
+                else {
+                    gp.ui.npcNum++;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_UP:
+                if (gp.ui.npcNum == 0) {
+                    gp.ui.npcNum = 3;
+                }
+                else {
+                    gp.ui.npcNum--;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_DOWN:
+                if (gp.ui.npcNum == 3) {
+                    gp.ui.npcNum = 0;
+                }
+                else {
+                    gp.ui.npcNum++;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_LEFT:
+                if (gp.ui.npcNum == 0) {
+                    gp.ui.npcNum = 3;
+                }
+                else {
+                    gp.ui.npcNum--;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_RIGHT:
                 if (gp.ui.npcNum == 3) {
                     gp.ui.npcNum = 0;
                 }
@@ -715,6 +1021,46 @@ public class KeyHandler implements KeyListener {
                 gp.playSE(3);
                 break;
             case KeyEvent.VK_D:
+                if (gp.ui.storeCol < 4) {
+                    gp.ui.storeCol++;
+                }
+                else if (gp.ui.storeCol == 4) {
+                    if (gp.ui.storeSection == 4){
+                        gp.ui.storeSection = 0;
+                    } else {
+                        gp.ui.storeSection++;
+                    }
+                    gp.ui.storeCol = 0;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_UP:
+                if (gp.ui.storeRow > 0) {
+                    gp.ui.storeRow--;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_DOWN:
+                if (gp.ui.storeRow < 4) {
+                    gp.ui.storeRow++;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_LEFT:
+                if (gp.ui.storeCol > 0) {
+                    gp.ui.storeCol--;
+                }
+                else if (gp.ui.storeCol == 0) {
+                    if (gp.ui.storeSection == 0){
+                        gp.ui.storeSection = 4;
+                    } else {
+                        gp.ui.storeSection--;
+                    }
+                    gp.ui.storeCol = 4;
+                }
+                gp.playSE(3);
+                break;
+            case KeyEvent.VK_RIGHT:
                 if (gp.ui.storeCol < 4) {
                     gp.ui.storeCol++;
                 }

@@ -51,7 +51,7 @@ public class Weather {
     }
 
     public boolean isRainy() {
-        return "Rainy".equals(currentWeather);
+        return "Rainy".equalsIgnoreCase(currentWeather);
     }
 
     // Cheat tool

@@ -397,7 +397,7 @@ public class UI {
         String seasonInput = JOptionPane.showInputDialog(gp, "Enter the season (Summer, Fall, Winter, Spring):", "Cheat: Set Season", JOptionPane.PLAIN_MESSAGE);
         if (seasonInput != null && !seasonInput.trim().isEmpty()) {
             if (gp.farm != null){
-                gp.farm.cheatSetSeason(seasonInput.trim());
+                gp.farm.cheatSetSeason(seasonInput.trim().toLowerCase());
             }    
             else {
                 System.err.println("Farm object is null in UI.processCheatInputs for season.");
@@ -744,8 +744,14 @@ public class UI {
                     gp.playSE(4);
                 }
                 else if (selectedItem instanceof Seed || selectedItem instanceof Equipment){
-                    gp.playerData.setEquppedItem(selectedItem);
-                    addMessage("Equipped " + selectedItem.getName() + ".");
+                    if (gp.playerData.getEquppedItem() == selectedItem) {
+                        gp.playerData.setEquppedItem(null);
+                        addMessage("Unequipped " + selectedItem.getName() + ".");
+                    } else {
+                        gp.playerData.setEquppedItem(selectedItem);
+                        addMessage("Equipped " + selectedItem.getName() + ".");
+                        addMessage("Press 'E' to use the equipped item.");
+                    }
                     gp.playSE(16);
                 }
                 gp.keyH.enterPressed = false;
