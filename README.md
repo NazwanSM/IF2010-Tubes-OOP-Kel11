@@ -50,7 +50,7 @@ Di **Spakbor Hills**, kamu akan menjalankan peran sebagai petani yang harus meng
 | `W` / `A` / `S` / `D` | Bergerak ke atas, kiri, bawah, dan kanan      |
 | Panah Atas / Kiri / Bawah / Kanan | Alternatif tombol arah untuk bergerak         |
 | `I`            | Membuka atau menutup inventory (tas)        |
-| `E`            | Melakukan aksi/interaksi dengan objek atau NPC |
+| `E`            | Melakukan aksi menggunakan equipment/seed (farming) |
 | `H`            | Memanen tanaman yang sudah siap panen        |
 | `C`            | Membuka cheat menu             |
 | `Enter`        | Berinteraksi langsung dengan objek sekitar   |
