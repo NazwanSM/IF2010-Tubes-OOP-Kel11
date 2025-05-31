@@ -167,16 +167,31 @@ public class EventHandler {
             else if(hit(0,31,11,"right" ) && randomMapIndex == 1) {
                 gp.gameState = gp.worldMapState;
             }
+            else if(hit(0,31,12,"right" ) && randomMapIndex == 1) {
+                gp.gameState = gp.worldMapState;
+            }
             else if(hit(0,0,13,"left" ) && randomMapIndex == 2) {
+                gp.gameState = gp.worldMapState;
+            }
+            else if(hit(0,0,14,"left" ) && randomMapIndex == 2) {
                 gp.gameState = gp.worldMapState;
             }
             else if(hit(0,31,19,"right" ) && randomMapIndex == 3) {
                 gp.gameState = gp.worldMapState;
             }
+            else if(hit(0,31,20,"right" ) && randomMapIndex == 3) {
+                gp.gameState = gp.worldMapState;
+            }
             else if(hit(0,31,17,"right" ) && randomMapIndex == 4) {
                 gp.gameState = gp.worldMapState;
             }
+            else if(hit(0,31,18,"right" ) && randomMapIndex == 4) {
+                gp.gameState = gp.worldMapState;
+            }
             else if(hit(0,0,16,"left" ) && randomMapIndex == 5) {
+                gp.gameState = gp.worldMapState;
+            }
+            else if(hit(0,0,17,"left" ) && randomMapIndex == 5) {
                 gp.gameState = gp.worldMapState;
             }
             else if(hit(2, 18, 15,"any")) {
@@ -348,6 +363,15 @@ public class EventHandler {
                 else if (randomMapIndex == 5){
                     teleport(0,0,16);
                 }
+            }
+            else if(hit(10, 15, 12, "any")){
+                teleport(11,15,15);
+            }
+            else if(hit(10, 14, 12, "any")){
+                teleport(11,15,15);
+            }
+            else if(hit(11, 15, 17, "any")) {
+                teleport(10, 15, 12);
             }
 
             else if(hit(1, 12, 8 , "any")) {

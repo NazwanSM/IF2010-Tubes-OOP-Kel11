@@ -1,18 +1,26 @@
-package data; 
+package data;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
 import java.util.HashMap;
-import main.GamePanel;
+import java.util.List;
+import java.util.Map;
+
+import custom_adapters.NPCAdapter; // Import NPCAdapter
 import entity.npc.Abigail;
 import entity.npc.Caroline;
 import entity.npc.Dasco;
 import entity.npc.Emily;
 import entity.npc.MayorTadi;
 import entity.npc.NPC;
+import entity.npc.NPCEasterEgg1;
+import entity.npc.NPCEasterEgg2;
+import entity.npc.NPCEasterEgg3;
+import entity.npc.NPCEasterEgg4;
+import entity.npc.NPCEasterEgg5;
+import entity.npc.NPCEasterEgg6;
 import entity.npc.Perry;
+import main.GamePanel;
 
 public class NPCData {
 
@@ -22,13 +30,23 @@ public class NPCData {
 
     public static void initialize(GamePanel gp) {
         if (initialized) return;
-        
+
         addNPC(new MayorTadi(gp));
         addNPC(new Caroline(gp));
         addNPC(new Perry(gp));
         addNPC(new Dasco(gp));
         addNPC(new Emily(gp));
         addNPC(new Abigail(gp));
+        addNPC(new NPCEasterEgg1(gp));
+        addNPC(new NPCEasterEgg2(gp));
+        addNPC(new NPCEasterEgg3(gp));
+        addNPC(new NPCEasterEgg4(gp));
+        addNPC(new NPCEasterEgg5(gp));
+        addNPC(new NPCEasterEgg6(gp));
+
+        // Set the GamePanel instance in NPCAdapter after all NPCs are initialized
+        // This ensures the adapter can use it during deserialization
+        NPCAdapter.setGamePanel(gp);
         
         initialized = true;
     }

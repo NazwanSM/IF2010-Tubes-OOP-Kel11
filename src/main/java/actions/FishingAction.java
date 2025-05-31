@@ -1,5 +1,7 @@
 package actions ;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -7,16 +9,14 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import main.GamePanel;
 import data.FishData;
 import data.FishRarity;
 import data.RecipeData;
 import entity.player.Player;
 import items.Fish;
-import world.environment.Weather;
+import main.GamePanel;
 import world.environment.Season;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
+import world.environment.Weather;
 
 public class FishingAction extends Action
 {
@@ -26,7 +26,7 @@ public class FishingAction extends Action
     private int currentHour;
     private String currentSeason;
 
-    public FishingAction(Player player, GamePanel gp) 
+    public FishingAction(Player player, GamePanel gp)
     {
         super("Fishing", 5, 15, gp);
         this.currentSeason = Season.getInstance().getCurrentSeason();
@@ -46,10 +46,10 @@ public class FishingAction extends Action
         }
     }
 
-    public void startFishing() 
-    {   
-
-        if (player.getEquppedItem() == null || !player.getEquppedItem().getName().equalsIgnoreCase("Fishing Rod")) {
+    public void startFishing()
+    {
+        // Corrected method name from getEquppedItem() to getEquippedItem()
+        if (player.getEquippedItem() == null || !player.getEquippedItem().getName().equalsIgnoreCase("Fishing Rod")) {
             gp.ui.addMessage("You need to equip a fishing rod to fish!");
             return;
         }
@@ -58,8 +58,8 @@ public class FishingAction extends Action
             return;
         }
         Random random = new Random();
-        
-        
+
+
         List<Fish> allFish = FishData.getAllFish();
         List<Fish> validFish = new ArrayList<>();
         for (Fish fish : allFish) {
@@ -67,7 +67,7 @@ public class FishingAction extends Action
                 validFish.add(fish);
             }
         }
-        
+
         if (validFish.isEmpty()) {
             gp.ui.addMessage("No fish can be caught here at this time.");
             return;
@@ -76,7 +76,7 @@ public class FishingAction extends Action
         gp.farm.getGameClock().pauseClock();
         player.decreaseEnergy(energyRequired);
         gp.farm.getGameClock().advance(timeRequired);
-        
+
         Fish fish = validFish.get(random.nextInt(validFish.size()));
         ImageIcon fishIcon = null;
         if (fish != null && fish.getItemImage() != null) {
@@ -108,8 +108,8 @@ public class FishingAction extends Action
             }
         }
 
-        
-        
+
+
         boolean caught = false;
 
         for (int i = 1; i <= maxTry; i++)
@@ -136,7 +136,7 @@ public class FishingAction extends Action
 
             int guess = Integer.parseInt(input);
 
-            if (guess == targetRandoming) 
+            if (guess == targetRandoming)
             {
                 caught = true;
                 break;
@@ -174,7 +174,7 @@ public class FishingAction extends Action
                 RecipeData.getRecipeById("recipe_4").setUnlocked(true);
             }
         }
-        else 
+        else
         {
             JOptionPane.showMessageDialog(gp, "You failed to catch the fish. Better luck next time!", "Fishing Failed", JOptionPane.INFORMATION_MESSAGE, fishIcon);
         }

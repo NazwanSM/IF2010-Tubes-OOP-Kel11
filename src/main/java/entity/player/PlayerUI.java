@@ -1,17 +1,16 @@
 package entity.player;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import entity.Entity;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
-import entity.Entity;
-
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-// import java.awt.Color;
-
-import java.io.IOException;
-import java.awt.Rectangle;
 public class PlayerUI extends Entity {
     KeyHandler keyH;
     Player player;
@@ -99,7 +98,6 @@ public class PlayerUI extends Entity {
             interact(obj);
             int npc = gp.cChecker.checkNPC(this, true);
             interactNPC(npc);
-
 
 
             // Check event

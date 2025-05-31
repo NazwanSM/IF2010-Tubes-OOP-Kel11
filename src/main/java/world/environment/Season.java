@@ -50,4 +50,8 @@ public class Season {
             }
         }
     }
+
+    public synchronized void setDayCounter(int dayCounter) {
+        this.dayCounter = dayCounter;
+    }
 }

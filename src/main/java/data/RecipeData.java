@@ -84,7 +84,7 @@ public class RecipeData {
         ingredients11.put(CropsData.getCropByName("Potato"), 2);
         ingredients11.put(CropsData.getCropByName("Parsnip"), 1);
         ingredients11.put(CropsData.getCropByName("Tomato"), 1);
-        ingredients11.put(CropsData.getCropByName("Eggplant"), 1);
+        ingredients11.put(MiscData.getMiscByName("Eggplant"), 1);
         Recipes.add(new Recipe("recipe_11", FoodData.getFoodByName("The Legends of Spakbor"), ingredients11, false, "Fishing 'Legend Fish'"));
     }
 

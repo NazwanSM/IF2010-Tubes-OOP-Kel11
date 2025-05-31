@@ -1,6 +1,7 @@
 package entity.player;
 
-import main.GamePanel;
+import java.awt.Point;
+
 import actions.BuyingAction;
 import actions.ChattingAction;
 import actions.CookingAction;
@@ -23,8 +24,8 @@ import data.RecipeData;
 import entity.npc.NPC;
 import items.Items;
 import items.Seed;
+import main.GamePanel;
 import statistics.IStatisticTracker;
-import java.awt.Point;
 
 public class Player {
     private String name;
@@ -33,10 +34,10 @@ public class Player {
     private String famName;
     private NPC partner;
     private int gold;
-    private Items equppedItem;
+    private Items equippedItem; // Corrected field name
     private Inventory inventory;
     public static final int MAX_ENERGY = 100;
-    public static final int MIN_ENERGY = -20;
+    public static final int MIN_ENERGY = -20; // Corrected field name (was int int)
     private IStatisticTracker statisticTracker;
     private GamePanel gp;
     private static int proposingDay;
@@ -56,7 +57,7 @@ public class Player {
         this.statisticTracker = gp.statisticTracker;
         this.gp = gp;
         this.location = gp.currentMap;
-        this.equppedItem = null;
+        this.equippedItem = null; // Initialize with corrected field name
 
         DefaultInventoryInitializer inventoryInitializer = new DefaultInventoryInitializer();
         inventoryInitializer.setDefaultItems(this.inventory);
@@ -102,12 +103,14 @@ public class Player {
         return location;
     }
 
-    public Items getEquppedItem() {
-        return equppedItem;
+    // Corrected method name to getEquippedItem
+    public Items getEquippedItem() {
+        return equippedItem;
     }
 
-    public void setEquppedItem(Items equppedItem) {
-        this.equppedItem = equppedItem;
+    // Corrected method name to setEquippedItem
+    public void setEquippedItem(Items equippedItem) {
+        this.equippedItem = equippedItem;
     }
 
     public static void setProposingDay(int proposingDay) {
@@ -122,7 +125,7 @@ public class Player {
         this.gender = gender;
     }
 
-    public void setEnergy(int energy) { 
+    public void setEnergy(int energy) {
         if (energy > MAX_ENERGY) {
             this.energy = MAX_ENERGY;
         } else if (energy <= MIN_ENERGY) {
@@ -140,7 +143,7 @@ public class Player {
         this.partner = partner;
     }
 
-    public void setGold(int gold) {  
+    public void setGold(int gold) {
         if (gold < 0) {
             this.gold = 0;
         } else {
@@ -156,7 +159,7 @@ public class Player {
     public void setLocation(int location) {
         this.location = location;
     }
-    
+
     public void increaseEnergy(int amount) {
         setEnergy(this.energy + amount);
     }
@@ -170,7 +173,7 @@ public class Player {
         statisticTracker.trackIncome(amount);
     }
 
-    public void subtractGold(int amount) { 
+    public void subtractGold(int amount) {
         setGold(this.gold - amount);
         if (amount > 0) {
             statisticTracker.trackExpenditure(amount);
@@ -178,19 +181,19 @@ public class Player {
     }
 
     public boolean hasItem(Items item) {
-        return inventory.hasItem(item); 
+        return inventory.hasItem(item);
     }
 
     public void addItemToInventory(Items item, int amount) {
-        inventory.addItem(item, amount); 
+        inventory.addItem(item, amount);
     }
 
     public void removeItemFromInventory(Items item, int amount) {
-        inventory.removeItem(item, amount); 
+        inventory.removeItem(item, amount);
     }
 
     public void performAction(String actionName, String parameter, Items item) {
-        switch (actionName.toLowerCase()) { 
+        switch (actionName.toLowerCase()) {
             case "tidur":
             case "sleep":
                 SleepingAction tidur = new SleepingAction(this, this.gp);
@@ -240,7 +243,7 @@ public class Player {
                 NPC npcToPropose = gp.npcs[gp.currentMap][0];
                 ProposingAction proposing = new ProposingAction(this, npcToPropose, this.gp);
                 proposing.executeAction();
-                gp.gameState = gp.playState;   
+                gp.gameState = gp.playState;
                 break;
             case "menikah":
             case "marry":
@@ -322,7 +325,7 @@ public class Player {
 
     public boolean isSleeping() {
         if (!gp.showingSleepScreen) return false;
-        
+
         if (System.currentTimeMillis() - sleepStartTime >= SLEEP_DURATION) {
             gp.showingSleepScreen = false;
             return false;

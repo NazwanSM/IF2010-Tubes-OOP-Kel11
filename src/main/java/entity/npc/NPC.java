@@ -1,10 +1,11 @@
 package entity.npc;
 
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.List;
+
 import main.GamePanel;
-import java.awt.Rectangle;
-import java.awt.Graphics2D;
 
 public abstract class NPC {
     protected String npcName;
@@ -39,6 +40,9 @@ public abstract class NPC {
 
     public int getHeartPoints() {
         return heartPoints;
+    }
+    public void setHeartPoints(int heartPoints) {
+        this.heartPoints = heartPoints;
     }
 
     public List<String> getLovedItems() {

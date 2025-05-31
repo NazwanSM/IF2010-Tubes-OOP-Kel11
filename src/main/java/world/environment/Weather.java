@@ -1,6 +1,6 @@
 package world.environment;
 
-import java.util.*;
+import java.util.Random;
 
 public class Weather {
     private static volatile Weather instance;
@@ -51,7 +51,7 @@ public class Weather {
     }
 
     public boolean isRainy() {
-        return "Rainy".equals(currentWeather);
+        return "Rainy".equalsIgnoreCase(currentWeather);
     }
 
     // Cheat tool
@@ -63,5 +63,9 @@ public class Weather {
 
     public int getRainyDaysThisSeason() {
         return rainyDaysThisSeason;
+    }
+
+    public void setRainyDaysThisSeason(int rainyDaysThisSeason) {
+        this.rainyDaysThisSeason = rainyDaysThisSeason;
     }
 }

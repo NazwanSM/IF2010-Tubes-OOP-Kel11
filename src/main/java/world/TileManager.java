@@ -20,7 +20,7 @@ public class TileManager {
 
     public TileManager(GamePanel gp, int randomMapIndex) {
         this.gp = gp;
-        tile = new Tile[999];
+        tile = new Tile[1200];
         mapTileNum = new int[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
@@ -35,6 +35,7 @@ public class TileManager {
         loadMap("perryHouse.txt", 8);
         loadMap("dascoHouse.txt", 9);
         loadMap("abigailHouse.txt", 10);
+        loadMap("easterEgg.txt", 11);
     }
 
     public void getTileImage() {
@@ -1015,6 +1016,42 @@ public class TileManager {
         setup (974, "/fall/Soil", false);
         setup (975, "/spring/Soil", false);
         setup (976, "/winter/Soil", false);
+        setup (977, "/easterEgg/EasterEgg_1", false);
+        setup (978, "/easterEgg/EasterEgg_2", false);
+        setup (979, "/easterEgg/EasterEgg_3", false);
+        setup (980, "/easterEgg/EasterEgg_4", false);
+        setup (981, "/easterEgg/EasterEgg_5", false);
+        setup (982, "/easterEgg/EasterEgg_6", false);
+        setup (983, "/easterEgg/EasterEgg_7", false);
+        setup (984, "/easterEgg/EasterEgg_8", false);
+        setup (985, "/easterEgg/EasterEgg_9", false);
+        setup (986, "/easterEgg/EasterEgg_10", false);
+        setup (987, "/easterEgg/EasterEgg_11", false);
+        setup (988, "/easterEgg/EasterEgg_12", false);
+        setup (989, "/easterEgg/EasterEgg_13", false);
+        setup (990, "/easterEgg/EasterEgg_14", false);
+        setup (991, "/easterEgg/EasterEgg_15", false);
+        setup (992, "/easterEgg/EasterEgg_16", false);
+        setup (993, "/easterEgg/EasterEgg_17", false);
+        setup (994, "/easterEgg/EasterEgg_18", false);
+        setup (995, "/easterEgg/EasterEgg_19", false);
+        setup (996, "/easterEgg/EasterEgg_20", false);
+        setup (997, "/easterEgg/EasterEgg_21", false);
+        setup (998, "/easterEgg/EasterEgg_22", false);
+        setup (999, "/easterEgg/EasterEgg_23", false);
+        setup (1000, "/easterEgg/EasterEgg_24", false);
+        setup (1001, "/easterEgg/EasterEgg_25", false);
+        setup (1002, "/easterEgg/EasterEgg_26", false);
+        setup (1003, "/easterEgg/EasterEgg_27", false);
+        setup (1004, "/easterEgg/EasterEgg_28", false);
+        setup (1005, "/easterEgg/EasterEgg_29", false);
+        setup (1006, "/easterEgg/EasterEgg_30", false);
+        setup (1007, "/easterEgg/EasterEgg_31", true);
+        setup (1008, "/easterEgg/EasterEgg_32", true);
+        setup (1009, "/easterEgg/EasterEgg_33", false);
+        setup (1010, "/easterEgg/EasterEgg_34", false);
+        setup (1011, "/easterEgg/EasterEgg_35", true);
+        setup (1012, "/easterEgg/EasterEgg_36", true);
     }
 
     public void setup(int index, String imagePath, boolean collision) {

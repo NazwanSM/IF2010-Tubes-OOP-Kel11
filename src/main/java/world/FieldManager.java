@@ -1,15 +1,16 @@
 package world;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Iterator;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
-import main.GamePanel;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import items.Crops;
 import items.Seed;
+import main.GamePanel;
 
 public class FieldManager {
     private Map<Point, CropsPlanted> plantedCrops;
@@ -125,5 +126,12 @@ public class FieldManager {
 
     public Collection<CropsPlanted> getAllPlantedCrops() {
         return plantedCrops.values();
+    }
+
+    public void setPlantedCrops(Collection<CropsPlanted> crops) {
+        this.plantedCrops.clear();
+        for (CropsPlanted crop : crops) {
+            this.plantedCrops.put(new Point(crop.getX(), crop.getY()), crop);
+        }
     }
 }

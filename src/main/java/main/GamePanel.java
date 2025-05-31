@@ -1,9 +1,18 @@
 package main;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import world.environment.Lighting;
 import actions.CookingAction;
 import data.NPCData;
 import entity.npc.NPC;
@@ -16,15 +25,7 @@ import statistics.StatisticsManager;
 import world.CropsPlanted;
 import world.Farm;
 import world.TileManager;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.Font;
-import java.awt.image.BufferedImage;
+import world.environment.Lighting;
 
 public class GamePanel extends JPanel implements Runnable {
     
@@ -73,6 +74,7 @@ public class GamePanel extends JPanel implements Runnable {
     public IStatisticProvider statisticProvider;
     public StatisticsManager manager = new StatisticsManager();
     public Farm farm;
+    public SaveLoadManager saveLoadManager;
     
     
     // Game State
@@ -109,11 +111,13 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         this.statisticTracker = manager;
         this.statisticProvider = manager;
+        this.saveLoadManager = new SaveLoadManager(this);
     }
     
     public void setupGame() {
         playMusic(21);
         gameState = titleState;
+        NPCData.initialize(this);
     }
     
     public void setupNewGame() {
@@ -152,9 +156,7 @@ public class GamePanel extends JPanel implements Runnable {
         
         this.farm = new Farm(farmNameInput, this.playerData, this);
 
-        NPCData.initialize(this);
-        
-        int randomMapIndex = (int) (Math.random() * 5) + 1;
+        this.randomMapIndex = (int) (Math.random() * 5) + 1;
         
         tileM = new TileManager(this, randomMapIndex);
         farm.getGameClock().startTime();
@@ -216,8 +218,19 @@ public class GamePanel extends JPanel implements Runnable {
                 alreadyProcessedCheatKey = true;
                 handleCheatActivation();
             }
+            else if (keyH.pPressed && !alreadyProcessedCheatKey) {
+                alreadyProcessedCheatKey = true;
+                // Mengubah panggilan saveGame untuk menerima argumen
+                saveGame("manual_save.json"); // Anda bisa ganti nama ini jika perlu
+            }
+            else if (keyH.lPressed && !alreadyProcessedCheatKey) {
+                alreadyProcessedCheatKey = true;
+                // Mengubah panggilan loadGame untuk menerima argumen
+                loadGame("autosave.json"); // Memuat otomatis autosave.json
+            }
 
-            if (farm.getGameClock().getHours() == 2) {
+
+            if (farm.getGameClock().getHours() == 2 && !playerData.isSleeping()) {
                 playerData.performAction("Sleep", null, null);
             }
 
@@ -249,11 +262,28 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    // Mengubah metode saveGame agar menerima filePath sebagai argumen
+    public void saveGame(String filePath) {
+        saveLoadManager.saveGame(filePath);
+        alreadyProcessedCheatKey = false;
+    }
+
+    // Mengubah metode loadGame agar menerima filePath sebagai argumen
+    public void loadGame(String filePath) {
+        File saveFile = new File(filePath);
+        if (saveFile.exists()) {
+            saveLoadManager.loadGame(filePath);
+        } else {
+            ui.addMessage("Save file not found: " + filePath);
+        }
+        alreadyProcessedCheatKey = false;
+    }
+
+
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // TITLE SCREEN
         if (gameState == titleState) {
             ui.draw(g2);
         }
@@ -262,7 +292,6 @@ public class GamePanel extends JPanel implements Runnable {
                 ui.drawSleeping();
                 return;
             }
-            // TILE
             tileM.draw(g2);
 
             if (currentMap == 0 && farm != null && farm.getFieldManager() != null) {
@@ -288,40 +317,32 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
     
-            // Object
             for (int i = 0; i < objects[currentMap].length; i++) {
                 if (objects[currentMap][i] != null) {
                     objects[currentMap][i].draw(g2, this);
                 }
             }
             
-            // NPC
             for (int i = 0; i < npcs[currentMap].length; i++) {
                 if (npcs[currentMap][i] != null) {
                     npcs[currentMap][i].draw(g2, this);
                 }
             }
 
-            // COOKING ACTIONS
             for (int i = activeCookingActions.size() - 1; i >= 0; i--) {
                 activeCookingActions.get(i).update();
             }
 
             
-            // PLAYER
             player.draw(g2);
 
-            // LIGHTING
             if (lightingSystem != null) {
             lightingSystem.draw(g2);
             }
     
-            // UI
             ui.draw(g2);
         }
 
-
-        // Debugging
         if (keyH.showDebugText) {
             g2.setFont(new Font("Helvetica", Font.PLAIN, 20));
             g2.setColor(Color.white);

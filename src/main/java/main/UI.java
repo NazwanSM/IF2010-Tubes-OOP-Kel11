@@ -1,19 +1,22 @@
 package main;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Color;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+
 import data.CropsData;
-import data.FoodData;
+import data.FoodData; // Ensure this import is present and correct
 import data.MiscData;
 import data.NPCData;
 import data.RecipeData;
@@ -22,14 +25,12 @@ import entity.npc.NPC;
 import items.Crops;
 import items.Edible;
 import items.Food;
-import items.Items;
+import items.Items; // Explicitly import Misc
 import items.Misc;
 import items.Recipe;
 import items.Seed;
 import items.Sellable;
 import items.equipment.Equipment;
-
-import java.util.HashMap;
 
 public class UI {
     
@@ -397,7 +398,7 @@ public class UI {
         String seasonInput = JOptionPane.showInputDialog(gp, "Enter the season (Summer, Fall, Winter, Spring):", "Cheat: Set Season", JOptionPane.PLAIN_MESSAGE);
         if (seasonInput != null && !seasonInput.trim().isEmpty()) {
             if (gp.farm != null){
-                gp.farm.cheatSetSeason(seasonInput.trim());
+                gp.farm.cheatSetSeason(seasonInput.trim().toLowerCase());
             }    
             else {
                 System.err.println("Farm object is null in UI.processCheatInputs for season.");
@@ -451,16 +452,16 @@ public class UI {
         }
 
         // Season
-        if (gp.farm.getSeason().getCurrentSeason() == "Summer") {
+        if (gp.farm.getSeason().getCurrentSeason().equals("Summer")) {
             g2.drawImage(summer, x + gp.tileSize + gp.tileSize / 2 + gp.tileSize / 4 + gp.tileSize * 2 - gp.tileSize / 4 - gp.tileSize / 8, y + gp.tileSize * 2 - gp.tileSize / 2 - gp.tileSize / 4 - gp.tileSize / 4 - gp.tileSize / 8, gp.tileSize, gp.tileSize, null);
         } 
-        else if (gp.farm.getSeason().getCurrentSeason() == "Spring") {
+        else if (gp.farm.getSeason().getCurrentSeason().equals("Spring")) {
             g2.drawImage(spring, x + gp.tileSize + gp.tileSize / 2 + gp.tileSize / 4 + gp.tileSize * 2 - gp.tileSize / 4 - gp.tileSize / 8, y + gp.tileSize * 2 - gp.tileSize / 2 - gp.tileSize / 4 - gp.tileSize / 4 - gp.tileSize / 8, gp.tileSize, gp.tileSize, null);
         } 
-        else if (gp.farm.getSeason().getCurrentSeason() == "Fall") {
+        else if (gp.farm.getSeason().getCurrentSeason().equals("Fall")) {
             g2.drawImage(fall, x + gp.tileSize + gp.tileSize / 2 + gp.tileSize / 4 + gp.tileSize * 2 - gp.tileSize / 4 - gp.tileSize / 8, y + gp.tileSize * 2 - gp.tileSize / 2 - gp.tileSize / 4 - gp.tileSize / 4 - gp.tileSize / 8, gp.tileSize, gp.tileSize, null);
         } 
-        else if (gp.farm.getSeason().getCurrentSeason() == "Winter") {
+        else if (gp.farm.getSeason().getCurrentSeason().equals("Winter")) {
             g2.drawImage(winter, x + gp.tileSize + gp.tileSize / 2 + gp.tileSize / 4 + gp.tileSize * 2 - gp.tileSize / 4 - gp.tileSize / 8, y + gp.tileSize * 2 - gp.tileSize / 2 - gp.tileSize / 4 - gp.tileSize / 4 - gp.tileSize / 8, gp.tileSize, gp.tileSize, null);
         }
         
@@ -659,7 +660,6 @@ public class UI {
         g2.setColor(Color.white);
         x += gp.tileSize / 2;
         y += gp.tileSize;
-        g2.drawString(currentDialog, x, y);
 
         for (String line : currentDialog.split("\n")) {
             g2.drawString(line, x, y);
@@ -706,7 +706,8 @@ public class UI {
             BufferedImage itemImage = item.getItemImage();
             if (itemImage != null) {
                 g2.drawImage(itemImage, slotX, slotY, gp.tileSize, gp.tileSize, null);
-                if (item == gp.playerData.getEquppedItem()) {
+                // Corrected method name from getEquppedItem() to getEquippedItem()
+                if (item == gp.playerData.getEquippedItem()) {
                     g2.drawImage(equipedItem, slotX, slotY, gp.tileSize, gp.tileSize, null);
                 }
             }
@@ -744,8 +745,14 @@ public class UI {
                     gp.playSE(4);
                 }
                 else if (selectedItem instanceof Seed || selectedItem instanceof Equipment){
-                    gp.playerData.setEquppedItem(selectedItem);
-                    addMessage("Equipped " + selectedItem.getName() + ".");
+                    if (gp.playerData.getEquippedItem() == selectedItem) {
+                        gp.playerData.setEquippedItem(null);
+                        addMessage("Unequipped " + selectedItem.getName() + ".");
+                    } else {
+                        gp.playerData.setEquippedItem(selectedItem);
+                        addMessage("Equipped " + selectedItem.getName() + ".");
+                        addMessage("Press 'E' to use the equipped item.");
+                    }
                     gp.playSE(16);
                 }
                 gp.keyH.enterPressed = false;
@@ -909,9 +916,9 @@ public class UI {
                 }
             }
         }
-        else if (storeSection == 3){
+        else if (storeSection == 3){ // Misc store section
             g2.drawImage(miscStore, x + gp.tileSize, y + gp.tileSize, width, height, null);
-            List<Misc> allMisc = MiscData.getAllMiscItems();
+            List<Misc> allMisc = MiscData.getAllMiscItems(); // This should correctly resolve now with Misc import
             List<Items> miscList = new ArrayList<>();
             for (Misc misc : allMisc) {
                 if (misc.getBuyPrice() > 0) {
@@ -937,13 +944,10 @@ public class UI {
                 if (itemIndex < miscList.size()) {
                     Items selectedItem = miscList.get(itemIndex);
                     String itemName = selectedItem.getName();
-                    Misc selectedMisc = (Misc) selectedItem;
+                    Misc selectedMisc = (Misc) selectedItem; // This should correctly resolve now
                     String itemPrice = String.valueOf(selectedMisc.getBuyPrice());
                     g2.drawString(itemName, textX, textY + gp.tileSize * 6);
                     g2.drawString("Price: " + itemPrice, textX, textY + gp.tileSize * 6 + gp.tileSize / 2);
-                    if (itemName.equals("Proposal Ring")) {
-                        isOwned = gp.playerData.getInventory().checkInventory().containsKey(selectedItem);
-                    }
                     if (gp.keyH.enterPressed) {
                         if (gp.playerData.getGold() >= selectedMisc.getBuyPrice() && !isOwned) {
                             gp.playerData.performAction("buy", itemPrice, selectedItem);
@@ -1526,7 +1530,7 @@ public class UI {
     }
 
     public void drawLoadScene(){
-        JOptionPane.showMessageDialog(gp, "This feature is still under development.", "Load Game", JOptionPane.INFORMATION_MESSAGE);
+        // This is replaced by direct loadGame() call
     }
 
     public int getItemIndexSlot() {

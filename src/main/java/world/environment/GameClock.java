@@ -28,11 +28,11 @@ public class GameClock extends Thread {
 
     public synchronized void startTime() {
         if (!threadStart) {
-            this.start(); 
+            this.start();
             threadStart = true;
         }
-        this.isRunning = true;  
-        this.isPaused = false; 
+        this.isRunning = true;
+        this.isPaused = false;
     }
 
     public void run() {
@@ -47,7 +47,7 @@ public class GameClock extends Thread {
                 Thread.currentThread().interrupt();
             }
         }
-    }   
+    }
 
     public void stopClock() { isRunning = false; }
     public void pauseClock() { isPaused = true; }
@@ -79,4 +79,12 @@ public class GameClock extends Thread {
 
     public synchronized int getHours() { return hours; }
     public synchronized int getMinutes() { return minutes; }
+
+    public synchronized void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public synchronized void setMinutes(int minutes) {
+        this.minutes = minutes;
+    }
 }

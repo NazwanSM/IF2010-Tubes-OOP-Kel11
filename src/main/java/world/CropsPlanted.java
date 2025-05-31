@@ -3,16 +3,17 @@ package world;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import main.UtilityTool;
-import data.CropsData;
-import items.Crops;
-import items.Seed;
 
 import javax.imageio.ImageIO;
 
+import data.CropsData;
+import items.Crops;
+import items.Seed;
+import main.UtilityTool;
+
 public class CropsPlanted {
-    private int x; 
-    private int y; 
+    private int x;
+    private int y;
     private boolean wateredThisDay;
     private int growthStage;
     private boolean readyToHarvest;
@@ -22,10 +23,10 @@ public class CropsPlanted {
     private BufferedImage halfCropImage;
     private BufferedImage fullCropImage;
     private final int GAME_SCALE = 3;
-    private int daysUnwatered; 
+    private int daysUnwatered;
     private boolean needsWateringVisualCue = false;
 
-    public CropsPlanted(int x, int y, Seed seed) { 
+    public CropsPlanted(int x, int y, Seed seed) {
         this.x = x;
         this.y = y;
         this.seed = seed;
@@ -36,11 +37,40 @@ public class CropsPlanted {
         this.daysUnwatered = 0;
         this.needsWateringVisualCue = false;
 
-        UtilityTool uTool = new UtilityTool(); 
+        UtilityTool uTool = new UtilityTool();
 
         this.seedImage = loadImage("/items/growth/" + crop.getName() + "/phase1.png", uTool);
         this.halfCropImage = loadImage("/items/growth/" + crop.getName() + "/phase2.png", uTool);
-        this.fullCropImage = loadImage("/items/growth/" + crop.getName() + "/phase3.png", uTool); 
+        this.fullCropImage = loadImage("/items/growth/" + crop.getName() + "/phase3.png", uTool);
+    }
+
+    // Constructor for loading from save data
+    public CropsPlanted(int x, int y, Seed seed, boolean wateredThisDay, int growthStage, boolean readyToHarvest, int daysUnwatered) {
+        this.x = x;
+        this.y = y;
+        this.seed = seed;
+        this.wateredThisDay = wateredThisDay;
+        this.growthStage = growthStage;
+        this.readyToHarvest = readyToHarvest;
+        this.crop = CropsData.getCropBySeed(seed.getName());
+        this.daysUnwatered = daysUnwatered;
+        // Recalculate needsWateringVisualCue based on loaded data
+        this.needsWateringVisualCue = !wateredThisDay && !readyToHarvest && (growthStage > 0); // Simplified for loading
+        if (this.crop == null) {
+            System.err.println("Error: Crop data not found for seed: " + seed.getName());
+        }
+
+
+        UtilityTool uTool = new UtilityTool();
+        if (crop != null) {
+            this.seedImage = loadImage("/items/growth/" + crop.getName() + "/phase1.png", uTool);
+            this.halfCropImage = loadImage("/items/growth/" + crop.getName() + "/phase2.png", uTool);
+            this.fullCropImage = loadImage("/items/growth/" + crop.getName() + "/phase3.png", uTool);
+        } else {
+            this.seedImage = null;
+            this.halfCropImage = null;
+            this.fullCropImage = null;
+        }
     }
 
     private BufferedImage loadImage(String imagePath, UtilityTool uTool) {
@@ -65,7 +95,7 @@ public class CropsPlanted {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-        return null; 
+        return null;
     }
 
 
@@ -110,16 +140,16 @@ public class CropsPlanted {
     }
 
     public void processEndOfDay(boolean isHotWeather, boolean isRainy) {
-        if (readyToHarvest || seed == null || crop == null) { 
-            return; 
+        if (readyToHarvest || seed == null || crop == null) {
+            return;
         }
 
         boolean canGrowThisDay = false;
 
         if (isRainy) {
-            setWateredThisDay(true); 
+            setWateredThisDay(true);
         }
-        if (wateredThisDay) { 
+        if (wateredThisDay) {
             canGrowThisDay = true;
         } else {
             daysUnwatered++;
@@ -129,11 +159,11 @@ public class CropsPlanted {
                     canGrowThisDay = true;
                 } else {
                     canGrowThisDay = false;
-                    needsWateringVisualCue = true; 
+                    needsWateringVisualCue = true;
                 }
-            } else { 
+            } else {
                 if (daysUnwatered < 1) {
-                    canGrowThisDay = true; 
+                    canGrowThisDay = true;
                 } else {
                     canGrowThisDay = false;
                     needsWateringVisualCue = true;
@@ -152,7 +182,7 @@ public class CropsPlanted {
 
         if (growthStage >= seed.getDaysToHarvest()) {
             readyToHarvest = true;
-            needsWateringVisualCue = false; 
+            needsWateringVisualCue = false;
         }
 
         this.wateredThisDay = false;
@@ -180,5 +210,9 @@ public class CropsPlanted {
 
     public boolean needsWateringVisualCue() {
         return needsWateringVisualCue && !readyToHarvest;
+    }
+
+    public int getDaysUnwatered() {
+        return daysUnwatered;
     }
 }

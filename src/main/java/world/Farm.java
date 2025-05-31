@@ -1,8 +1,10 @@
 package world;
 
-import main.GamePanel;
 import entity.player.Player;
-import world.environment.*;
+import main.GamePanel;
+import world.environment.GameClock;
+import world.environment.Season;
+import world.environment.Weather;
 
 public class Farm {
     private String farmName;
@@ -12,7 +14,7 @@ public class Farm {
     private GameClock gameClock;
     private GamePanel gp;
     private FieldManager fieldManager; // Assuming you have a FieldManager class to manage crops
-    private int day; 
+    private int day;
 
     public Farm(String farmName, Player player, GamePanel gp) {
         this.farmName = farmName;
@@ -21,32 +23,37 @@ public class Farm {
         this.gameClock = GameClock.getInstance();
         this.weather = Weather.getInstance();
         this.day = 1;
-        this.gp = gp; 
+        this.gp = gp;
         this.fieldManager = new FieldManager(gp);
     }
 
     // --- Getter Methods ---
-    public String getFarmName() { 
-        return farmName; 
+    public String getFarmName() {
+        return farmName;
     }
-    public Player getPlayer() { 
-        return player; 
+    public Player getPlayer() {
+        return player;
     }
-    public Season getSeason() { 
-        return season; 
+    public Season getSeason() {
+        return season;
     }
-    public GameClock getGameClock() { 
-        return gameClock; 
+    public GameClock getGameClock() {
+        return gameClock;
     }
-    public Weather getWeather() { 
-        return weather; 
+    public Weather getWeather() {
+        return weather;
     }
-    public int getDay() { 
-        return day; 
+    public int getDay() {
+        return day;
     }
 
-    public FieldManager getFieldManager() { 
-        return fieldManager; 
+    public FieldManager getFieldManager() {
+        return fieldManager;
+    }
+
+    // --- Setter Methods ---
+    public void setDay(int day) {
+        this.day = day;
     }
 
     // --- Day Progression ---
@@ -63,13 +70,13 @@ public class Farm {
 
         if (season.getCurrentSeason().equals("Winter")) {
             gp.stopMusic();
-            gp.playMusic(10); 
+            gp.playMusic(10);
         } else if (season.getCurrentSeason().equals("Spring")) {
             gp.stopMusic();
-            gp.playMusic(8); 
+            gp.playMusic(8);
         } else if (season.getCurrentSeason().equals("Summer")) {
             gp.stopMusic();
-            gp.playMusic(0); 
+            gp.playMusic(0);
         } else if (season.getCurrentSeason().equals("Fall")) {
             gp.stopMusic();
             gp.playMusic(9);

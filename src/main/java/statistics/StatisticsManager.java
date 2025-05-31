@@ -1,13 +1,12 @@
 package statistics;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import data.FishRarity;
 import items.Fish;
-
-import java.util.List;
-import java.util.Collections;
 
 public class StatisticsManager implements IStatisticTracker, IStatisticProvider {
     
@@ -158,6 +157,21 @@ public class StatisticsManager implements IStatisticTracker, IStatisticProvider 
     }
 
     @Override
+    public Map<String, Integer> getNPCChatFrequencies() { // Added method
+        return Collections.unmodifiableMap(this.npcChatFrequencies);
+    }
+
+    @Override
+    public Map<String, Integer> getNPCGiftFrequencies() { // Added method
+        return Collections.unmodifiableMap(this.npcGiftFrequencies);
+    }
+
+    @Override
+    public Map<String, Integer> getNPCVisitFrequencies() { // Added method
+        return Collections.unmodifiableMap(this.npcVisitFrequencies);
+    }
+
+    @Override
     public List<String> getTrackedNPCNames() {
         return Collections.unmodifiableList(this.internalNpcNameList);
     }
@@ -186,5 +200,61 @@ public class StatisticsManager implements IStatisticTracker, IStatisticProvider 
     @Override
     public boolean isAnyMilestoneAchieved() {
         return this.goldMilestoneAchieved || this.marriageMilestoneAchieved;
+    }
+
+    // Setters for loading data
+    public void setTotalIncome(long totalIncome) {
+        this.totalIncome = totalIncome;
+    }
+
+    public void setTotalExpenditure(long totalExpenditure) {
+        this.totalExpenditure = totalExpenditure;
+    }
+
+    public void setTotalDaysPlayed(int totalDaysPlayed) {
+        this.totalDaysPlayed = totalDaysPlayed;
+    }
+
+    public void setNpcChatFrequencies(Map<String, Integer> npcChatFrequencies) {
+        this.npcChatFrequencies.clear();
+        this.npcChatFrequencies.putAll(npcChatFrequencies);
+    }
+
+    public void setNpcGiftFrequencies(Map<String, Integer> npcGiftFrequencies) {
+        this.npcGiftFrequencies.clear();
+        this.npcGiftFrequencies.putAll(npcGiftFrequencies);
+    }
+
+    public void setNpcVisitFrequencies(Map<String, Integer> npcVisitFrequencies) {
+        this.npcVisitFrequencies.clear();
+        this.npcVisitFrequencies.putAll(npcVisitFrequencies);
+    }
+
+    public void setTotalCropsHarvested(int totalCropsHarvested) {
+        this.totalCropsHarvested = totalCropsHarvested;
+    }
+
+    public void setTotalFishCaught(int totalFishCaught) {
+        this.totalFishCaught = totalFishCaught;
+    }
+
+    public void setTotalCommonFishCaught(int totalCommonFishCaught) {
+        this.totalCommonFishCaught = totalCommonFishCaught;
+    }
+
+    public void setTotalRegularFishCaught(int totalRegularFishCaught) {
+        this.totalRegularFishCaught = totalRegularFishCaught;
+    }
+
+    public void setTotalLegendaryFishCaught(int totalLegendaryFishCaught) {
+        this.totalLegendaryFishCaught = totalLegendaryFishCaught;
+    }
+
+    public void setGoldMilestoneAchieved(boolean goldMilestoneAchieved) {
+        this.goldMilestoneAchieved = goldMilestoneAchieved;
+    }
+
+    public void setMarriageMilestoneAchieved(boolean marriageMilestoneAchieved) {
+        this.marriageMilestoneAchieved = marriageMilestoneAchieved;
     }
 }
