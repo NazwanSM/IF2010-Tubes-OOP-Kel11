@@ -1,7 +1,8 @@
 # 🌾 Spakbor Hills – Tugas Besar IF2010 OOP 2025
 
-> Proyek Tugas Besar Mata Kuliah **Pemrograman Berorientasi Objek**  
+> Tugas Besar Mata Kuliah **IF2010**  Pemrograman Berorientasi Objek
 > Semester Genap 2024/2025 – Institut Teknologi Bandung
+> By Tim **#BantaiTubesOOP** - Kelompok 11 K05
 
 ## 📖 Tentang Game
 
@@ -25,7 +26,6 @@ Setiap tanaman dan hewan memiliki atribut unik, dan pemain ditantang untuk meran
     ```bash
     git clone "https://github.com/NazwanSM/IF2010-Tubes-OOP-Kel11"
     ```
-    *(Ganti `USERNAME_ANDA` dengan username GitHub pemilik repositori atau URL yang benar)*
 
 2.  **Buka proyek:**
     Buka folder `IF2010-Tubes-OOP-Kel11` menggunakan IDE pilihan Anda.
