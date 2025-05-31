@@ -52,5 +52,5 @@ Di **Spakbor Hills**, kamu akan menjalankan peran sebagai petani yang harus meng
 | `I`            | Membuka atau menutup inventory (tas)        |
 | `E`            | Melakukan aksi/interaksi dengan objek atau NPC |
 | `H`            | Memanen tanaman yang sudah siap panen        |
-| `C`            | Membuka cheat menu (jika tersedia)            |
+| `C`            | Membuka cheat menu             |
 | `Enter`        | Berinteraksi langsung dengan objek sekitar   |
