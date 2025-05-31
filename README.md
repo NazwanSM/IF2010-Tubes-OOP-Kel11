@@ -33,9 +33,8 @@ Setiap tanaman dan hewan memiliki atribut unik, dan pemain ditantang untuk meran
     Buka folder `IF2010-Tubes-OOP-Kel11` menggunakan IDE pilihan Anda.
 
 3.  **Jalankan game:**
-    * Temukan file `Game.java` (pastikan path-nya benar, misal `src/main/java/com/yourpackage/Game.java` atau sesuai struktur proyek Anda).
-    * Di Visual Studio Code, Anda biasanya dapat mengklik tombol "Run Java" yang muncul di editor, atau klik kanan pada file `Game.java` dan pilih "Run Java".
-    * Di IDE lain, cari opsi untuk menjalankan file Java sebagai aplikasi. Pastikan `Game.java` memiliki metode `main`.
+    * Buka terminal kalian dengan root folder `IF2010-Tubes-OOP-Kel11`
+    * Ketikkan `gridlew run` jika menggunakan CMD Windows atau `./gridlew run` jika menggunakan MacOs/Linux/Powershell
 
     Game akan dimulai setelah kompilasi berhasil.
 
@@ -53,4 +52,4 @@ Di **Spakbor Hills**, kamu akan menjalankan peran sebagai petani yang harus meng
 | `E`            | Melakukan aksi menggunakan equipment/seed (farming) |
 | `H`            | Memanen tanaman yang sudah siap panen        |
 | `C`            | Membuka cheat menu             |
-| `Enter`        | Berinteraksi langsung dengan objek sekitar   |
+| `Enter`        | Berinteraksi langsung dengan objek sekitar dan menu   |
