@@ -12,6 +12,12 @@ import entity.npc.Dasco;
 import entity.npc.Emily;
 import entity.npc.MayorTadi;
 import entity.npc.NPC;
+import entity.npc.NPCEasterEgg1;
+import entity.npc.NPCEasterEgg2;
+import entity.npc.NPCEasterEgg3;
+import entity.npc.NPCEasterEgg4;
+import entity.npc.NPCEasterEgg5;
+import entity.npc.NPCEasterEgg6;
 import entity.npc.Perry;
 
 public class NPCData {
@@ -29,6 +35,12 @@ public class NPCData {
         addNPC(new Dasco(gp));
         addNPC(new Emily(gp));
         addNPC(new Abigail(gp));
+        addNPC(new NPCEasterEgg1(gp));
+        addNPC(new NPCEasterEgg2(gp));
+        addNPC(new NPCEasterEgg3(gp));
+        addNPC(new NPCEasterEgg4(gp));
+        addNPC(new NPCEasterEgg5(gp));
+        addNPC(new NPCEasterEgg6(gp));
         
         initialized = true;
     }

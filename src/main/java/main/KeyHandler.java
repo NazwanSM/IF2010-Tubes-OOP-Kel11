@@ -509,6 +509,13 @@ public class KeyHandler implements KeyListener {
                             break;
                     }
                     break;
+                case KeyEvent.VK_T:
+                    if (showDebugText) {
+                        showDebugText = false;
+                    } else {
+                        showDebugText = true;
+                    }
+                    break;
                 case KeyEvent.VK_E:
                     if(gp.playerData.getEquppedItem() == null) {
                         gp.ui.addMessage("You have no equipped item.");

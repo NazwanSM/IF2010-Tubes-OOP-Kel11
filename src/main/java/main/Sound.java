@@ -39,6 +39,7 @@ public class Sound {
         soundURL[21] = this.getClass().getResource("/sound/OST.wav");
         soundURL[22] = this.getClass().getResource("/sound/getNewSpecialItem.wav");
         soundURL[23] = this.getClass().getResource("/sound/bigSelect.wav");
+        soundURL[24] = this.getClass().getResource("/sound/windah.wav");
     }
 
     public void setFile(int i) {

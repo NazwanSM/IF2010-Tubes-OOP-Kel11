@@ -10,6 +10,12 @@ import entity.npc.Dasco;
 import entity.npc.Emily;
 import entity.npc.MayorTadi;
 import entity.npc.Perry;
+import entity.npc.NPCEasterEgg1;
+import entity.npc.NPCEasterEgg2;
+import entity.npc.NPCEasterEgg3;
+import entity.npc.NPCEasterEgg4;
+import entity.npc.NPCEasterEgg5;
+import entity.npc.NPCEasterEgg6;
 import entity.object.OBJ_Bed_1;
 import entity.object.OBJ_Bed_2;
 import entity.object.OBJ_Bed_3;
@@ -314,6 +320,57 @@ public class AssetSetter {
                             abigail.worldY = row;
                             gp.npcs[gp.currentMap][npcIndex++] = abigail;
                             break;
+                    }
+                }
+            }
+        }
+        else if (gp.currentMap == 11) {
+            int[][] npcMap = loadNPCMap("/maps/npc_map" + gp.currentMap + ".txt", gp.maxWorldCol, gp.maxWorldRow);
+            int npcIndex = 0;
+
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                for (int col = 0; col < gp.maxWorldCol; col++) {
+                    int id = npcMap[col][row];
+                    if (id == 0) continue;
+
+                    switch (id) {
+                        case 1: 
+                            NPCEasterEgg1 egg1 = (NPCEasterEgg1) NPCData.getNPCByName("NPCEasterEgg1");
+                            egg1.worldX = col;
+                            egg1.worldY = row;
+                            gp.npcs[gp.currentMap][npcIndex++] = egg1;
+                            break;
+                        case 2:
+                            NPCEasterEgg2 egg2 = (NPCEasterEgg2) NPCData.getNPCByName("NPCEasterEgg2");
+                            egg2.worldX = col;
+                            egg2.worldY = row;
+                            gp.npcs[gp.currentMap][npcIndex++] = egg2;
+                            break;
+                        case 3:
+                            NPCEasterEgg3 egg3 = (NPCEasterEgg3) NPCData.getNPCByName("NPCEasterEgg3");
+                            egg3.worldX = col;
+                            egg3.worldY = row;
+                            gp.npcs[gp.currentMap][npcIndex++] = egg3;
+                            break;
+                        case 4:
+                            NPCEasterEgg4 egg4 = (NPCEasterEgg4) NPCData.getNPCByName("NPCEasterEgg4");
+                            egg4.worldX = col;
+                            egg4.worldY = row;
+                            gp.npcs[gp.currentMap][npcIndex++] = egg4;
+                            break;
+                        case 5:
+                            NPCEasterEgg5 egg5 = (NPCEasterEgg5) NPCData.getNPCByName("NPCEasterEgg5");
+                            egg5.worldX = col;
+                            egg5.worldY = row;
+                            gp.npcs[gp.currentMap][npcIndex++] = egg5;
+                            break;
+                        case 6:
+                            NPCEasterEgg6 egg6 = (NPCEasterEgg6) NPCData.getNPCByName("NPCEasterEgg6");
+                            egg6.worldX = col;
+                            egg6.worldY = row;
+                            gp.npcs[gp.currentMap][npcIndex++] = egg6;
+                            break;
+                        default:
                     }
                 }
             }

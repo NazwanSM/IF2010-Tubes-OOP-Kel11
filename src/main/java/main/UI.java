@@ -659,7 +659,6 @@ public class UI {
         g2.setColor(Color.white);
         x += gp.tileSize / 2;
         y += gp.tileSize;
-        g2.drawString(currentDialog, x, y);
 
         for (String line : currentDialog.split("\n")) {
             g2.drawString(line, x, y);
