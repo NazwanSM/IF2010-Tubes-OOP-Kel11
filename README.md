@@ -23,7 +23,7 @@ Setiap tanaman dan hewan memiliki atribut unik, dan pemain ditantang untuk meran
 
 1.  **Clone repositori ini:**
     ```bash
-    git clone [https://github.com/USERNAME_ANDA/IF2010-Tubes-OOP-Kel11.git](https://github.com/USERNAME_ANDA/IF2010-Tubes-OOP-Kel11.git)
+    git clone "https://github.com/NazwanSM/IF2010-Tubes-OOP-Kel11"
     ```
     *(Ganti `USERNAME_ANDA` dengan username GitHub pemilik repositori atau URL yang benar)*
 
