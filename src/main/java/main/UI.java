@@ -1472,6 +1472,9 @@ public class UI {
         textY += gp.tileSize / 2;
         List<NPC> npcs = NPCData.getAllNPC();
         for (NPC npc : npcs) {
+            if (npc.getNPCName().equals("NPCEasterEgg1") || npc.getNPCName().equals("NPCEasterEgg2") || npc.getNPCName().equals("NPCEasterEgg3") || npc.getNPCName().equals("NPCEasterEgg4") || npc.getNPCName().equals("NPCEasterEgg5") || npc.getNPCName().equals("NPCEasterEgg6")){
+                continue;
+            }
             g2.drawString(npc.getNPCName() + ": " + npc.getRelationshipStatus()+ ", " + gp.manager.getNPCChatFrequency(npc.getNPCName()) + ", " + gp.manager.getNPCGiftFrequency(npc.getNPCName()) + ", " + gp.manager.getNPCVisitFrequency(npc.getNPCName()),textX + gp.tileSize / 4, textY);
             textY += gp.tileSize / 2;
         }
