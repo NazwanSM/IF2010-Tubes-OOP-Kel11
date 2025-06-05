@@ -34,7 +34,7 @@ Setiap tanaman dan hewan memiliki atribut unik, dan pemain ditantang untuk meran
 
 3.  **Jalankan game:**
     * Buka terminal kalian dengan root folder `IF2010-Tubes-OOP-Kel11`
-    * Ketikkan `gridlew run` jika menggunakan CMD Windows atau `./gridlew run` jika menggunakan MacOs/Linux/Powershell
+    * Ketikkan `gradlew run` jika menggunakan CMD Windows atau `./gradlew run` jika menggunakan MacOs/Linux/Powershell
 
     Game akan dimulai setelah kompilasi berhasil.
 
